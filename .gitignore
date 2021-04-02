@@ -29,7 +29,6 @@ Makefile.pre
 Misc/python.pc
 Modules/Setup
 Modules/Setup.config
-Modules/Setup.local
 Modules/config.c
 Modules/ld_so_aix
 PC/python_nt*.h

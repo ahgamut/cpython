@@ -6,7 +6,7 @@
 #define PY_SSIZE_T_CLEAN
 
 #include "Python.h"
-#include "zlib.h"
+// #include "zlib.h" available in cosmopolitan.h
 
 #ifdef WITH_THREAD
 #include "pythread.h"

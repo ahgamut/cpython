@@ -16,6 +16,7 @@ redistribution of this file, and for a DISCLAIMER OF ALL WARRANTIES.
    See init_builtin() in import.c. */
 
 #include "Python.h"
+#undef initarray // clash with cosmopolitan macro
 
 #ifdef __cplusplus
 extern "C" {
