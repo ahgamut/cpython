@@ -489,7 +489,7 @@ coverage-report: regen-grammar
 $(BUILDPYTHON):	Modules/python.o $(LIBRARY) $(LDLIBRARY)
 		$(LINKCC) $(LDFLAGS) $(LINKFORSHARED) -o $@ \
 			Modules/python.o \
-			$(BLDLIBRARY) $(LIBS) $(MODLIBS) $(SYSLIBS) $(LDLAST)
+			$(BLDLIBRARY) $(MODLIBS) $(SYSLIBS) $(LDLAST) $(LIBS) 
 
 platform: $(BUILDPYTHON) pybuilddir.txt
 	$(RUNSHARED) $(PYTHON_FOR_BUILD) -c 'import sys ; from sysconfig import get_platform ; print get_platform()+"-"+sys.version[0:3]' >platform
@@ -1401,7 +1401,7 @@ pycremoval:
 	find $(srcdir) -name '*.py[co]' -exec rm -f {} ';'
 
 clean: pycremoval
-	find . -name '*.[oa]' -exec rm -f {} ';'
+	find . -path ./libcosmo -prune -false -o -name '*.[oa]' -exec rm -f {} ';'
 	find . -name '*.s[ol]' -exec rm -f {} ';'
 	find . -name '*.so.[0-9]*.[0-9]*' -exec rm -f {} ';'
 	find build -name 'fficonfig.h' -exec rm -f {} ';' || true

@@ -1,0 +1,45 @@
+#! /bin/sh 
+set -eux
+
+COSMO_LIBDIR="./libcosmo"
+
+if [ ! -f $COSMO_LIBDIR/cosmopolitan.h ]; then
+    echo "<<<SUPERCONFIGURE>>> cosmopolitan.h does not exist in $COSMO_LIBDIR!!!!"
+    exit 1
+fi
+
+echo "<<<SUPERCONFIGURE>>> cosmopolitan.h exists in $COSMO_LIBDIR, assuming other files exist as well"
+
+echo "<<<SUPERCONFIGURE>>> Running configure"
+LD_LIBRARY_PATH="" ./configure \
+    --prefix="" \
+    --disable-shared --disable-profiling \
+    --disable-ipv6 --disable-optimizations \
+    --without-pydebug --without-lto \
+    --without-threads \
+    --without-pymalloc --without-tsc \
+    --without-ensurepip \
+    --with-tcltk-includes="" \
+    --with-tcltk-libs="" \
+    --with-libm="" \
+    OPT="" \
+    CCSHARED="" \
+    LINKFORSHARED="" \
+    PKG_CONFIG="" \
+    CC="gcc" \
+    CFLAGS="-Wall -Wno-strict-prototypes -Wno-unused-value \
+      -std=c99 -static \
+      -fno-pie -no-pie -fno-omit-frame-pointer \
+      -mno-red-zone -pg -mnop-mcount \
+      -nostdinc -nostdlib \
+      -I./header_stubs \
+      -include $COSMO_LIBDIR/cosmopolitan.h" \
+    LDFLAGS="-static -nostdlib -nostdinc -fno-pie \
+      -no-pie -mno-red-zone \
+      -include $COSMO_LIBDIR/cosmopolitan.h" \
+    LIBS="-fuse-ld=bfd \
+      -Wl,-T,$COSMO_LIBDIR/ape.lds \
+      -include $COSMO_LIBDIR/cosmopolitan.h \
+      $COSMO_LIBDIR/crt.o \
+      $COSMO_LIBDIR/ape.o \
+      $COSMO_LIBDIR/cosmopolitan.a"
