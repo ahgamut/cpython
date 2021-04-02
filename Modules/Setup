@@ -98,10 +98,10 @@ EXTRAMACHDEPPATH=
 
 # Path component for the Tkinter-related modules
 # The TKPATH variable is always enabled, to save you the effort.
-TKPATH=:lib-tk
+TKPATH=
 
 # Path component for old modules.
-OLDPATH=:lib-old
+OLDPATH=
 
 COREPYTHONPATH=$(DESTPATH)$(SITEPATH)$(TESTPATH)$(MACHDEPPATH)$(EXTRAMACHDEPPATH)$(TKPATH)$(OLDPATH)
 PYTHONPATH=$(COREPYTHONPATH)
@@ -360,7 +360,7 @@ timing timingmodule.c
 #	-lX11
 
 # Lance Ellinghaus's syslog module
-#syslog syslogmodule.c		# syslog daemon interface
+syslog syslogmodule.c		# syslog daemon interface
 
 
 # Curses support, requring the System V version of curses, often
