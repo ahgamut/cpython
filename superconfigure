@@ -2,6 +2,7 @@
 set -eux
 
 COSMO_LIBDIR="./libcosmo"
+CC="${CC:-gcc}"
 
 if [ ! -f $COSMO_LIBDIR/cosmopolitan.h ]; then
     echo "<<<SUPERCONFIGURE>>> cosmopolitan.h does not exist in $COSMO_LIBDIR!!!!"
@@ -10,7 +11,7 @@ fi
 
 echo "<<<SUPERCONFIGURE>>> cosmopolitan.h exists in $COSMO_LIBDIR, assuming other files exist as well"
 
-echo "<<<SUPERCONFIGURE>>> Running configure"
+echo "<<<SUPERCONFIGURE>>> Running configure with $CC"
 LD_LIBRARY_PATH="" ./configure \
     --prefix="" \
     --disable-shared --disable-profiling \
@@ -26,11 +27,10 @@ LD_LIBRARY_PATH="" ./configure \
     CCSHARED="" \
     LINKFORSHARED="" \
     PKG_CONFIG="" \
-    CC="gcc" \
     CFLAGS="-Wall -Wno-strict-prototypes -Wno-unused-value \
       -std=c99 -static \
-      -fno-pie -no-pie -fno-omit-frame-pointer \
-      -mno-red-zone -pg -mnop-mcount \
+      -fno-pie -fno-omit-frame-pointer \
+      -mno-red-zone -pg \
       -nostdinc -nostdlib \
       -I./header_stubs \
       -include $COSMO_LIBDIR/cosmopolitan.h" \
@@ -43,3 +43,10 @@ LD_LIBRARY_PATH="" ./configure \
       $COSMO_LIBDIR/crt.o \
       $COSMO_LIBDIR/ape.o \
       $COSMO_LIBDIR/cosmopolitan.a"
+
+
+echo "<<<SUPERCONFIGURE>>> Running make"
+make -j4
+
+echo "<<<SUPERCONFIGURE>>> Running objcopy to create APE"
+objcopy -S -O binary python python.exe
