@@ -440,7 +440,7 @@ visit_reachable(PyObject *op, PyGC_Head *reachable)
  * not.
  */
 static void
-move_unreachable(PyGC_Head *young, PyGC_Head *unreachable)
+move_unreachable(PyGC_Head *young, PyGC_Head *pygc_unreachable)
 {
     PyGC_Head *gc = young->gc.gc_next;
 
@@ -486,7 +486,7 @@ move_unreachable(PyGC_Head *young, PyGC_Head *unreachable)
              * young if that's so, and we'll see it again.
              */
             next = gc->gc.gc_next;
-            gc_list_move(gc, unreachable);
+            gc_list_move(gc, pygc_unreachable);
             gc->gc.gc_refs = GC_TENTATIVELY_UNREACHABLE;
         }
         gc = next;
@@ -534,7 +534,7 @@ untrack_dicts(PyGC_Head *head)
  * objects remaining in unreachable are left at GC_TENTATIVELY_UNREACHABLE.
  */
 static void
-move_finalizers(PyGC_Head *unreachable, PyGC_Head *finalizers)
+move_finalizers(PyGC_Head *pygc_unreachable, PyGC_Head *finalizers)
 {
     PyGC_Head *gc;
     PyGC_Head *next;
@@ -542,7 +542,7 @@ move_finalizers(PyGC_Head *unreachable, PyGC_Head *finalizers)
     /* March over unreachable.  Move objects with finalizers into
      * `finalizers`.
      */
-    for (gc = unreachable->gc.gc_next; gc != unreachable; gc = next) {
+    for (gc = pygc_unreachable->gc.gc_next; gc != pygc_unreachable; gc = next) {
         PyObject *op = FROM_GC(gc);
 
         assert(IS_TENTATIVELY_UNREACHABLE(op));
@@ -598,7 +598,7 @@ move_finalizer_reachable(PyGC_Head *finalizers)
  * no object in `unreachable` is weakly referenced anymore.
  */
 static int
-handle_weakrefs(PyGC_Head *unreachable, PyGC_Head *old)
+handle_weakrefs(PyGC_Head *pygc_unreachable, PyGC_Head *old)
 {
     PyGC_Head *gc;
     PyObject *op;               /* generally FROM_GC(gc) */
@@ -617,7 +617,7 @@ handle_weakrefs(PyGC_Head *unreachable, PyGC_Head *old)
      * make another pass over wrcb_to_call, invoking callbacks, after this
      * pass completes.
      */
-    for (gc = unreachable->gc.gc_next; gc != unreachable; gc = next) {
+    for (gc = pygc_unreachable->gc.gc_next; gc != pygc_unreachable; gc = next) {
         PyWeakReference **wrlist;
 
         op = FROM_GC(gc);
@@ -873,7 +873,7 @@ collect(int generation)
     Py_ssize_t n = 0; /* # unreachable objects that couldn't be collected */
     PyGC_Head *young; /* the generation we are examining */
     PyGC_Head *old; /* next older generation */
-    PyGC_Head unreachable; /* non-problematic unreachable trash */
+    PyGC_Head pygc_unreachable; /* non-problematic unreachable trash */
     PyGC_Head finalizers;  /* objects with, & reachable from, __del__ */
     PyGC_Head *gc;
     double t1 = 0.0;
@@ -927,8 +927,8 @@ collect(int generation)
      * set instead.  But most things usually turn out to be reachable,
      * so it's more efficient to move the unreachable things.
      */
-    gc_list_init(&unreachable);
-    move_unreachable(young, &unreachable);
+    gc_list_init(&pygc_unreachable);
+    move_unreachable(young, &pygc_unreachable);
 
     /* Move reachable objects to next generation. */
     if (young != old) {
@@ -953,7 +953,7 @@ collect(int generation)
      * handle_weakrefs().
      */
     gc_list_init(&finalizers);
-    move_finalizers(&unreachable, &finalizers);
+    move_finalizers(&pygc_unreachable, &finalizers);
     /* finalizers contains the unreachable objects with a finalizer;
      * unreachable objects reachable *from* those are also uncollectable,
      * and we move those into the finalizers list too.
@@ -963,7 +963,7 @@ collect(int generation)
     /* Collect statistics on collectable objects found and print
      * debugging information.
      */
-    for (gc = unreachable.gc.gc_next; gc != &unreachable;
+    for (gc = pygc_unreachable.gc.gc_next; gc != &pygc_unreachable;
                     gc = gc->gc.gc_next) {
         m++;
         if (debug & DEBUG_COLLECTABLE) {
@@ -972,13 +972,13 @@ collect(int generation)
     }
 
     /* Clear weakrefs and invoke callbacks as necessary. */
-    m += handle_weakrefs(&unreachable, old);
+    m += handle_weakrefs(&pygc_unreachable, old);
 
     /* Call tp_clear on objects in the unreachable set.  This will cause
      * the reference cycles to be broken.  It may also cause some objects
      * in finalizers to be freed.
      */
-    delete_garbage(&unreachable, old);
+    delete_garbage(&pygc_unreachable, old);
 
     /* Collect statistics on uncollectable objects found and print
      * debugging information. */

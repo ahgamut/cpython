@@ -16,7 +16,7 @@ typedef struct {
 
 
 enum buffer_t {
-    READ_BUFFER,
+    RD_BUFFER,
     WRITE_BUFFER,
     CHAR_BUFFER,
     ANY_BUFFER
@@ -40,7 +40,7 @@ get_buf(PyBufferObject *self, void **ptr, Py_ssize_t *size,
                 "single-segment buffer object expected");
             return 0;
         }
-        if ((buffer_type == READ_BUFFER) ||
+        if ((buffer_type == RD_BUFFER) ||
             ((buffer_type == ANY_BUFFER) && self->b_readonly))
             proc = bp->bf_getreadbuffer;
         else if ((buffer_type == WRITE_BUFFER) ||
@@ -58,7 +58,7 @@ get_buf(PyBufferObject *self, void **ptr, Py_ssize_t *size,
         if (!proc) {
             char *buffer_type_name;
             switch (buffer_type) {
-            case READ_BUFFER:
+            case RD_BUFFER:
                 buffer_type_name = "read";
                 break;
             case WRITE_BUFFER:
@@ -767,7 +767,7 @@ buffer_getreadbuf(PyBufferObject *self, Py_ssize_t idx, void **pp)
                         "accessing non-existent buffer segment");
         return -1;
     }
-    if (!get_buf(self, pp, &size, READ_BUFFER))
+    if (!get_buf(self, pp, &size, RD_BUFFER))
         return -1;
     return size;
 }

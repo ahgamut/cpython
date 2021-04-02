@@ -6102,6 +6102,12 @@ static PyObject *
 posix_setgroups(PyObject *self, PyObject *groups)
 {
     Py_ssize_t i, len;
+#ifdef NGROUPS_MAX
+#define MAX_GROUPS NGROUPS_MAX
+#else
+    /* defined to be 16 on Solaris7, so this should be a small number */
+#define MAX_GROUPS 64
+#endif
     gid_t grouplist[MAX_GROUPS];
 
     if (!PySequence_Check(groups)) {
