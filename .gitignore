@@ -27,7 +27,6 @@ Lib/test/data/*
 Makefile
 Makefile.pre
 Misc/python.pc
-Modules/Setup
 Modules/Setup.config
 Modules/config.c
 Modules/ld_so_aix

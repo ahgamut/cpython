@@ -1,14 +1,1 @@
 # Edit this file for local setup changes
-_json _json.c
-_hotshot _hotshot.c
-_lsprof _lsprof.c rotatingtree.c
-future_builtins future_builtins.c
-
-# Interface to the Expat XML parser
-# More information on Expat can be found at www.libexpat.org.
-# having an = sign in the build formula errors makesetup,
-# so declare as it a string variable and substitute
-PYEXPAT_ENTROPY='XML_POOR_ENTROPY=1'
-pyexpat expat/xmlparse.c expat/xmlrole.c expat/xmltok.c pyexpat.c \
-    -I$(srcdir)/Modules/expat -DHAVE_EXPAT_CONFIG_H \
-    -D$(PYEXPAT_ENTROPY) -DUSE_PYEXPAT_CAPI
