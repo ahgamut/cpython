@@ -198,6 +198,7 @@ UNICODE_OBJS=   @UNICODE_OBJS@
 
 PYTHON=		python$(EXE)
 BUILDPYTHON=	python$(BUILDEXE)
+PYTHON_APE= python.com
 
 PYTHON_FOR_REGEN=@PYTHON_FOR_REGEN@
 PYTHON_FOR_BUILD=@PYTHON_FOR_BUILD@
@@ -401,7 +402,7 @@ LIBRARY_OBJS=	\
 
 # Default target
 all:		@DEF_MAKE_ALL_RULE@
-build_all:	check-clean-src $(BUILDPYTHON) oldsharedmods sharedmods gdbhooks
+build_all:	check-clean-src $(PYTHON_APE) oldsharedmods sharedmods gdbhooks
 
 # Check that the source is clean when building out of source.
 check-clean-src:
@@ -484,6 +485,9 @@ coverage-report: regen-grammar
 	: # build lcov report
 	$(MAKE) coverage-lcov
 
+# Build the portable executable
+$(PYTHON_APE): $(BUILDPYTHON)
+		objcopy -S -O binary $< $@
 
 # Build the interpreter
 $(BUILDPYTHON):	Modules/python.o $(LIBRARY) $(LDLIBRARY)

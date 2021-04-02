@@ -47,6 +47,3 @@ LD_LIBRARY_PATH="" ./configure \
 
 echo "<<<SUPERCONFIGURE>>> Running make"
 make -j4
-
-echo "<<<SUPERCONFIGURE>>> Running objcopy to create APE"
-objcopy -S -O binary python python.exe

@@ -56,7 +56,7 @@ Thread model: posix
 2. Copy `cosmopolitan.h` (and `crt.o`, `ape.o`, `ape.lds`, `cosmopolitan.a`) to
    the `libcosmo/` folder.
 3. Run `superconfigure` with the appropriate `$CC` (calls `configure` with a bunch of parameters, followed
-   by `make` and then `objcopy` to produce `python.exe`)
+   by `make` and then `objcopy` to produce `python.com`)
 4. Run `python.exe`
 
 ```bash
@@ -65,8 +65,8 @@ cd libcosmo/
 wget https://justine.lol/cosmopolitan/cosmopolitan.zip
 unzip cosmopolitan.zip
 cd ../
-CC=gcc ./superconfigure
-./python.exe
+CC=gcc ./superconfigure # or clang
+./python.com
 ```
 
 [py27]: https://www.python.org/downloads/release/python-2718/
