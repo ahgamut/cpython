@@ -310,7 +310,7 @@ class PyBuildExt(build_ext):
             args['compiler_so'] = compiler + ' ' + ccshared + ' ' + cflags
         self.compiler.set_executables(**args)
 
-        build_ext.build_extensions(self)
+        #build_ext.build_extensions(self)
 
         longest = 0
         if self.extensions:
@@ -326,6 +326,13 @@ class PyBuildExt(build_ext):
             for e, f, g in zip(lst[::3], lst[1::3], lst[2::3]):
                 print "%-*s   %-*s   %-*s" % (longest, e, longest, f,
                                               longest, g)
+
+        print
+        print("Using cosmopolitan, will not build the below modules:")
+        print_three_column(list(ext.name for ext in self.extensions))
+        for ext_name in missing:
+            if ext_name in remove_modules:
+                missing.remove(ext_name)
 
         if missing:
             print
@@ -1251,7 +1258,6 @@ class PyBuildExt(build_ext):
                 sqlite_extra_link_args = ('-Wl,-search_paths_first',)
             else:
                 sqlite_extra_link_args = ()
-
             exts.append(Extension('_sqlite3', sqlite_srcs,
                                   define_macros=sqlite_defines,
                                   include_dirs=["Modules/_sqlite",
