@@ -496,7 +496,6 @@ Py_Main(int argc, char **argv)
     }
 
     stdin_is_interactive = Py_FdIsInteractive(stdin, (char *)0);
-
     if (unbuffered) {
 #if defined(MS_WINDOWS) || defined(__CYGWIN__)
         _setmode(fileno(stdin), O_BINARY);
@@ -525,11 +524,11 @@ Py_Main(int argc, char **argv)
 #endif /* !MS_WINDOWS */
         /* Leave stderr alone - it should be unbuffered anyway. */
     }
-#ifdef __VMS
+    /* setvbuf on stdin allows entering empty line in REPL */ 
     else {
-        setvbuf (stdout, (char *)NULL, _IOLBF, BUFSIZ);
+        setvbuf(stdin,  (char *)NULL, _IONBF, BUFSIZ);
+        setvbuf(stdout, (char *)NULL, _IONBF, BUFSIZ);
     }
-#endif /* __VMS */
 
 #ifdef __APPLE__
     /* On MacOS X, when the Python interpreter is embedded in an
