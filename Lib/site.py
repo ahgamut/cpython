@@ -79,7 +79,8 @@ USER_BASE = None
 def makepath(*paths):
     dir = os.path.join(*paths)
     try:
-        dir = os.path.abspath(dir)
+        # dir = os.path.abspath(dir)
+        pass
     except OSError:
         pass
     return dir, os.path.normcase(dir)
@@ -453,6 +454,7 @@ def aliasmbcs():
     while they are always available as "mbcs" in each locale. Make
     them usable by aliasing to "mbcs" in such a case."""
     if sys.platform == 'win32':
+        return # TODO: check locale, _locale
         import locale, codecs
         enc = locale.getdefaultlocale()[1]
         if enc.startswith('cp'):            # "cp***" ?

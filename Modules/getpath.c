@@ -501,6 +501,7 @@ calculate_path(void)
     /* At this point, argv0_path is guaranteed to be less than
        MAXPATHLEN bytes long.
     */
+    printf("ARGV path is %s\n", argv0_path);
 
     if (!(pfound = search_for_prefix(argv0_path, home))) {
         if (!Py_FrozenFlag)
@@ -511,6 +512,9 @@ calculate_path(void)
     }
     else
         reduce(prefix);
+
+    /* Avoid absolute path for prefix */
+    strncpy(prefix, "Lib", MAXPATHLEN);
 
     strncpy(zip_path, prefix, MAXPATHLEN);
     zip_path[MAXPATHLEN] = '\0';
@@ -537,6 +541,9 @@ calculate_path(void)
     if ((!pfound || !efound) && !Py_FrozenFlag)
         fprintf(stderr,
                 "Consider setting $PYTHONHOME to <prefix>[:<exec_prefix>]\n");
+
+    /* Avoid absolute path for exec_prefix */
+    strncpy(exec_prefix, "build/lib.linux-x86_64-2.7", MAXPATHLEN);
 
     /* Calculate size of return buffer.
      */
@@ -620,7 +627,13 @@ calculate_path(void)
         /* Finally, on goes the directory for dynamic-load modules */
         strcat(buf, exec_prefix);
 
+        /* Change separators for Windows */
+        if (IsWindows()) {
+            printf("Cosmopolitan on Windows\n");
+        }
+
         /* And publish the results */
+        printf("Searching stdlib in: %s\n", buf);
         module_search_path = buf;
     }
 

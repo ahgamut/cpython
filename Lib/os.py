@@ -38,7 +38,7 @@ def _get_exports_list(module):
     except AttributeError:
         return [n for n in dir(module) if n[0] != '_']
 
-if 'posix' in _names:
+if 'linux' in sys.platform:
     name = 'posix'
     linesep = '\n'
     from posix import *
@@ -52,17 +52,18 @@ if 'posix' in _names:
     __all__.extend(_get_exports_list(posix))
     del posix
 
-elif 'nt' in _names:
+elif 'win32' in sys.platform:
     name = 'nt'
     linesep = '\r\n'
-    from nt import *
+    # TODO: get nt module during compilation
+    from posix import *
     try:
-        from nt import _exit
+        from posix import _exit
     except ImportError:
         pass
     import ntpath as path
 
-    import nt
+    import posix as nt
     __all__.extend(_get_exports_list(nt))
     del nt
 
