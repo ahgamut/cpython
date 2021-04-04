@@ -491,12 +491,12 @@ PyDoc_STRVAR(getcheckinterval_doc,
 static PyObject *
 sys_settscdump(PyObject *self, PyObject *args)
 {
-    int bool;
+    int bol;
     PyThreadState *tstate = PyThreadState_Get();
 
-    if (!PyArg_ParseTuple(args, "i:settscdump", &bool))
+    if (!PyArg_ParseTuple(args, "i:settscdump", &bol))
         return NULL;
-    if (bool)
+    if (bol)
         tstate->interp->tscdump = 1;
     else
         tstate->interp->tscdump = 0;

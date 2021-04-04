@@ -2,6 +2,7 @@
 set -eux
 
 COSMO_LIBDIR="./libcosmo"
+HEADER_PATHS="./header_stubs"
 CC="${CC:-gcc}"
 
 if [ ! -f $COSMO_LIBDIR/cosmopolitan.h ]; then
@@ -16,10 +17,11 @@ LD_LIBRARY_PATH="" ./configure \
     --prefix="" \
     --disable-shared --disable-profiling \
     --disable-ipv6 --disable-optimizations \
-    --without-pydebug --without-lto \
-    --without-threads \
-    --without-pymalloc --without-tsc \
+    --without-pydebug --without-threads \
+    --without-lto \
+    --with-pymalloc --with-tsc \
     --without-ensurepip \
+    --with-wctype-functions \
     --with-tcltk-includes="" \
     --with-tcltk-libs="" \
     --with-libm="" \
@@ -32,10 +34,10 @@ LD_LIBRARY_PATH="" ./configure \
       -fno-pie -fno-omit-frame-pointer \
       -mno-red-zone -pg \
       -nostdinc -nostdlib \
-      -I./header_stubs \
+      -I$HEADER_PATHS \
       -include $COSMO_LIBDIR/cosmopolitan.h" \
-    LDFLAGS="-static -nostdlib -nostdinc -fno-pie \
-      -no-pie -mno-red-zone \
+    LDFLAGS="-static -nostdlib -nostdinc \
+      -fno-pie -mno-red-zone \
       -include $COSMO_LIBDIR/cosmopolitan.h" \
     LIBS="-fuse-ld=bfd \
       -Wl,-T,$COSMO_LIBDIR/ape.lds \
