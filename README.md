@@ -7,11 +7,15 @@ The `header_stubs` folder contains dummy headers corresponding to the [C
 stdlib][cstdlib]. The `libcosmo` folder should contain the required files for
 compiling an executable using Cosmopolitan on Linux.
 
-**Note:** The compiled APE runs on Windows -- you can check by just calling
-`python.exe -V` (prints the version and exits). Otherwise, the interpreter exits
-immediately because it can't find the Python standard library (and other
-platform dependent files). This requires some changes to `Modules/getpath.c`
-and/or `Lib/site.py` (possibly in addition to some OS-specific stuff) .
+The compiled APE runs on Linux and Windows -- the interpreter uses *relative
+paths* to find the Python standard library (and other platform dependent files):
+copy `python.com` and the `Lib/` directory to the same location and Python
+should run as expected. **Note:** Ensure that the `PYTHONPATH` or `PYTHONHOME`
+environment variables are not set.
+
+Finding the standard library requires changing `Modules/getpath.c`: it would be
+nice to gracefully handle OS-specific stuff at the C level so that files like
+`Lib/os.py` don't have any confusion.
 
 ### Missing modules
 
@@ -22,17 +26,18 @@ _ctypes         _ctypes_test    _curses
 _curses_panel   _hashlib        _locale
 _socket         _ssl            audioop
 bz2             crypt           linuxaudiodev
-mmap            nis             ossaudiodev
-readline        resource        syslog
-termios
+nis             ossaudiodev     readline
+resource        termios
 
-Python build finished, but the necessary bits to build these modules were not
-found:
 _bsddb          _multiprocessing   _sqlite3
 _tkinter        bsddb185        dbm
 dl              gdbm            imageop
 spwd            sunaudiodev
 ```
+
+`Modules/Setup.local` contains recipes to compile the `_ctypes` and `_sqlite3`
+modules.
+
 
 Compiled on:
 

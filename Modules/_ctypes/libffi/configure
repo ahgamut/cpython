@@ -1911,7 +1911,7 @@ else
 #ifdef __cplusplus
 extern "C"
 #endif
-char $2 ();
+
 /* The GNU C library defines this for functions which it implements
     to always fail with ENOSYS.  Some functions are actually named
     something starting with __ and the normal name is an alias.  */
@@ -1922,7 +1922,7 @@ choke me
 int
 main ()
 {
-return $2 ();
+void *funcptr = (void*) $2;
   ;
   return 0;
 }
