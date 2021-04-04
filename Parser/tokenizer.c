@@ -1323,7 +1323,7 @@ tok_get(register struct tok_state *tok, char **p_start, char **p_end)
     /* Skip spaces */
     do {
         c = tok_nextc(tok);
-    } while (c == ' ' || c == '\t' || c == '\014');
+    } while (c == ' ' || c == '\t' || c == '\r' || c == '\014');
 
     /* Set start of current token */
     tok->start = tok->cur - 1;
