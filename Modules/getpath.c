@@ -367,13 +367,14 @@ calculate_path(void)
     static char delimiter[2] = {DELIM, '\0'};
     static char separator[2] = {SEP, '\0'};
     char *pythonpath = PYTHONPATH;
-    char *rtpypath = Py_GETENV("PYTHONPATH");
-    char *home = Py_GetPythonHome();
+    /* ignore PYTHONPATH/PYTHONHOME for now */
+    char *rtpypath = NULL; // Py_GETENV("PYTHONPATH");
+    // char *home = Py_GetPythonHome();
     char *path = getenv("PATH");
     char *prog = Py_GetProgramName();
     char argv0_path[MAXPATHLEN+1];
     char zip_path[MAXPATHLEN+1];
-    int pfound, efound; /* 1 if found; -1 if found build directory */
+    int pfound = 0, efound = 0; /* 1 if found; -1 if found build directory */
     char *buf;
     size_t bufsz;
     size_t prefixsz;
@@ -501,8 +502,11 @@ calculate_path(void)
     /* At this point, argv0_path is guaranteed to be less than
        MAXPATHLEN bytes long.
     */
-    printf("ARGV path is %s\n", argv0_path);
+    fprintf(stderr, "Current dir is %s\n", argv0_path);
+    fprintf(stderr, "Env-var PATH is %s\n", path);
 
+    /* Avoid absolute path for prefix */
+#if 0
     if (!(pfound = search_for_prefix(argv0_path, home))) {
         if (!Py_FrozenFlag)
             fprintf(stderr,
@@ -512,8 +516,7 @@ calculate_path(void)
     }
     else
         reduce(prefix);
-
-    /* Avoid absolute path for prefix */
+#endif
     strncpy(prefix, "Lib", MAXPATHLEN);
 
     strncpy(zip_path, prefix, MAXPATHLEN);
@@ -529,6 +532,8 @@ calculate_path(void)
     zip_path[bufsz - 6] = VERSION[0];
     zip_path[bufsz - 5] = VERSION[2];
 
+    /* Avoid absolute path for exec_prefix */
+#if 0
     if (!(efound = search_for_exec_prefix(argv0_path, home))) {
         if (!Py_FrozenFlag)
             fprintf(stderr,
@@ -541,8 +546,8 @@ calculate_path(void)
     if ((!pfound || !efound) && !Py_FrozenFlag)
         fprintf(stderr,
                 "Consider setting $PYTHONHOME to <prefix>[:<exec_prefix>]\n");
+#endif
 
-    /* Avoid absolute path for exec_prefix */
     strncpy(exec_prefix, "build/lib.linux-x86_64-2.7", MAXPATHLEN);
 
     /* Calculate size of return buffer.
@@ -629,11 +634,11 @@ calculate_path(void)
 
         /* Change separators for Windows */
         if (IsWindows()) {
-            printf("Cosmopolitan on Windows\n");
+            fprintf(stderr, "Cosmopolitan on Windows\n");
         }
 
         /* And publish the results */
-        printf("Searching stdlib in: %s\n", buf);
+        fprintf(stderr, "sys.path in: %s\n", buf);
         module_search_path = buf;
     }
 
