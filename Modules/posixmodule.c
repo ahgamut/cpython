@@ -3922,6 +3922,7 @@ posix_fork(PyObject *self, PyObject *noargs)
 #define DEV_PTY_FILE "/dev/ptmx"
 #endif
 
+#undef HAVE_FORKPTY
 #if defined(HAVE_OPENPTY) || defined(HAVE_FORKPTY) || defined(HAVE_DEV_PTMX)
 #ifdef HAVE_PTY_H
 #include <pty.h>
