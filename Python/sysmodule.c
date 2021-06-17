@@ -1546,6 +1546,7 @@ makepathobject(char *path, int delim)
     v = PyList_New(n);
     if (v == NULL)
         return NULL;
+
     for (i = 0; ; i++) {
         p = strchr(path, delim);
         if (p == NULL)
@@ -1567,7 +1568,9 @@ void
 PySys_SetPath(char *path)
 {
     PyObject *v;
-    if ((v = makepathobject(path, DELIM)) == NULL)
+    int delim = DELIM;
+    if(IsWindows()) delim = ';';
+    if ((v = makepathobject(path, delim)) == NULL)
         Py_FatalError("can't create sys.path");
     if (PySys_SetObject("path", v) != 0)
         Py_FatalError("can't assign sys.path");

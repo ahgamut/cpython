@@ -201,7 +201,7 @@ BUILDPYTHON=	python$(BUILDEXE)
 PYTHON_APE= python.com
 
 PYTHON_FOR_REGEN=@PYTHON_FOR_REGEN@
-PYTHON_FOR_BUILD=@PYTHON_FOR_BUILD@
+PYTHON_FOR_BUILD=@PYTHON_FOR_BUILD@ -BE
 _PYTHON_HOST_PLATFORM=@_PYTHON_HOST_PLATFORM@
 HOST_GNU_TYPE=  @host@
 
@@ -486,8 +486,10 @@ coverage-report: regen-grammar
 	$(MAKE) coverage-lcov
 
 # Build the portable executable
-$(PYTHON_APE): $(BUILDPYTHON)
+$(PYTHON_APE): $(BUILDPYTHON) pybuilddir.txt
 		objcopy -S -O binary $< $@
+		zip -qr $@ Lib/* 
+		zip -q $@ build/lib.linux-x86_64-2.7/_sysconfigdata.py
 
 # Build the interpreter
 $(BUILDPYTHON):	Modules/python.o $(LIBRARY) $(LDLIBRARY)
@@ -657,6 +659,7 @@ Modules/getpath.o: $(srcdir)/Modules/getpath.c Makefile
 		-DEXEC_PREFIX='"$(exec_prefix)"' \
 		-DVERSION='"$(VERSION)"' \
 		-DVPATH='"$(VPATH)"' \
+		-Wno-format-truncation \
 		-o $@ $(srcdir)/Modules/getpath.c
 
 Modules/python.o: $(srcdir)/Modules/python.c

@@ -36,6 +36,8 @@ extern "C" {
 #endif
 
 /* Max pathname length */
+#define MAXPATHLEN 256
+
 #ifdef __hpux
 #include <sys/param.h>
 #include <limits.h>

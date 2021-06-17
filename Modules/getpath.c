@@ -358,7 +358,6 @@ search_for_exec_prefix(char *argv0_path, char *home)
     return 0;
 }
 
-
 static void
 calculate_path(void)
 {
@@ -366,216 +365,104 @@ calculate_path(void)
 
     static char delimiter[2] = {DELIM, '\0'};
     static char separator[2] = {SEP, '\0'};
-    char *pythonpath = PYTHONPATH;
     /* ignore PYTHONPATH/PYTHONHOME for now */
-    char *rtpypath = NULL; // Py_GETENV("PYTHONPATH");
-    // char *home = Py_GetPythonHome();
+    // char *pythonpath = PYTHONPATH;
+    // char *rtpypath = Py_GETENV("PYTHONPATH");
+    char *home = NULL; // Py_GetPythonHome();
     char *path = getenv("PATH");
     char *prog = Py_GetProgramName();
     char argv0_path[MAXPATHLEN+1];
-    char zip_path[MAXPATHLEN+1];
-    int pfound = 0, efound = 0; /* 1 if found; -1 if found build directory */
+    /* wont need zip_path because embedded stdlib inside executable */
+    /* char zip_path[MAXPATHLEN+1]; */
     char *buf;
     size_t bufsz;
-    size_t prefixsz;
-    char *defpath = pythonpath;
-#ifdef WITH_NEXT_FRAMEWORK
-    NSModule pythonModule;
-#endif
-#ifdef __APPLE__
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_4
-    uint32_t nsexeclength = MAXPATHLEN;
-#else
-    unsigned long nsexeclength = MAXPATHLEN;
-#endif
-#endif
+    char defpath[MAXPATHLEN+1];
+    char ape_path[MAXPATHLEN+1];
+    char ape_lib_path[MAXPATHLEN+1];
+    char ape_def_path[MAXPATHLEN+1];
+    char ape_exec_path[MAXPATHLEN+1];
 
-        /* If there is no slash in the argv0 path, then we have to
-         * assume python is on the user's $PATH, since there's no
-         * other way to find a directory to start the search from.  If
-         * $PATH isn't exported, you lose.
-         */
-        if (strchr(prog, SEP))
-                strncpy(progpath, prog, MAXPATHLEN);
-#ifdef __APPLE__
-     /* On Mac OS X, if a script uses an interpreter of the form
-      * "#!/opt/python2.3/bin/python", the kernel only passes "python"
-      * as argv[0], which falls through to the $PATH search below.
-      * If /opt/python2.3/bin isn't in your path, or is near the end,
-      * this algorithm may incorrectly find /usr/bin/python. To work
-      * around this, we can use _NSGetExecutablePath to get a better
-      * hint of what the intended interpreter was, although this
-      * will fail if a relative path was used. but in that case,
-      * absolutize() should help us out below
-      */
-     else if(0 == _NSGetExecutablePath(progpath, &nsexeclength) && progpath[0] == SEP)
-       ;
-#endif /* __APPLE__ */
-        else if (path) {
-                while (1) {
-                        char *delim = strchr(path, DELIM);
-
-                        if (delim) {
-                                size_t len = delim - path;
-                                if (len > MAXPATHLEN)
-                                        len = MAXPATHLEN;
-                                strncpy(progpath, path, len);
-                                *(progpath + len) = '\0';
-                        }
-                        else
-                                strncpy(progpath, path, MAXPATHLEN);
-
-                        joinpath(progpath, prog);
-                        if (isxfile(progpath))
-                                break;
-
-                        if (!delim) {
-                                progpath[0] = '\0';
-                                break;
-                        }
-                        path = delim + 1;
-                }
-        }
-        else
-                progpath[0] = '\0';
-        if (progpath[0] != SEP && progpath[0] != '\0')
-                absolutize(progpath);
-        strncpy(argv0_path, progpath, MAXPATHLEN);
-        argv0_path[MAXPATHLEN] = '\0';
-
-#ifdef WITH_NEXT_FRAMEWORK
-        /* On Mac OS X we have a special case if we're running from a framework.
-        ** This is because the python home should be set relative to the library,
-        ** which is in the framework, not relative to the executable, which may
-        ** be outside of the framework. Except when we're in the build directory...
-        */
-    pythonModule = NSModuleForSymbol(NSLookupAndBindSymbol("_Py_Initialize"));
-    /* Use dylib functions to find out where the framework was loaded from */
-    buf = (char *)NSLibraryNameForModule(pythonModule);
-    if (buf != NULL) {
-        /* We're in a framework. */
-        /* See if we might be in the build directory. The framework in the
-        ** build directory is incomplete, it only has the .dylib and a few
-        ** needed symlinks, it doesn't have the Lib directories and such.
-        ** If we're running with the framework from the build directory we must
-        ** be running the interpreter in the build directory, so we use the
-        ** build-directory-specific logic to find Lib and such.
-        */
-        strncpy(argv0_path, buf, MAXPATHLEN);
-        reduce(argv0_path);
-        joinpath(argv0_path, lib_python);
-        joinpath(argv0_path, LANDMARK);
-        if (!ismodule(argv0_path)) {
-                /* We are in the build directory so use the name of the
-                   executable - we know that the absolute path is passed */
-                strncpy(argv0_path, progpath, MAXPATHLEN);
-        }
-        else {
-                /* Use the location of the library as the progpath */
-                strncpy(argv0_path, buf, MAXPATHLEN);
-        }
-    }
-#endif
-
-#if HAVE_READLINK
+    if(IsWindows())
     {
-        char tmpbuffer[MAXPATHLEN+1];
-        int linklen = readlink(progpath, tmpbuffer, MAXPATHLEN);
-        while (linklen != -1) {
-            /* It's not null terminated! */
-            tmpbuffer[linklen] = '\0';
-            if (tmpbuffer[0] == SEP)
-                /* tmpbuffer should never be longer than MAXPATHLEN,
-                   but extra check does not hurt */
-                strncpy(argv0_path, tmpbuffer, MAXPATHLEN + 1);
-            else {
-                /* Interpret relative to progpath */
-                reduce(argv0_path);
-                joinpath(argv0_path, tmpbuffer);
-            }
-            linklen = readlink(argv0_path, tmpbuffer, MAXPATHLEN);
-        }
+        fprintf(stderr, "python APE on Windows\n");
+        delimiter[0] = ';';
+        separator[0] = '\\';
     }
-#endif /* HAVE_READLINK */
+    /* If there is no slash in the argv0 path, then we have to
+     * assume python is on the user's $PATH, since there's no
+     * other way to find a directory to start the search from.  If
+     * $PATH isn't exported, you lose.
+     */
+    if (strchr(prog, separator[0]))
+            strncpy(progpath, prog, MAXPATHLEN);
+    else if (path) {
+            while (1) {
+                    char *delim = strchr(path, delimiter[0]);
+
+                    if (delim) {
+                            size_t len = delim - path;
+                            if (len > MAXPATHLEN)
+                                    len = MAXPATHLEN;
+                            strncpy(progpath, path, len);
+                            *(progpath + len) = '\0';
+                    }
+                    else
+                            strncpy(progpath, path, MAXPATHLEN);
+
+                    joinpath(progpath, prog);
+                    if (isxfile(progpath))
+                            break;
+
+                    if (!delim) {
+                            progpath[0] = '\0';
+                            break;
+                    }
+                    path = delim + 1;
+            }
+    }
+    else
+            progpath[0] = '\0';
+    if (progpath[0] != separator[0] && progpath[0] != '\0')
+            absolutize(progpath);
+    strncpy(argv0_path, progpath, MAXPATHLEN);
+    argv0_path[MAXPATHLEN] = '\0';
+
 
     reduce(argv0_path);
     /* At this point, argv0_path is guaranteed to be less than
        MAXPATHLEN bytes long.
     */
-    fprintf(stderr, "Current dir is %s\n", argv0_path);
-    fprintf(stderr, "Env-var PATH is %s\n", path);
 
+    search_for_prefix(argv0_path, home);
     /* Avoid absolute path for prefix */
-#if 0
-    if (!(pfound = search_for_prefix(argv0_path, home))) {
-        if (!Py_FrozenFlag)
-            fprintf(stderr,
-                "Could not find platform independent libraries <prefix>\n");
-        strncpy(prefix, PREFIX, MAXPATHLEN);
-        joinpath(prefix, lib_python);
-    }
-    else
-        reduce(prefix);
-#endif
     strncpy(prefix, "Lib", MAXPATHLEN);
 
-    strncpy(zip_path, prefix, MAXPATHLEN);
-    zip_path[MAXPATHLEN] = '\0';
-    if (pfound > 0) { /* Use the reduced prefix returned by Py_GetPrefix() */
-        reduce(zip_path);
-        reduce(zip_path);
-    }
-    else
-        strncpy(zip_path, PREFIX, MAXPATHLEN);
-    joinpath(zip_path, "lib/python00.zip");
-    bufsz = strlen(zip_path);   /* Replace "00" with version */
-    zip_path[bufsz - 6] = VERSION[0];
-    zip_path[bufsz - 5] = VERSION[2];
-
+    search_for_exec_prefix(argv0_path, home);
     /* Avoid absolute path for exec_prefix */
-#if 0
-    if (!(efound = search_for_exec_prefix(argv0_path, home))) {
-        if (!Py_FrozenFlag)
-            fprintf(stderr,
-                "Could not find platform dependent libraries <exec_prefix>\n");
-        strncpy(exec_prefix, EXEC_PREFIX, MAXPATHLEN);
-        joinpath(exec_prefix, "lib/lib-dynload");
-    }
-    /* If we found EXEC_PREFIX do *not* reduce it!  (Yet.) */
+    snprintf(exec_prefix, MAXPATHLEN, "build%clib.linux-x86_64-2.7", separator[0]);
 
-    if ((!pfound || !efound) && !Py_FrozenFlag)
-        fprintf(stderr,
-                "Consider setting $PYTHONHOME to <prefix>[:<exec_prefix>]\n");
-#endif
+    snprintf(defpath, MAXPATHLEN, "Lib%cplat-linux2", separator[0]);
 
-    strncpy(exec_prefix, "build/lib.linux-x86_64-2.7", MAXPATHLEN);
+    /* add paths for the internal store of the APE */
+    strncpy(ape_path, prog, MAXPATHLEN);
+    /* -Wformat-truncation isn't going to happen,
+     * because sizes of prefix, defpath, exec_prefix,
+     * are known at compile time
+     */
+    snprintf(ape_lib_path, MAXPATHLEN, "%s/%s", prog, prefix);
+    snprintf(ape_def_path, MAXPATHLEN, "%s/%s", prog, defpath);
+    snprintf(ape_exec_path, MAXPATHLEN, "%s/%s", prog, exec_prefix);
 
     /* Calculate size of return buffer.
      */
     bufsz = 0;
 
-    if (rtpypath)
-        bufsz += strlen(rtpypath) + 1;
-
-    prefixsz = strlen(prefix) + 1;
-
-    while (1) {
-        char *delim = strchr(defpath, DELIM);
-
-        if (defpath[0] != SEP)
-            /* Paths are relative to prefix */
-            bufsz += prefixsz;
-
-        if (delim)
-            bufsz += delim - defpath + 1;
-        else {
-            bufsz += strlen(defpath) + 1;
-            break;
-        }
-        defpath = delim + 1;
-    }
-
-    bufsz += strlen(zip_path) + 1;
+    bufsz += strlen(ape_def_path) + 1;
+    bufsz += strlen(ape_lib_path) + 1;
+    bufsz += strlen(ape_exec_path) + 1;
+    bufsz += strlen(ape_path) + 1;
+    bufsz += strlen(prefix) + 1;
+    bufsz += strlen(defpath) + 1;
     bufsz += strlen(exec_prefix) + 1;
 
     /* This is the only malloc call in this file */
@@ -588,85 +475,20 @@ calculate_path(void)
         module_search_path = PYTHONPATH;
     }
     else {
-        /* Run-time value of $PYTHONPATH goes first */
-        if (rtpypath) {
-            strcpy(buf, rtpypath);
-            strcat(buf, delimiter);
-        }
-        else
-            buf[0] = '\0';
+        snprintf(buf, bufsz,
+                 "%s%c"
+                 "%s%c"
+                 "%s%c"
+                 "%s%c"
+                 "%s%c"
+                 "%s%c"
+                 "%s",
+                 ape_lib_path, delimiter[0], ape_def_path, delimiter[0],
+                 ape_exec_path, delimiter[0], ape_path, delimiter[0], prefix,
+                 delimiter[0], defpath, delimiter[0], exec_prefix);
 
-        /* Next is the default zip path */
-        strcat(buf, zip_path);
-        strcat(buf, delimiter);
-
-        /* Next goes merge of compile-time $PYTHONPATH with
-         * dynamically located prefix.
-         */
-        defpath = pythonpath;
-        while (1) {
-            char *delim = strchr(defpath, DELIM);
-
-            if (defpath[0] != SEP) {
-                strcat(buf, prefix);
-                if (prefixsz >= 2 && prefix[prefixsz - 2] != SEP &&
-                    defpath[0] != (delim ? DELIM : L'\0')) {  /* not empty */
-                    strcat(buf, separator);
-                }
-            }
-
-            if (delim) {
-                size_t len = delim - defpath + 1;
-                size_t end = strlen(buf) + len;
-                strncat(buf, defpath, len);
-                *(buf + end) = '\0';
-            }
-            else {
-                strcat(buf, defpath);
-                break;
-            }
-            defpath = delim + 1;
-        }
-        strcat(buf, delimiter);
-
-        /* Finally, on goes the directory for dynamic-load modules */
-        strcat(buf, exec_prefix);
-
-        /* Change separators for Windows */
-        if (IsWindows()) {
-            fprintf(stderr, "Cosmopolitan on Windows\n");
-        }
-
-        /* And publish the results */
-        fprintf(stderr, "sys.path in: %s\n", buf);
         module_search_path = buf;
     }
-
-    /* Reduce prefix and exec_prefix to their essence,
-     * e.g. /usr/local/lib/python1.5 is reduced to /usr/local.
-     * If we're loading relative to the build directory,
-     * return the compiled-in defaults instead.
-     */
-    if (pfound > 0) {
-        reduce(prefix);
-        reduce(prefix);
-        /* The prefix is the root directory, but reduce() chopped
-         * off the "/". */
-        if (!prefix[0])
-                strcpy(prefix, separator);
-    }
-    else
-        strncpy(prefix, PREFIX, MAXPATHLEN);
-
-    if (efound > 0) {
-        reduce(exec_prefix);
-        reduce(exec_prefix);
-        reduce(exec_prefix);
-        if (!exec_prefix[0])
-                strcpy(exec_prefix, separator);
-    }
-    else
-        strncpy(exec_prefix, EXEC_PREFIX, MAXPATHLEN);
 }
 
 
