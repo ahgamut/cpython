@@ -444,14 +444,18 @@ calculate_path(void)
     snprintf(defpath, MAXPATHLEN, "Lib%cplat-linux2", separator[0]);
 
     /* add paths for the internal store of the APE */
-    strncpy(ape_path, prog, MAXPATHLEN);
+    if (strlen(argv0_path) > 0 && strlen(argv0_path) + strlen(prog) + 1 < MAXPATHLEN)
+        snprintf(ape_path, MAXPATHLEN, "%s%c%s", argv0_path, separator[0], prog);
+    else
+        strncpy(ape_path, prog, MAXPATHLEN);
+    
     /* -Wformat-truncation isn't going to happen,
      * because sizes of prefix, defpath, exec_prefix,
      * are known at compile time
      */
-    snprintf(ape_lib_path, MAXPATHLEN, "%s/%s", prog, prefix);
-    snprintf(ape_def_path, MAXPATHLEN, "%s/%s", prog, defpath);
-    snprintf(ape_exec_path, MAXPATHLEN, "%s/%s", prog, exec_prefix);
+    snprintf(ape_lib_path, MAXPATHLEN, "%s/%s", ape_path, prefix);
+    snprintf(ape_def_path, MAXPATHLEN, "%s/%s", ape_path, defpath);
+    snprintf(ape_exec_path, MAXPATHLEN, "%s/%s", ape_path, exec_prefix);
 
     /* Calculate size of return buffer.
      */
