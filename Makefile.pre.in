@@ -201,7 +201,7 @@ BUILDPYTHON=	python$(BUILDEXE)
 PYTHON_APE= python.com
 
 PYTHON_FOR_REGEN=@PYTHON_FOR_REGEN@
-PYTHON_FOR_BUILD=@PYTHON_FOR_BUILD@ -BE
+PYTHON_FOR_BUILD=@PYTHON_FOR_BUILD@ -B
 _PYTHON_HOST_PLATFORM=@_PYTHON_HOST_PLATFORM@
 HOST_GNU_TYPE=  @host@
 
@@ -488,7 +488,16 @@ coverage-report: regen-grammar
 # Build the portable executable
 $(PYTHON_APE): $(BUILDPYTHON) pybuilddir.txt
 		objcopy -S -O binary $< $@
-		zip -qr $@ Lib/* 
+		zip -qr $@ Lib -x \
+			Lib/pydoc_data/\* \
+			Lib/plat-irix\*/\* Lib/plat-aix\*/\* \
+			Lib/plat-atheos/\* Lib/plat-beos5/\* \
+			Lib/plat-next3/\* Lib/plat-os2emx/\* \
+			Lib/plat-riscos/\* Lib/plat-sunos5/\* \
+			Lib/test/\* Lib/lib-tk/\* \
+			Lib/*/tests/\* Lib/*/test/\* \
+			Lib/distutils/tests/\* Lib/distutils/command/*.exe \
+			Lib/idlelib/\* Lib/ensurepip/\*
 		zip -q $@ build/lib.linux-x86_64-2.7/_sysconfigdata.py
 
 # Build the interpreter
