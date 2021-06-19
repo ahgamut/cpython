@@ -487,18 +487,19 @@ coverage-report: regen-grammar
 
 # Build the portable executable
 $(PYTHON_APE): $(BUILDPYTHON) pybuilddir.txt
-		objcopy -S -O binary $< $@
-		zip -qr $@ Lib -x \
-			Lib/pydoc_data/\* \
-			Lib/plat-irix\*/\* Lib/plat-aix\*/\* \
-			Lib/plat-atheos/\* Lib/plat-beos5/\* \
-			Lib/plat-next3/\* Lib/plat-os2emx/\* \
-			Lib/plat-riscos/\* Lib/plat-sunos5/\* \
-			Lib/test/\* Lib/lib-tk/\* \
-			Lib/*/tests/\* Lib/*/test/\* \
-			Lib/distutils/tests/\* Lib/distutils/command/*.exe \
-			Lib/idlelib/\* Lib/ensurepip/\*
-		zip -q $@ build/lib.linux-x86_64-2.7/_sysconfigdata.py
+	objcopy -S -O binary $< $@
+	find Lib/ -type f -executable -regex '.*\.py' | grep -v test | xargs zip $@
+	zip -qr $@ Lib -x \*.py \
+		Lib/pydoc_data/\* \
+		Lib/plat-irix\*/\* Lib/plat-aix\*/\* \
+		Lib/plat-atheos/\* Lib/plat-beos5/\* \
+		Lib/plat-next3/\* Lib/plat-os2emx/\* \
+		Lib/plat-riscos/\* Lib/plat-sunos5/\* \
+		Lib/test/\* Lib/lib-tk/\* \
+		Lib/*/tests/\* Lib/*/test/\* \
+		Lib/distutils/command/*.exe \
+		Lib/ensurepip/\*
+	zip -q $@ build/lib.linux-x86_64-2.7/_sysconfigdata.py
 
 # Build the interpreter
 $(BUILDPYTHON):	Modules/python.o $(LIBRARY) $(LDLIBRARY)
@@ -524,6 +525,7 @@ pybuilddir.txt: $(BUILDPYTHON)
 		rm -f ./pybuilddir.txt ; \
 		exit 1 ; \
 	fi
+	$(PYTHON_FOR_BUILD) -Om  compileall -q
 
 # This is shared by the math and cmath modules
 Modules/_math.o: Modules/_math.c Modules/_math.h
