@@ -434,18 +434,19 @@ calculate_path(void)
     */
 
     search_for_prefix(argv0_path, home);
+    
     /* Avoid absolute path for prefix */
-    strncpy(prefix, "Lib", MAXPATHLEN);
+    strncpy(prefix, "Lib/", MAXPATHLEN);
 
     search_for_exec_prefix(argv0_path, home);
     /* Avoid absolute path for exec_prefix */
-    snprintf(exec_prefix, MAXPATHLEN, "build%clib.linux-x86_64-2.7", separator[0]);
+    snprintf(exec_prefix, MAXPATHLEN, "build/lib.linux-x86_64-2.7");
 
-    snprintf(defpath, MAXPATHLEN, "Lib%cplat-linux2", separator[0]);
+    snprintf(defpath, MAXPATHLEN, "Lib/plat-linux2");
 
     /* add paths for the internal store of the APE */
     if (strlen(argv0_path) > 0 && strlen(argv0_path) + strlen(prog) + 1 < MAXPATHLEN)
-        snprintf(ape_path, MAXPATHLEN, "%s%c%s", argv0_path, separator[0], prog);
+        snprintf(ape_path, MAXPATHLEN, "%s", progpath);
     else
         strncpy(ape_path, prog, MAXPATHLEN);
     

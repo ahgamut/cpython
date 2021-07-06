@@ -1,14 +1,14 @@
 """Thread module emulating a subset of Java's threading model."""
 
 import sys as _sys
+import warnings
 
 try:
     import thread
 except ImportError:
-    del _sys.modules[__name__]
-    raise
-
-import warnings
+    import dummy_thread as thread
+    # del _sys.modules[__name__]
+    warnings.warn("thread not available, using dummy_thread")
 
 from collections import deque as _deque
 from itertools import count as _count
@@ -1181,7 +1181,7 @@ def enumerate():
     with _active_limbo_lock:
         return _active.values() + _limbo.values()
 
-from thread import stack_size
+from dummy_thread import stack_size
 
 # Create the main thread object,
 # and make it available for the interpreter
@@ -1193,7 +1193,7 @@ _shutdown = _MainThread()._exitfunc
 # module, or from the python fallback
 
 try:
-    from thread import _local as local
+    from dummy_thread import _local as local
 except ImportError:
     from _threading_local import local
 

@@ -525,7 +525,7 @@ pybuilddir.txt: $(BUILDPYTHON)
 		rm -f ./pybuilddir.txt ; \
 		exit 1 ; \
 	fi
-	$(PYTHON_FOR_BUILD) -Om  compileall -q
+	$(PYTHON_FOR_BUILD) -Om  compileall -q -x ".*test.*" ./Lib
 
 # This is shared by the math and cmath modules
 Modules/_math.o: Modules/_math.c Modules/_math.h
