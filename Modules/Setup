@@ -184,7 +184,7 @@ itertools itertoolsmodule.c	# Functions creating iterators for efficient looping
 strop stropmodule.c		# String manipulations
 _functools _functoolsmodule.c	# Tools for working with functions and callable objects
 _elementtree -I$(srcdir)/Modules/expat -DHAVE_EXPAT_CONFIG_H -DUSE_PYEXPAT_CAPI _elementtree.c	# elementtree accelerator
-#_pickle _pickle.c	# pickle accelerator
+# _pickle _pickle.c	# pickle accelerator
 datetime datetimemodule.c	# date/time type
 _bisect _bisectmodule.c	# Bisection algorithms
 
@@ -213,7 +213,7 @@ mmap mmapmodule.c
 _csv _csv.c
 
 # Socket module helper for socket(2)
-#_socket socketmodule.c timemodule.c
+_socket socketmodule.c timemodule.c
 
 # Socket module helper for SSL support; you must comment out the other
 # socket line above, and possibly edit the SSL variable:

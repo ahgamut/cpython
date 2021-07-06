@@ -27,7 +27,7 @@
  * SUCH DAMAGE.
  */
 
-#ifndef HAVE_GETADDRINFO
+#if 0 && HAVE_GETADDRINFO
 
 /*
  * Error return codes from getaddrinfo()

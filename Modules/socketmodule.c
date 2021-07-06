@@ -81,6 +81,9 @@ Local naming conventions:
 
 */
 
+#undef IPPROTO_MAX
+#define IPPROTO_MAX 255
+
 #ifdef __APPLE__
 #include <AvailabilityMacros.h>
 /* for getaddrinfo thread safety test on old versions of OS X */
@@ -375,14 +378,14 @@ const char *inet_ntop(int af, const void *src, char *dst, socklen_t size);
 #endif
 
 /* I know this is a bad practice, but it is the easiest... */
-#if !defined(HAVE_GETADDRINFO)
+#if 0 && !defined(HAVE_GETADDRINFO)
 /* avoid clashes with the C library definition of the symbol. */
 #define getaddrinfo fake_getaddrinfo
 #define gai_strerror fake_gai_strerror
 #define freeaddrinfo fake_freeaddrinfo
 #include "getaddrinfo.c"
 #endif
-#if !defined(HAVE_GETNAMEINFO)
+#if 0 && !defined(HAVE_GETNAMEINFO)
 #define getnameinfo fake_getnameinfo
 #include "getnameinfo.c"
 #endif
