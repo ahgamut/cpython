@@ -382,6 +382,9 @@ calculate_path(void)
     char ape_def_path[MAXPATHLEN+1];
     char ape_exec_path[MAXPATHLEN+1];
 
+    char package_path[MAXPATHLEN+1];
+    char ape_package_path[MAXPATHLEN+1];
+
     if(IsWindows())
     {
         fprintf(stderr, "python APE on Windows\n");
@@ -434,7 +437,6 @@ calculate_path(void)
     */
 
     search_for_prefix(argv0_path, home);
-    
     /* Avoid absolute path for prefix */
     strncpy(prefix, "Lib/", MAXPATHLEN);
 
@@ -443,13 +445,14 @@ calculate_path(void)
     snprintf(exec_prefix, MAXPATHLEN, "build/lib.linux-x86_64-2.7");
 
     snprintf(defpath, MAXPATHLEN, "Lib/plat-linux2");
+    snprintf(package_path, MAXPATHLEN, "Lib/site-packages");
 
     /* add paths for the internal store of the APE */
     if (strlen(argv0_path) > 0 && strlen(argv0_path) + strlen(prog) + 1 < MAXPATHLEN)
         snprintf(ape_path, MAXPATHLEN, "%s", progpath);
     else
         strncpy(ape_path, prog, MAXPATHLEN);
-    
+
     /* -Wformat-truncation isn't going to happen,
      * because sizes of prefix, defpath, exec_prefix,
      * are known at compile time
@@ -457,6 +460,7 @@ calculate_path(void)
     snprintf(ape_lib_path, MAXPATHLEN, "%s/%s", ape_path, prefix);
     snprintf(ape_def_path, MAXPATHLEN, "%s/%s", ape_path, defpath);
     snprintf(ape_exec_path, MAXPATHLEN, "%s/%s", ape_path, exec_prefix);
+    snprintf(ape_package_path, MAXPATHLEN, "%s/%s", ape_path, package_path);
 
     /* Calculate size of return buffer.
      */
@@ -465,10 +469,12 @@ calculate_path(void)
     bufsz += strlen(ape_def_path) + 1;
     bufsz += strlen(ape_lib_path) + 1;
     bufsz += strlen(ape_exec_path) + 1;
+    bufsz += strlen(ape_package_path) + 1;
     bufsz += strlen(ape_path) + 1;
     bufsz += strlen(prefix) + 1;
     bufsz += strlen(defpath) + 1;
     bufsz += strlen(exec_prefix) + 1;
+    bufsz += strlen(package_path) + 1;
 
     /* This is the only malloc call in this file */
     buf = (char *)PyMem_Malloc(bufsz);
@@ -487,9 +493,12 @@ calculate_path(void)
                  "%s%c"
                  "%s%c"
                  "%s%c"
+                 "%s%c"
+                 "%s%c"
                  "%s",
-                 ape_lib_path, delimiter[0], ape_def_path, delimiter[0],
-                 ape_exec_path, delimiter[0], ape_path, delimiter[0], prefix,
+                 ape_lib_path, delimiter[0], ape_package_path, delimiter[0],
+                 ape_def_path, delimiter[0], ape_exec_path, delimiter[0],
+                 ape_path, delimiter[0], prefix, delimiter[0], package_path,
                  delimiter[0], defpath, delimiter[0], exec_prefix);
 
         module_search_path = buf;

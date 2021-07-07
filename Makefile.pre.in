@@ -489,7 +489,7 @@ coverage-report: regen-grammar
 $(PYTHON_APE): $(BUILDPYTHON) pybuilddir.txt
 	objcopy -S -O binary $< $@
 	find Lib/ -type f -executable -regex '.*\.py' | grep -v test | xargs zip $@
-	zip -qr $@ Lib -x \*.py \
+	zip -qr $@ Lib -x \*.py \*.exe \
 		Lib/pydoc_data/\* \
 		Lib/plat-irix\*/\* Lib/plat-aix\*/\* \
 		Lib/plat-atheos/\* Lib/plat-beos5/\* \
@@ -497,7 +497,6 @@ $(PYTHON_APE): $(BUILDPYTHON) pybuilddir.txt
 		Lib/plat-riscos/\* Lib/plat-sunos5/\* \
 		Lib/test/\* Lib/lib-tk/\* \
 		Lib/*/tests/\* Lib/*/test/\* \
-		Lib/distutils/command/*.exe \
 		Lib/ensurepip/\*
 	zip -q $@ build/lib.linux-x86_64-2.7/_sysconfigdata.py
 
