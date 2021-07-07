@@ -68,7 +68,7 @@ def get_ident():
     """
     return -1
 
-def allocate_lock():
+def allocate_lock(*args, **kwargs):
     """Dummy implementation of thread.allocate_lock()."""
     return LockType()
 
