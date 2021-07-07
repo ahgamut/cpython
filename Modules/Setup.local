@@ -41,3 +41,6 @@
 # bz2 bz2module.c \
 #     -I"../bzip2-1.0.8" \
 #     -L"../bzip2-1.0.8" -lbz2
+
+# # Possible to compile even external packages like greenlet if lucky
+_greenlet greenlet/greenlet.c
