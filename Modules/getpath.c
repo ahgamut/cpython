@@ -448,7 +448,7 @@ calculate_path(void)
     snprintf(package_path, MAXPATHLEN, "Lib/site-packages");
 
     /* add paths for the internal store of the APE */
-    if (strlen(argv0_path) > 0 && strlen(argv0_path) + strlen(prog) + 1 < MAXPATHLEN)
+    if (strlen(progpath) + 1 < MAXPATHLEN)
         snprintf(ape_path, MAXPATHLEN, "%s", progpath);
     else
         strncpy(ape_path, prog, MAXPATHLEN);
