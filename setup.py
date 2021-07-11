@@ -302,9 +302,16 @@ class PyBuildExt(build_ext):
             # don't build it here.
             if ext.name in modnames:
                 removed_modules.append(ext)
+            else:
+                # fully static, so all extensions must be in Makefile
+                missing.append(ext.name)
 
         if removed_modules:
-            self.extensions = [x for x in self.extensions if x not in removed_modules]
+            self.extensions = [
+                x
+                for x in self.extensions
+                if x not in removed_modules and x.name not in missing
+            ]
 
         # When you run "make CC=altcc" or something similar, you really want
         # those environment variables passed into the setup.py phase.  Here's
@@ -1829,8 +1836,6 @@ class PyBuildExt(build_ext):
                 )
             )
 
-        # self.extensions.extend(exts)
-
         # Call the method for detecting whether _tkinter can be compiled
         self.detect_tkinter(inc_dirs, lib_dirs)
 
@@ -1849,10 +1854,7 @@ class PyBuildExt(build_ext):
             )
             self.extensions.append(ext)
 
-        exts.extend(self.extensions)
-        self.extensions = []
-        print([ext.name for ext in exts])
-        print(missing)
+        self.extensions.extend(exts)
         return missing
 
     def detect_tkinter_explicitly(self):

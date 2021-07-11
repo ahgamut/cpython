@@ -234,6 +234,7 @@ LIBOBJS=	@LIBOBJS@
 
 PYTHON=		python$(EXE)
 BUILDPYTHON=	python$(BUILDEXE)
+PYTHON_APE= python.com
 
 PYTHON_FOR_REGEN=@PYTHON_FOR_REGEN@
 UPDATE_FILE=@PYTHON_FOR_REGEN@ $(srcdir)/Tools/scripts/update_file.py
@@ -446,7 +447,7 @@ DTRACE_DEPS = \
 
 # Default target
 all:		@DEF_MAKE_ALL_RULE@
-build_all:	check-clean-src $(BUILDPYTHON) oldsharedmods sharedmods gdbhooks \
+build_all:	check-clean-src $(PYTHON_APE) oldsharedmods sharedmods gdbhooks \
 		Programs/_testembed python-config
 
 # Check that the source is clean when building out of source.
@@ -547,6 +548,9 @@ coverage-report: regen-grammar regen-importlib
 .PHONY=clinic
 clinic: check-clean-src $(srcdir)/Modules/_blake2/blake2s_impl.c
 	$(PYTHON_FOR_REGEN) ./Tools/clinic/clinic.py --make
+
+$(PYTHON_APE): $(BUILDPYTHON) pybuilddir.txt
+	objcopy -S -O binary $< $@
 
 # Build the interpreter
 $(BUILDPYTHON):	Programs/python.o $(LIBRARY) $(LDLIBRARY) $(PY3LIBRARY)

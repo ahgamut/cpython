@@ -33,9 +33,9 @@ Makefile
 Makefile.pre
 Misc/python.pc
 Misc/python-config.sh
-Modules/Setup
+!Modules/Setup
 Modules/Setup.config
-Modules/Setup.local
+!Modules/Setup.local
 Modules/config.c
 Modules/ld_so_aix
 Programs/_freeze_importlib
