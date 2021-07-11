@@ -469,14 +469,14 @@ _PyObject_Dump(PyObject* op)
 
     fprintf(stderr, "object  : ");
     fflush(stderr);
-    gil = PyGILState_Ensure();
+    // gil = PyGILState_Ensure();
 
     PyErr_Fetch(&error_type, &error_value, &error_traceback);
     (void)PyObject_Print(op, stderr, 0);
     fflush(stderr);
     PyErr_Restore(error_type, error_value, error_traceback);
 
-    PyGILState_Release(gil);
+    // PyGILState_Release(gil);
     /* XXX(twouters) cast refcount to long until %zd is
        universally available */
     fprintf(stderr, "\n"

@@ -771,7 +771,7 @@ calculate_path(void)
         if (delim) {
             size_t len = delim - defpath + 1;
             size_t end = wcslen(buf) + len;
-            wcsncat(buf, defpath, len);
+            wcsncpy(buf + wcslen(buf), defpath, len);
             *(buf + end) = '\0';
         }
         else {
