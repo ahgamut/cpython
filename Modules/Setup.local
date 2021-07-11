@@ -1,1 +1,3 @@
 # Edit this file for local setup changes
+
+_markupsafe_speedups _markupsafe_speedups.c
