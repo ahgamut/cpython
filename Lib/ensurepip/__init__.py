@@ -8,9 +8,9 @@ import tempfile
 __all__ = ["version", "bootstrap"]
 
 
-_SETUPTOOLS_VERSION = "40.6.2"
+_SETUPTOOLS_VERSION = "41.2.0"
 
-_PIP_VERSION = "18.1"
+_PIP_VERSION = "19.2.3"
 
 _PROJECTS = [
     ("setuptools", _SETUPTOOLS_VERSION),
@@ -25,6 +25,7 @@ def _run_pip(args, additional_paths=None):
 
     # Install the bundled software
     import pip._internal
+
     return pip._internal.main(args)
 
 
@@ -33,6 +34,7 @@ def version():
     Returns a string specifying the bundled version of pip.
     """
     return _PIP_VERSION
+
 
 def _disable_pip_configuration_settings():
     # We deliberately ignore all pip environment variables
@@ -43,12 +45,18 @@ def _disable_pip_configuration_settings():
         del os.environ[k]
     # We also ignore the settings in the default pip configuration file
     # See http://bugs.python.org/issue20053 for details
-    os.environ['PIP_CONFIG_FILE'] = os.devnull
+    os.environ["PIP_CONFIG_FILE"] = os.devnull
 
 
-def bootstrap(*, root=None, upgrade=False, user=False,
-              altinstall=False, default_pip=False,
-              verbosity=0):
+def bootstrap(
+    *,
+    root=None,
+    upgrade=False,
+    user=False,
+    altinstall=False,
+    default_pip=False,
+    verbosity=0
+):
     """
     Bootstrap pip into the current Python installation (or the given root
     directory).
@@ -56,14 +64,25 @@ def bootstrap(*, root=None, upgrade=False, user=False,
     Note that calling this function will alter both sys.path and os.environ.
     """
     # Discard the return value
-    _bootstrap(root=root, upgrade=upgrade, user=user,
-               altinstall=altinstall, default_pip=default_pip,
-               verbosity=verbosity)
+    _bootstrap(
+        root=root,
+        upgrade=upgrade,
+        user=user,
+        altinstall=altinstall,
+        default_pip=default_pip,
+        verbosity=verbosity,
+    )
 
 
-def _bootstrap(*, root=None, upgrade=False, user=False,
-              altinstall=False, default_pip=False,
-              verbosity=0):
+def _bootstrap(
+    *,
+    root=None,
+    upgrade=False,
+    user=False,
+    altinstall=False,
+    default_pip=False,
+    verbosity=0
+):
     """
     Bootstrap pip into the current Python installation (or the given root
     directory). Returns pip command status code.
@@ -116,6 +135,7 @@ def _bootstrap(*, root=None, upgrade=False, user=False,
 
         return _run_pip(args + [p[0] for p in _PROJECTS], additional_paths)
 
+
 def _uninstall_helper(*, verbosity=0):
     """Helper to support a clean default uninstall process on Windows
 
@@ -129,8 +149,10 @@ def _uninstall_helper(*, verbosity=0):
 
     # If the pip version doesn't match the bundled one, leave it alone
     if pip.__version__ != _PIP_VERSION:
-        msg = ("ensurepip will only uninstall a matching version "
-               "({!r} installed, {!r} bundled)")
+        msg = (
+            "ensurepip will only uninstall a matching version "
+            "({!r} installed, {!r} bundled)"
+        )
         print(msg.format(pip.__version__, _PIP_VERSION), file=sys.stderr)
         return
 
@@ -146,6 +168,7 @@ def _uninstall_helper(*, verbosity=0):
 
 def _main(argv=None):
     import argparse
+
     parser = argparse.ArgumentParser(prog="python -m ensurepip")
     parser.add_argument(
         "--version",
@@ -154,15 +177,18 @@ def _main(argv=None):
         help="Show the version of pip that is bundled with this Python.",
     )
     parser.add_argument(
-        "-v", "--verbose",
+        "-v",
+        "--verbose",
         action="count",
         default=0,
         dest="verbosity",
-        help=("Give more output. Option is additive, and can be used up to 3 "
-              "times."),
+        help=(
+            "Give more output. Option is additive, and can be used up to 3 " "times."
+        ),
     )
     parser.add_argument(
-        "-U", "--upgrade",
+        "-U",
+        "--upgrade",
         action="store_true",
         default=False,
         help="Upgrade pip and dependencies, even if already installed.",
@@ -182,15 +208,19 @@ def _main(argv=None):
         "--altinstall",
         action="store_true",
         default=False,
-        help=("Make an alternate install, installing only the X.Y versioned "
-              "scripts (Default: pipX, pipX.Y, easy_install-X.Y)."),
+        help=(
+            "Make an alternate install, installing only the X.Y versioned "
+            "scripts (Default: pipX, pipX.Y, easy_install-X.Y)."
+        ),
     )
     parser.add_argument(
         "--default-pip",
         action="store_true",
         default=False,
-        help=("Make a default pip install, installing the unqualified pip "
-              "and easy_install in addition to the versioned scripts."),
+        help=(
+            "Make a default pip install, installing the unqualified pip "
+            "and easy_install in addition to the versioned scripts."
+        ),
     )
 
     args = parser.parse_args(argv)
