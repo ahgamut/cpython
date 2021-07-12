@@ -551,9 +551,10 @@ clinic: check-clean-src $(srcdir)/Modules/_blake2/blake2s_impl.c
 
 $(PYTHON_APE): $(BUILDPYTHON) pybuilddir.txt
 	objcopy -S -O binary $< $@
-	find Lib/ -type f -executable -regex '.*\.py' | grep -v test | xargs zip $@
+	find Lib/ -type f -executable -regex '.*\.py' | grep -v test | xargs zip -q $@
 	zip -qr $@ Lib -x \*.py \*.exe \
-		Lib/pydoc_data/\* Lib/__pycache__/\*\
+		Lib/pydoc_data/\* \*__pycache__\*\
+		Lib/tkinter/\* \
 		Lib/test/\* Lib/lib-tk/\* \
 		Lib/*/tests/\* Lib/*/test/\* \
 		Lib/site-packages/\* \
