@@ -485,11 +485,7 @@ calculate_path(void)
     wchar_t ape_package_path[MAXPATHLEN+1];
 
     if(IsWindows())
-    {
         fprintf(stderr, "python APE on Windows\n");
-        delimiter[0] = ';';
-        separator[0] = '\\';
-    }
 
     if (_path) {
         path_buffer = Py_DecodeLocale(_path, NULL);
@@ -553,8 +549,9 @@ calculate_path(void)
 
     wcsncpy(package_path, L"Lib/site-packages", MAXPATHLEN);
 
+    // printf("progpath = %ls, prog = %ls\n", progpath, prog);
     /* add paths for the internal store of the APE */
-    if(wcslen(progpath) + 1 < MAXPATHLEN)
+    if(wcslen(progpath) > 0 && wcslen(progpath) + 1 < MAXPATHLEN)
         wcsncpy(ape_path, progpath, MAXPATHLEN);
     else
         wcsncpy(ape_path, prog, MAXPATHLEN);
@@ -625,6 +622,7 @@ calculate_path(void)
 
     /* And publish the results */
     module_search_path = buf;
+    // printf("%ls\n", buf);
 }
 
 
