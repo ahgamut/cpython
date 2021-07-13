@@ -1913,6 +1913,11 @@ sock_setsockopt(PySocketSockObject *s, PyObject *args)
     char *buf;
     int buflen;
     int flag;
+    int backup_optname;
+
+    backup_optname = SO_REUSEADDR;
+    if(IsWindows() && SO_REUSEADDR != 1) 
+        backup_optname = 1;
 
     if (PyArg_ParseTuple(args, "iii:setsockopt",
                          &level, &optname, &flag)) {
@@ -1925,7 +1930,7 @@ sock_setsockopt(PySocketSockObject *s, PyObject *args)
                               &level, &optname, &buf, &buflen))
             return NULL;
     }
-    res = setsockopt(s->sock_fd, level, optname, (void *)buf, buflen);
+    res = setsockopt(s->sock_fd, level, IsWindows() ? backup_optname : optname, (void *)buf, buflen);
     if (res < 0)
         return s->errorhandler();
     Py_INCREF(Py_None);
