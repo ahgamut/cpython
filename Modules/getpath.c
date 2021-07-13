@@ -485,7 +485,11 @@ calculate_path(void)
     wchar_t ape_package_path[MAXPATHLEN+1];
 
     if(IsWindows())
+    {
         fprintf(stderr, "python APE on Windows\n");
+        delimiter[0] = L';';
+        separator[0] = L'\\';
+    }
 
     if (_path) {
         path_buffer = Py_DecodeLocale(_path, NULL);
