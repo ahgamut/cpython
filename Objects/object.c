@@ -464,7 +464,7 @@ _PyObject_Dump(PyObject* op)
         return;
     }
 
-    PyGILState_STATE gil;
+    // PyGILState_STATE gil;
     PyObject *error_type, *error_value, *error_traceback;
 
     fprintf(stderr, "object  : ");

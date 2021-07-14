@@ -111,7 +111,7 @@ pwd pwdmodule.c			# this is needed to find out the user's home dir
 				# if $HOME is not set
 _sre _sre.c			# Fredrik Lundh's new regular expressions
 _codecs _codecsmodule.c		# access to the builtin codecs and codec registry
-_weakref _weakref.c		# weak references
+## _weakref _weakref.c		# weak references
 _functools _functoolsmodule.c   # Tools for working with functions and callable objects
 _operator _operator.c	        # operator.add() and similar goodies
 _collections _collectionsmodule.c # Container types
@@ -154,7 +154,7 @@ _symtable symtablemodule.c
 # modules are to be built as shared libraries (see above for more
 # detail; also note that *static* reverses this effect):
 
-#*shared*
+*static*
 
 # GNU readline.  Unlike previous Python incarnations, GNU readline is
 # now incorporated in an optional module, configured in the Setup file
@@ -170,7 +170,7 @@ _symtable symtablemodule.c
 # Modules that should always be present (non UNIX dependent):
 
 array arraymodule.c	# array objects
-cmath cmathmodule.c _math.c # -lm # complex math library functions
+cmath cmathmodule.c # _math.c # -lm # complex math library functions
 math mathmodule.c _math.c # -lm # math library functions, e.g. sin()
 _struct _struct.c	# binary structure packing/unpacking
 _weakref _weakref.c	# basic weak reference support
@@ -206,10 +206,18 @@ _socket socketmodule.c
 
 # Socket module helper for SSL support; you must comment out the other
 # socket line above, and possibly edit the SSL variable:
-#SSL=/usr/local/ssl
-#_ssl _ssl.c \
-#	-DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \
-#	-L$(SSL)/lib -lssl -lcrypto
+
+# I built OpenSSL from source, but I couldn't test it fully
+# maybe I should figure out the MbedTLS bindings for this
+# adding OpenSSL to the build is left as an exercise to the reader
+# SSL=$(srcdir)/../openssl-1.1.1k
+# _ssl _ssl.c \
+# 	-DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \
+# 	-L$(SSL)/ -lssl -lcrypto
+
+# _hashlib _hashopenssl.c \
+# 	-DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \
+# 	-L$(SSL)/ -lssl -lcrypto
 
 # The crypt module is now disabled by default because it breaks builds
 # on many systems (where -lcrypt is needed), e.g. Linux (I believe).

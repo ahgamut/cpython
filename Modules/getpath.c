@@ -6,6 +6,9 @@
 #include <sys/types.h>
 #include <string.h>
 
+#pragma GCC diagnostic ignored "-Wunused-function" // search_for_exec_prefix
+#pragma GCC diagnostic ignored "-Wunused-but-set-variable" // separator
+
 #ifdef __APPLE__
 #include <mach-o/dyld.h>
 #endif
@@ -463,10 +466,10 @@ calculate_path(void)
     static wchar_t delimiter[2] = {DELIM, '\0'};
     static wchar_t separator[2] = {SEP, '\0'};
     /* ignore PYTHONPATH/PYTHONHOME for now */
-    // char *_rtpypath = Py_GETENV("PYTHONPATH"); 
+    // char *_rtpypath = Py_GETENV("PYTHONPATH");
     /* XXX use wide version on Windows */
     // wchar_t *rtpypath = NULL;
-    wchar_t *home = NULL; // Py_GetPythonHome();
+    // wchar_t *home = Py_GetPythonHome();
     char *_path = getenv("PATH");
     wchar_t *path_buffer = NULL;
     wchar_t *path = NULL;
