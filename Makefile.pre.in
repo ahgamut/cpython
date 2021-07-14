@@ -81,7 +81,7 @@ LDFLAGS=	@LDFLAGS@
 LDLAST=		@LDLAST@
 SGI_ABI=	@SGI_ABI@
 CCSHARED=	@CCSHARED@
-LINKFORSHARED=	@LINKFORSHARED@
+LINKFORSHARED=
 ARFLAGS=	@ARFLAGS@
 # Extra C flags added for building the interpreter object files.
 CFLAGSFORSHARED=@CFLAGSFORSHARED@
@@ -488,9 +488,9 @@ coverage-report: regen-grammar
 # Build the portable executable
 $(PYTHON_APE): $(BUILDPYTHON) pybuilddir.txt
 	objcopy -S -O binary $< $@
-	find Lib/ -type f -executable -regex '.*\.py' | grep -v test | xargs zip -q $@
 	zip -qr $@ Lib -x \*.py \*.exe \
 		Lib/pydoc_data/\* \*__pycache__\* \
+		\*idlelib\* \ \*dist-info\* \
 		Lib/plat-irix\*/\* Lib/plat-aix\*/\* \
 		Lib/plat-atheos/\* Lib/plat-beos5/\* \
 		Lib/plat-next3/\* Lib/plat-os2emx/\* \

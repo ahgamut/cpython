@@ -6142,7 +6142,7 @@ posix_setgroups(PyObject *self, PyObject *groups)
         Py_DECREF(elem);
     }
 
-    if (setgroups(len, grouplist) < 0)
+    if (setgroups(len, (const int32_t *)grouplist) < 0)
         return posix_error();
     Py_INCREF(Py_None);
     return Py_None;

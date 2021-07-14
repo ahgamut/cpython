@@ -213,14 +213,21 @@ mmap mmapmodule.c
 _csv _csv.c
 
 # Socket module helper for socket(2)
-_socket socketmodule.c timemodule.c
+_socket socketmodule.c # timemodule.c
 
 # Socket module helper for SSL support; you must comment out the other
 # socket line above, and possibly edit the SSL variable:
-#SSL=/usr/local/ssl
-#_ssl _ssl.c \
-#	-DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \
-#	-L$(SSL)/lib -lssl -lcrypto
+
+# I built OpenSSL from source, but I couldn't test it fully
+# maybe I should figure out the MbedTLS bindings for this
+# adding OpenSSL to the build is left as an exercise to the reader
+# SSL=$(srcdir)/../openssl-1.1.1k
+# _ssl _ssl.c \
+# 	-DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \
+# 	-L$(SSL)/ -lssl -lcrypto
+# _hashlib _hashopenssl.c \
+# 	-DUSE_SSL -I$(SSL)/include -I$(SSL)/include/openssl \
+# 	-L$(SSL)/ -lssl -lcrypto
 
 # The crypt module is now disabled by default because it breaks builds
 # on many systems (where -lcrypt is needed), e.g. Linux (I believe).

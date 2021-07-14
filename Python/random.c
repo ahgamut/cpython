@@ -8,6 +8,8 @@
 #endif
 #endif
 
+#pragma GCC diagnostic ignored "-Wunused-function"
+
 #ifdef Py_DEBUG
 int _Py_HashSecret_Initialized = 0;
 #else
