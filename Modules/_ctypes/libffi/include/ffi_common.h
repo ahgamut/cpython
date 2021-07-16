@@ -122,8 +122,10 @@ typedef float FLOAT32;
 #ifndef __GNUC__
 #define __builtin_expect(x, expected_value) (x)
 #endif
+#ifndef LIKELY
 #define LIKELY(x)    __builtin_expect(!!(x),1)
 #define UNLIKELY(x)  __builtin_expect((x)!=0,0)
+#endif
 
 #ifdef __cplusplus
 }

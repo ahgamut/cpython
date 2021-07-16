@@ -7,6 +7,11 @@
 #endif
 #include "ctypes.h"
 
+#ifdef CHECK
+#define __CHECK CHECK
+#undef CHECK
+#endif
+
 /**************************************************************/
 
 static void

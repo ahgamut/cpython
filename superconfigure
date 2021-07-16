@@ -12,6 +12,12 @@ fi
 
 echo "<<<SUPERCONFIGURE>>> cosmopolitan.h exists in $COSMO_LIBDIR, assuming other files exist as well"
 
+echo "<<<SUPERCONFIGURE>>> configuring static libffi"
+cd Modules/_ctypes/libffi 
+make clean || true
+./superconfigure
+cd ../../../
+
 echo "<<<SUPERCONFIGURE>>> Running configure with $CC"
 LD_LIBRARY_PATH="" ./configure \
     --prefix="" \

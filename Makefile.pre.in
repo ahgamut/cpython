@@ -551,16 +551,17 @@ clinic: check-clean-src $(srcdir)/Modules/_blake2/blake2s_impl.c
 
 $(PYTHON_APE): $(BUILDPYTHON) pybuilddir.txt
 	objcopy -S -O binary $< $@
-	find Lib/ -type f -executable -regex '.*\.py' | grep -v test | xargs zip -q $@
+	ls -rShal $@
 	zip -qr $@ Lib -x \*.py \*.exe \
 		Lib/pydoc_data/\* \*__pycache__\*\
-		Lib/tkinter/\* \
+		Lib/tkinter/\* Lib/idlelib/\* Lib/turtle.py\* \
 		Lib/test/\* Lib/lib-tk/\* \
 		Lib/*/tests/\* Lib/*/test/\* \
 		Lib/site-packages/\* \
 		Lib/ensurepip/\*
 	zip -q $@ build/lib.linux-x86_64-3.6/_sysconfigdata_m_linux_x86_64-linux-gnu.py
 	zip -qr $@ Lib/site-packages -x \*.py \*.exe
+	ls -rShal $@
 
 # Build the interpreter
 $(BUILDPYTHON):	Programs/python.o $(LIBRARY) $(LDLIBRARY) $(PY3LIBRARY)
@@ -1646,7 +1647,7 @@ docclean:
 	-rm -rf Doc/tools/sphinx Doc/tools/pygments Doc/tools/docutils
 
 clean: pycremoval
-	find . -path ./libcosmo -prune -false -o -name '*.[oa]' -exec rm -f {} ';'
+	find . -name '*.[oa]' ! -path "./libcosmo/*" ! -path "./Modules/_ctypes/libffi/*" -exec rm -f {} ';'
 	find . -name '*.s[ol]' -exec rm -f {} ';'
 	find . -name '*.so.[0-9]*.[0-9]*' -exec rm -f {} ';'
 	find build -name 'fficonfig.h' -exec rm -f {} ';' || true

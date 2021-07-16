@@ -344,7 +344,7 @@ class CDLL(object):
             _restype_ = self._func_restype_
         self._FuncPtr = _FuncPtr
 
-        if handle is None:
+        if False and handle is None:
             self._handle = _dlopen(self._name, mode)
         else:
             self._handle = handle
