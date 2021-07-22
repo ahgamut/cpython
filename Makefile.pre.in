@@ -555,6 +555,7 @@ $(PYTHON_APE): $(BUILDPYTHON) pybuilddir.txt
 	zip -qr $@ Lib -x \*.py \*.exe \
 		Lib/pydoc_data/\* \*__pycache__\*\
 		Lib/tkinter/\* Lib/idlelib/\* Lib/turtle.py\* \
+		Lib/_pydecimal.py\* \
 		Lib/test/\* Lib/lib-tk/\* \
 		Lib/*/tests/\* Lib/*/test/\* \
 		Lib/site-packages/\* \

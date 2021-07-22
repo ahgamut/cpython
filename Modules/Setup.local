@@ -43,5 +43,19 @@ _ctypes _ctypes/callbacks.c _ctypes/callproc.c _ctypes/cfield.c \
 #     -L"../bzip2-1.0.8" -lbz2
 
 
+# the _decimal folder contains libmpdec source
+DECIMAL_USE_X64='CONFIG_64=1'
+DECIMAL_USE_ASM='ASM=1'
+_decimal _decimal/_decimal.c \
+    _decimal/libmpdec/basearith.c _decimal/libmpdec/constants.c \
+    _decimal/libmpdec/context.c _decimal/libmpdec/convolute.c \
+    _decimal/libmpdec/crt.c _decimal/libmpdec/difradix2.c \
+    _decimal/libmpdec/fnt.c _decimal/libmpdec/fourstep.c \
+    _decimal/libmpdec/io.c _decimal/libmpdec/memory.c \
+    _decimal/libmpdec/mpdecimal.c _decimal/libmpdec/numbertheory.c \
+    _decimal/libmpdec/sixstep.c _decimal/libmpdec/transpose.c \
+    -IModules/_decimal -IModules/_decimal/libmpdec \
+    -D$(DECIMAL_USE_X64) -D$(DECIMAL_USE_ASM)
+
 # # Possible to compile even external packages like markupsafe if lucky
 _markupsafe_speedups _markupsafe_speedups.c
