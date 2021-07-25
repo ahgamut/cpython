@@ -151,12 +151,14 @@ use *some* C extensions by compiling them like stdlib modules:
 * If you added the recipe correctly, run `make` to check successful compilation,
     and then try importing the package with the `./python -c 'import my_package'`.
 
-For example, the APE includes [MarkupSafe 2.0.1][markupsafe] alongside the
-stdlib, because I wanted to try [Flask][flask].  `Modules/Setup.local` contains
-the recipe to compile the `_speedup` component of the MarkupSafe package.
+For example, the APE includes [MarkupSafe 2.0.1][markupsafe] and
+[greenlet][greenlet] alongside the stdlib, because I wanted to try
+[Flask][flask].  `Modules/Setup.local` contains the recipe to compile the
+`_speedup` component of the MarkupSafe package.
 
 [py36]: https://docs.python.org/3.6/
 [cosmo]: https://github.com/jart/cosmopolitan
 [cstdlib]: https://en.cppreference.com/w/c/header
 [markupsafe]: https://github.com/pallets/markupsafe/
+[greenlet]: https://pypi.org/project/greenlet/
 [flask]: https://github.com/pallets/flask/

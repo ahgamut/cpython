@@ -57,5 +57,10 @@ _decimal _decimal/_decimal.c \
     -IModules/_decimal -IModules/_decimal/libmpdec \
     -D$(DECIMAL_USE_X64) -D$(DECIMAL_USE_ASM)
 
-# # Possible to compile even external packages like markupsafe if lucky
+# # Possible to compile even extensions of external packages if lucky
+
+# # markupsafe._speedups
 _markupsafe_speedups _markupsafe_speedups.c
+
+# # greenlet._greenlet
+_greenlet greenlet/greenlet.c

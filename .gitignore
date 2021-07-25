@@ -83,6 +83,7 @@ libpython*.a
 libpython*.so*
 libpython*.dylib
 platform
+!Modules/greenlet/platform
 pybuilddir.txt
 pyconfig.h
 python-config
