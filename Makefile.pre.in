@@ -552,16 +552,14 @@ clinic: check-clean-src $(srcdir)/Modules/_blake2/blake2s_impl.c
 $(PYTHON_APE): $(BUILDPYTHON) pybuilddir.txt
 	objcopy -S -O binary $< $@
 	ls -rShal $@
-	zip -qr $@ Lib -x \*.py \*.exe \
+	zip -qr $@ Lib -x \*.exe \
 		Lib/pydoc_data/\* \*__pycache__\*\
 		Lib/tkinter/\* Lib/idlelib/\* Lib/turtle.py\* \
 		Lib/_pydecimal.py\* \
-		Lib/test/\* Lib/lib-tk/\* \
-		Lib/*/tests/\* Lib/*/test/\* \
 		Lib/site-packages/\* \
 		Lib/ensurepip/\*
 	zip -q $@ build/lib.linux-x86_64-3.6/_sysconfigdata_m_linux_x86_64-linux-gnu.py
-	zip -qr $@ Lib/site-packages -x \*.py \*.exe
+	zip -qr $@ Lib/site-packages -x \*.exe
 	ls -rShal $@
 
 # Build the interpreter
@@ -586,8 +584,6 @@ pybuilddir.txt: $(BUILDPYTHON)
 		rm -f ./pybuilddir.txt ; \
 		exit 1 ; \
 	fi
-	$(PYTHON_FOR_BUILD) -B -O -m  compileall -b -q -x ".*test.*" ./Lib
-	$(PYTHON_FOR_BUILD) -B -O -m  compileall -b -q ./Lib/site-packages
 
 # This is shared by the math and cmath modules
 Modules/_math.o: Modules/_math.c Modules/_math.h

@@ -605,7 +605,13 @@ calculate_path(void)
     }
 
     buf[0] = L'\0';
-    
+
+    wcscat(buf, prefix);
+    wcscat(buf, delimiter);
+
+    wcscat(buf, package_path);
+    wcscat(buf, delimiter);
+
     wcscat(buf, ape_lib_path);
     wcscat(buf, delimiter);
 
@@ -618,11 +624,6 @@ calculate_path(void)
     wcscat(buf, ape_path);
     wcscat(buf, delimiter);
 
-    wcscat(buf, prefix);
-    wcscat(buf, delimiter);
-    
-    wcscat(buf, package_path);
-    wcscat(buf, delimiter);
 
     /* Finally, on goes the directory for dynamic-load modules */
     wcscat(buf, exec_prefix);
