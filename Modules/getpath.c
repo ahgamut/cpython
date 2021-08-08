@@ -549,7 +549,7 @@ calculate_path(void)
 
 
     /* Avoid absolute path got prefix */
-    wcsncpy(prefix, L"Lib/", MAXPATHLEN);
+    wcsncpy(prefix, L"Lib", MAXPATHLEN);
    
     /* Avoid absolute path for exec_prefix */
     wcsncpy(exec_prefix, L"build/lib.linux-x86_64-3.6", MAXPATHLEN);

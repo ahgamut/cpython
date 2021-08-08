@@ -1782,7 +1782,7 @@ class IPv6SysLogHandlerTest(SysLogHandlerTest):
 
     """Test for SysLogHandler with IPv6 host."""
 
-    server_class = TestUDPServer
+    server_class = None # TestUDPServer
     address = ('::1', 0)
 
     def setUp(self):
