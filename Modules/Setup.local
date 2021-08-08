@@ -24,10 +24,10 @@
 # recipe for _ctypes
 # requires compiled libffi in the _ctypes directory
 # go to Modules/_ctypes/libffi and run superconfigure first
-_ctypes _ctypes/callbacks.c _ctypes/callproc.c _ctypes/cfield.c \
-  _ctypes/_ctypes.c _ctypes/stgdict.c \
-  -I./Modules/_ctypes -I./Modules/_ctypes/libffi/x86_64-unknown-linux-gnu/include \
-  -L./Modules/_ctypes/libffi/x86_64-unknown-linux-gnu/.libs -lffi
+# _ctypes _ctypes/callbacks.c _ctypes/callproc.c _ctypes/cfield.c \
+#  _ctypes/_ctypes.c _ctypes/stgdict.c \
+#  -I./Modules/_ctypes -I./Modules/_ctypes/libffi/x86_64-unknown-linux-gnu/include \
+#  -L./Modules/_ctypes/libffi/x86_64-unknown-linux-gnu/.libs -lffi
 
 # _ctypes_test _ctypes/_ctypes_test.c \
 #     -I./Modules/_ctypes

@@ -47,6 +47,7 @@ import unittest
 import warnings
 import weakref
 try:
+    import _thread
     import threading
     # The following imports are needed only for tests which
     # require threading
