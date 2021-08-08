@@ -66,7 +66,10 @@
 # test_queue
 # test_readline
 # test_robotparser
+# test_smtpd
+# test_smtplib
 # test_smtpnet
+# test_sndhdr
 # test_socketserver
 # test_source_encoding
 # test_spwd
@@ -75,6 +78,7 @@
 # test_startfile
 # test_subprocess
 # test_sunau # requires audioop
+# test_sys_settrace
 # test_tcl
 # test_telnetlib
 # test_thread
@@ -330,9 +334,6 @@ test_shutil
 test_signal
 test_site
 test_slice
-# test_smtpd
-# test_smtplib
-# test_sndhdr
 test_socket
 test_sort
 test_stat
@@ -355,7 +356,6 @@ test_symtable
 test_syntax
 test_sys
 test_sys_setprofile
-# test_sys_settrace
 test_sysconfig
 test_syslog
 test_tarfile
