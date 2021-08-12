@@ -242,7 +242,6 @@ class TestLiterals(unittest.TestCase):
         self.check_encoding("latin-1")
 
     def test_file_latin9(self):
-        return
         self.check_encoding("latin9")
 
 
