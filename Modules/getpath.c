@@ -554,7 +554,7 @@ calculate_path(void)
     /* Avoid absolute path for exec_prefix */
     wcsncpy(exec_prefix, L"build/lib.linux-x86_64-3.6", MAXPATHLEN);
 
-    wcsncpy(package_path, L"Lib/site-packages", MAXPATHLEN);
+    wcsncpy(package_path, L"", MAXPATHLEN);
 
     // printf("progpath = %ls, prog = %ls\n", progpath, prog);
     /* add paths for the internal store of the APE */
