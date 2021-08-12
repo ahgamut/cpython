@@ -241,7 +241,7 @@ _posixsubprocess _posixsubprocess.c  # POSIX subprocess module helper
 # #993173 says audioop works on 64-bit platforms, though.
 # These represent audio samples or images as strings:
 
-#audioop audioop.c	# Operations on audio samples
+audioop audioop.c	# Operations on audio samples
 
 
 # Note that the _md5 and _sha modules are normally only built if the
