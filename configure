@@ -2206,7 +2206,7 @@ else
 #ifdef __cplusplus
 extern "C"
 #endif
-char $2 ();
+// char $2 ();
 /* The GNU C library defines this for functions which it implements
     to always fail with ENOSYS.  Some functions are actually named
     something starting with __ and the normal name is an alias.  */
@@ -2217,7 +2217,7 @@ choke me
 int
 main ()
 {
-return $2 ();
+void *f = (void*) $2;
   ;
   return 0;
 }
@@ -7411,7 +7411,7 @@ main ()
 _ACEOF
 if ac_fn_c_try_compile "$LINENO"; then :
 
-       ac_cv_enable_strict_prototypes_warning=yes
+       ac_cv_enable_strict_prototypes_warning=no
 
 else
 

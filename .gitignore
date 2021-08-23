@@ -1,6 +1,11 @@
 # Two-trick pony for OSX and other case insensitive file systems:
 # Ignore ./python binary on Unix but still look into ./Python/ directory.
 /python
+test_outputs.txt
+libcosmo/*
+!libcosmo/README.md
+python.com
+python.com.dbg
 !/Python/
 *.cover
 *.o
@@ -29,9 +34,9 @@ Makefile
 Makefile.pre
 Misc/python.pc
 Misc/python-config.sh
-Modules/Setup
+!Modules/Setup
 Modules/Setup.config
-Modules/Setup.local
+!Modules/Setup.local
 Modules/config.c
 Modules/ld_so_aix
 Programs/_freeze_importlib
@@ -79,6 +84,7 @@ libpython*.a
 libpython*.so*
 libpython*.dylib
 platform
+!Modules/greenlet/platform
 pybuilddir.txt
 pyconfig.h
 python-config

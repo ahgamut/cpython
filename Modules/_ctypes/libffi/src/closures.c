@@ -43,7 +43,7 @@
    locations in the virtual memory space, one location writable and
    another executable.  */
 #  define FFI_MMAP_EXEC_WRIT 1
-#  define HAVE_MNTENT 1
+// #  define HAVE_MNTENT 1
 # endif
 # if defined(X86_WIN32) || defined(X86_WIN64) || defined(__OS2__)
 /* Windows systems may have Data Execution Protection (DEP) enabled, 
@@ -116,14 +116,13 @@
 #include <mntent.h>
 #endif /* HAVE_MNTENT */
 #include <sys/param.h>
-#include <pthread.h>
 
 /* We don't want sys/mman.h to be included after we redefine mmap and
    dlmunmap.  */
 #include <sys/mman.h>
 #define LACKS_SYS_MMAN_H 1
 
-#if FFI_MMAP_EXEC_SELINUX
+#if 0 && FFI_MMAP_EXEC_SELINUX
 #include <sys/statfs.h>
 #include <stdlib.h>
 
@@ -254,7 +253,6 @@ static int dlmunmap(void *, size_t);
 #if !(defined(X86_WIN32) || defined(X86_WIN64) || defined(__OS2__)) || defined (__CYGWIN__) || defined(__INTERIX)
 
 /* A mutex used to synchronize access to *exec* variables in this file.  */
-static pthread_mutex_t open_temp_exec_file_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 /* A file descriptor of a temporary file from which we'll map
    executable pages.  */
@@ -518,9 +516,7 @@ dlmmap (void *start, size_t length, int prot,
 
   if (execsize == 0 || execfd == -1)
     {
-      pthread_mutex_lock (&open_temp_exec_file_mutex);
       ptr = dlmmap_locked (start, length, prot, flags, offset);
-      pthread_mutex_unlock (&open_temp_exec_file_mutex);
 
       return ptr;
     }

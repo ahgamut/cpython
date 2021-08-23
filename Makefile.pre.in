@@ -105,7 +105,7 @@ NO_AS_NEEDED=	@NO_AS_NEEDED@
 LDLAST=		@LDLAST@
 SGI_ABI=	@SGI_ABI@
 CCSHARED=	@CCSHARED@
-LINKFORSHARED=	@LINKFORSHARED@
+LINKFORSHARED=
 ARFLAGS=	@ARFLAGS@
 # Extra C flags added for building the interpreter object files.
 CFLAGSFORSHARED=@CFLAGSFORSHARED@
@@ -165,8 +165,8 @@ LDCXXSHARED=	@LDCXXSHARED@
 DESTSHARED=	$(BINLIBDEST)/lib-dynload
 
 # Executable suffix (.exe on Windows and Mac OS X)
-EXE=		@EXEEXT@
-BUILDEXE=	@BUILDEXEEXT@
+EXE=		.com.dbg
+BUILDEXE=	.com.dbg
 
 # Short name and location for Mac OS X Python framework
 UNIVERSALSDK=@UNIVERSALSDK@
@@ -242,6 +242,7 @@ LIBOBJS=	@LIBOBJS@
 
 PYTHON=		python$(EXE)
 BUILDPYTHON=	python$(BUILDEXE)
+PYTHON_APE= python.com
 
 PYTHON_FOR_REGEN=@PYTHON_FOR_REGEN@
 UPDATE_FILE=@PYTHON_FOR_REGEN@ $(srcdir)/Tools/scripts/update_file.py
@@ -464,8 +465,8 @@ DTRACE_DEPS = \
 
 # Default target
 all:		@DEF_MAKE_ALL_RULE@
-build_all:	check-clean-src $(BUILDPYTHON) oldsharedmods sharedmods gdbhooks \
-		Programs/_testembed python-config
+build_all:	check-clean-src $(PYTHON_APE) oldsharedmods sharedmods gdbhooks \
+		python-config
 
 # Check that the source is clean when building out of source.
 check-clean-src:
@@ -566,9 +567,22 @@ coverage-report: regen-grammar regen-importlib
 clinic: check-clean-src $(srcdir)/Modules/_blake2/blake2s_impl.c
 	$(PYTHON_FOR_REGEN) ./Tools/clinic/clinic.py --make
 
+$(PYTHON_APE): $(BUILDPYTHON) pybuilddir.txt
+	objcopy -S -O binary $< $@
+	ls -rShal $@
+	zip -qr $@ Lib -x \*.exe \
+		Lib/pydoc_data/\* \*__pycache__\*\
+		Lib/tkinter/\* Lib/idlelib/\* Lib/turtle.py\* \
+		Lib/_pydecimal.py\* \
+		Lib/site-packages/\* \
+		Lib/ensurepip/\*
+	zip -q $@ build/lib.linux-x86_64-3.6/_sysconfigdata_m_linux_x86_64-linux-gnu.py
+	zip -qr $@ Lib/site-packages -x \*.exe
+	ls -rShal $@
+
 # Build the interpreter
 $(BUILDPYTHON):	Programs/python.o $(LIBRARY) $(LDLIBRARY) $(PY3LIBRARY)
-	$(LINKCC) $(PY_CORE_LDFLAGS) $(LINKFORSHARED) -o $@ Programs/python.o $(BLDLIBRARY) $(LIBS) $(MODLIBS) $(SYSLIBS) $(LDLAST)
+	$(LINKCC) $(PY_CORE_LDFLAGS) $(LINKFORSHARED) -o $@ Programs/python.o $(BLDLIBRARY) $(MODLIBS) $(SYSLIBS) $(LIBS) $(LDLAST)
 
 platform: $(BUILDPYTHON) pybuilddir.txt
 	$(RUNSHARED) $(PYTHON_FOR_BUILD) -c 'import sys ; from sysconfig import get_platform ; print("%s-%d.%d" % (get_platform(), *sys.version_info[:2]))' >platform
@@ -644,11 +658,11 @@ libpython$(VERSION).sl: $(LIBRARY_OBJS)
 #
 # Distributors are likely to want to install this somewhere else e.g. relative
 # to the stripped DWARF data for the shared library.
-gdbhooks: $(BUILDPYTHON)-gdb.py
+gdbhooks: python-gdb.py
 
 SRC_GDB_HOOKS=$(srcdir)/Tools/gdb/libpython.py
-$(BUILDPYTHON)-gdb.py: $(SRC_GDB_HOOKS)
-	$(INSTALL_DATA) $(SRC_GDB_HOOKS) $(BUILDPYTHON)-gdb.py
+python-gdb.py: $(SRC_GDB_HOOKS)
+	$(INSTALL_DATA) $(SRC_GDB_HOOKS) python-gdb.py
 
 # This rule is here for OPENSTEP/Rhapsody/MacOSX. It builds a temporary
 # minimal framework (not including the Lib directory and such) in the current
@@ -1684,7 +1698,7 @@ docclean:
 	-rm -rf Doc/tools/sphinx Doc/tools/pygments Doc/tools/docutils
 
 clean: pycremoval
-	find . -name '*.[oa]' -exec rm -f {} ';'
+	find . -name '*.[oa]' ! -path "./libcosmo/*" ! -path "./Modules/_ctypes/libffi/*" -exec rm -f {} ';'
 	find . -name '*.s[ol]' -exec rm -f {} ';'
 	find . -name '*.so.[0-9]*.[0-9]*' -exec rm -f {} ';'
 	find build -name 'fficonfig.h' -exec rm -f {} ';' || true
@@ -1695,6 +1709,7 @@ clean: pycremoval
 	-rm -f Programs/_testembed Programs/_freeze_importlib
 	-find build -type f -a ! -name '*.gc??' -exec rm -f {} ';'
 	-rm -f Include/pydtrace_probes.h
+	rm -f $(PYTHON_APE) python$(BUILDEXE)
 
 profile-removal:
 	find . -name '*.gc??' -exec rm -f {} ';'

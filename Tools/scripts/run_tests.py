@@ -11,6 +11,7 @@ import os
 import sys
 import test.support
 try:
+    import _thread
     import threading
 except ImportError:
     threading = None

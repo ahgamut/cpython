@@ -1,0 +1,52 @@
+#! /bin/sh 
+set -eux
+
+COSMO_LIBDIR=$(realpath ../../../libcosmo)
+HEADER_PATHS=$(realpath ../../../header_stubs)
+CC="${CC:-gcc}"
+
+if [ ! -f $COSMO_LIBDIR/cosmopolitan.h ]; then
+    echo "<<<SUPERCONFIGURE>>> cosmopolitan.h does not exist in $COSMO_LIBDIR!!!!"
+    exit 1
+fi
+
+echo "<<<SUPERCONFIGURE>>> cosmopolitan.h exists in $COSMO_LIBDIR, assuming other files exist as well"
+
+echo "<<<SUPERCONFIGURE>>> Running configure with $CC"
+LD_LIBRARY_PATH="" ./configure \
+    --prefix="" \
+    --enable-shared=no --enable-static \
+    --enable-portable-binary --disable-silent-rules \
+    OPT="" \
+    CCSHARED="" \
+    LINKFORSHARED="" \
+    PKG_CONFIG="" \
+    CFLAGS="-Wall -Wno-strict-prototypes -Wno-unused-value \
+      -std=c99 -static \
+      -ffunction-sections -fdata-sections \
+      -fno-pie -fno-omit-frame-pointer \
+      -mno-red-zone -pg \
+      -nostdinc -nostdlib \
+      -I$HEADER_PATHS \
+      -include $COSMO_LIBDIR/cosmopolitan.h" \
+    CCASFLAGS="-Wall -Wno-strict-prototypes -Wno-unused-value \
+      -std=c99 -static \
+      -fno-pie -fno-omit-frame-pointer \
+      -mno-red-zone -pg \
+      -nostdinc -nostdlib \
+      -I$HEADER_PATHS" \
+    LDFLAGS="-static -nostdlib -nostdinc -fno-pie \
+      -no-pie -mno-red-zone \
+      -include $COSMO_LIBDIR/cosmopolitan.h" \
+    LIBS="-Wl,--gc-sections -fuse-ld=bfd \
+      -Wl,-T,$COSMO_LIBDIR/ape.lds \
+      -include $COSMO_LIBDIR/cosmopolitan.h \
+      $COSMO_LIBDIR/crt.o \
+      $COSMO_LIBDIR/ape.o \
+      $COSMO_LIBDIR/cosmopolitan.a"
+
+echo "<<<SUPERCONFIGURE>>> Running make"
+make -j4
+
+echo "<<<SUPERCONFIGURE>>> removing cosmopolitan.a from the static lib"
+ar d ./x86_64-unknown-linux-gnu/.libs/libffi.a cosmopolitan.a

@@ -2524,7 +2524,7 @@ PyUnicode_FromWideChar(const wchar_t *w, Py_ssize_t size)
         return NULL;
     }
 
-    if (size == -1) {
+    if (size <= -1) {
         size = wcslen(w);
     }
 

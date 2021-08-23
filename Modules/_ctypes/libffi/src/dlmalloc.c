@@ -1173,12 +1173,12 @@ int mspace_mallopt(int, int);
 #endif /* LACKS_STDLIB_H */
 #ifdef DEBUG
 #if ABORT_ON_ASSERT_FAILURE
-#define assert(x) if(!(x)) ABORT
+// #define assert(x) if(!(x)) ABORT
 #else /* ABORT_ON_ASSERT_FAILURE */
 #include <assert.h>
 #endif /* ABORT_ON_ASSERT_FAILURE */
 #else  /* DEBUG */
-#define assert(x)
+// #define assert(x)
 #endif /* DEBUG */
 #ifndef LACKS_STRING_H
 #include <string.h>      /* for memset etc */
@@ -1423,7 +1423,7 @@ static int win32munmap(void* ptr, size_t size) {
 
 /* --------------------------- Lock preliminaries ------------------------ */
 
-#if USE_LOCKS
+#if 0 && USE_LOCKS
 
 /*
   When locks are defined, there are up to two global locks:
@@ -1502,7 +1502,7 @@ static MLOCK_T magic_init_mutex;
 #define INITIAL_LOCK(l)
 #endif /* USE_LOCKS */
 
-#if USE_LOCKS && HAVE_MORECORE
+#if 0 && USE_LOCKS && HAVE_MORECORE
 #define ACQUIRE_MORECORE_LOCK()    ACQUIRE_LOCK(&morecore_mutex);
 #define RELEASE_MORECORE_LOCK()    RELEASE_LOCK(&morecore_mutex);
 #else /* USE_LOCKS && HAVE_MORECORE */
@@ -1510,7 +1510,7 @@ static MLOCK_T magic_init_mutex;
 #define RELEASE_MORECORE_LOCK()
 #endif /* USE_LOCKS && HAVE_MORECORE */
 
-#if USE_LOCKS
+#if 0 && USE_LOCKS
 #define ACQUIRE_MAGIC_INIT_LOCK()  ACQUIRE_LOCK(&magic_init_mutex);
 #define RELEASE_MAGIC_INIT_LOCK()  RELEASE_LOCK(&magic_init_mutex);
 #else  /* USE_LOCKS */
@@ -2086,7 +2086,7 @@ struct malloc_state {
   size_t     footprint;
   size_t     max_footprint;
   flag_t     mflags;
-#if USE_LOCKS
+#if 0 && USE_LOCKS
   MLOCK_T    mutex;     /* locate lock among fields that rarely change */
 #endif /* USE_LOCKS */
   msegment   seg;
@@ -2201,7 +2201,7 @@ static int has_segment_link(mstate m, msegmentptr ss) {
   anything you like.
 */
 
-#if USE_LOCKS
+#if 0 && USE_LOCKS
 
 /* Ensure locks are initialized */
 #define GLOBALLY_INITIALIZE() (mparams.page_size == 0 && init_mparams())

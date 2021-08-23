@@ -1,0 +1,5 @@
+# this is the build dir create by superconfigure
+x86_64-unknown-linux-gnu
+*.la
+*.lo
+*.Plo
