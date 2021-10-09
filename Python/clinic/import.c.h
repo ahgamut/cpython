@@ -64,7 +64,7 @@ _imp_release_lock(PyObject *module, PyObject *Py_UNUSED(ignored))
 }
 
 PyDoc_STRVAR(_imp__fix_co_filename__doc__,
-"_fix_co_filename($module, code, path, /)\n"
+"_fix_co_filename($module, /, code, path)\n"
 "--\n"
 "\n"
 "Changes code.co_filename to specify the passed-in file path.\n"
@@ -75,20 +75,22 @@ PyDoc_STRVAR(_imp__fix_co_filename__doc__,
 "    File path to use.");
 
 #define _IMP__FIX_CO_FILENAME_METHODDEF    \
-    {"_fix_co_filename", (PyCFunction)_imp__fix_co_filename, METH_VARARGS, _imp__fix_co_filename__doc__},
+    {"_fix_co_filename", (PyCFunction)_imp__fix_co_filename, METH_FASTCALL, _imp__fix_co_filename__doc__},
 
 static PyObject *
 _imp__fix_co_filename_impl(PyObject *module, PyCodeObject *code,
                            PyObject *path);
 
 static PyObject *
-_imp__fix_co_filename(PyObject *module, PyObject *args)
+_imp__fix_co_filename(PyObject *module, PyObject **args, Py_ssize_t nargs, PyObject *kwnames)
 {
     PyObject *return_value = NULL;
+    static const char * const _keywords[] = {"code", "path", NULL};
+    static _PyArg_Parser _parser = {"O!U:_fix_co_filename", _keywords, 0};
     PyCodeObject *code;
     PyObject *path;
 
-    if (!PyArg_ParseTuple(args, "O!U:_fix_co_filename",
+    if (!_PyArg_ParseStack(args, nargs, kwnames, &_parser,
         &PyCode_Type, &code, &path)) {
         goto exit;
     }
@@ -99,13 +101,34 @@ exit:
 }
 
 PyDoc_STRVAR(_imp_create_builtin__doc__,
-"create_builtin($module, spec, /)\n"
+"create_builtin($module, /, spec)\n"
 "--\n"
 "\n"
 "Create an extension module.");
 
 #define _IMP_CREATE_BUILTIN_METHODDEF    \
-    {"create_builtin", (PyCFunction)_imp_create_builtin, METH_O, _imp_create_builtin__doc__},
+    {"create_builtin", (PyCFunction)_imp_create_builtin, METH_FASTCALL, _imp_create_builtin__doc__},
+
+static PyObject *
+_imp_create_builtin_impl(PyObject *module, PyObject *spec);
+
+static PyObject *
+_imp_create_builtin(PyObject *module, PyObject **args, Py_ssize_t nargs, PyObject *kwnames)
+{
+    PyObject *return_value = NULL;
+    static const char * const _keywords[] = {"spec", NULL};
+    static _PyArg_Parser _parser = {"O:create_builtin", _keywords, 0};
+    PyObject *spec;
+
+    if (!_PyArg_ParseStack(args, nargs, kwnames, &_parser,
+        &spec)) {
+        goto exit;
+    }
+    return_value = _imp_create_builtin_impl(module, spec);
+
+exit:
+    return return_value;
+}
 
 PyDoc_STRVAR(_imp_extension_suffixes__doc__,
 "extension_suffixes($module, /)\n"
@@ -126,24 +149,27 @@ _imp_extension_suffixes(PyObject *module, PyObject *Py_UNUSED(ignored))
 }
 
 PyDoc_STRVAR(_imp_init_frozen__doc__,
-"init_frozen($module, name, /)\n"
+"init_frozen($module, /, name)\n"
 "--\n"
 "\n"
 "Initializes a frozen module.");
 
 #define _IMP_INIT_FROZEN_METHODDEF    \
-    {"init_frozen", (PyCFunction)_imp_init_frozen, METH_O, _imp_init_frozen__doc__},
+    {"init_frozen", (PyCFunction)_imp_init_frozen, METH_FASTCALL, _imp_init_frozen__doc__},
 
 static PyObject *
 _imp_init_frozen_impl(PyObject *module, PyObject *name);
 
 static PyObject *
-_imp_init_frozen(PyObject *module, PyObject *arg)
+_imp_init_frozen(PyObject *module, PyObject **args, Py_ssize_t nargs, PyObject *kwnames)
 {
     PyObject *return_value = NULL;
+    static const char * const _keywords[] = {"name", NULL};
+    static _PyArg_Parser _parser = {"U:init_frozen", _keywords, 0};
     PyObject *name;
 
-    if (!PyArg_Parse(arg, "U:init_frozen", &name)) {
+    if (!_PyArg_ParseStack(args, nargs, kwnames, &_parser,
+        &name)) {
         goto exit;
     }
     return_value = _imp_init_frozen_impl(module, name);
@@ -153,24 +179,27 @@ exit:
 }
 
 PyDoc_STRVAR(_imp_get_frozen_object__doc__,
-"get_frozen_object($module, name, /)\n"
+"get_frozen_object($module, /, name)\n"
 "--\n"
 "\n"
 "Create a code object for a frozen module.");
 
 #define _IMP_GET_FROZEN_OBJECT_METHODDEF    \
-    {"get_frozen_object", (PyCFunction)_imp_get_frozen_object, METH_O, _imp_get_frozen_object__doc__},
+    {"get_frozen_object", (PyCFunction)_imp_get_frozen_object, METH_FASTCALL, _imp_get_frozen_object__doc__},
 
 static PyObject *
 _imp_get_frozen_object_impl(PyObject *module, PyObject *name);
 
 static PyObject *
-_imp_get_frozen_object(PyObject *module, PyObject *arg)
+_imp_get_frozen_object(PyObject *module, PyObject **args, Py_ssize_t nargs, PyObject *kwnames)
 {
     PyObject *return_value = NULL;
+    static const char * const _keywords[] = {"name", NULL};
+    static _PyArg_Parser _parser = {"U:get_frozen_object", _keywords, 0};
     PyObject *name;
 
-    if (!PyArg_Parse(arg, "U:get_frozen_object", &name)) {
+    if (!_PyArg_ParseStack(args, nargs, kwnames, &_parser,
+        &name)) {
         goto exit;
     }
     return_value = _imp_get_frozen_object_impl(module, name);
@@ -180,24 +209,27 @@ exit:
 }
 
 PyDoc_STRVAR(_imp_is_frozen_package__doc__,
-"is_frozen_package($module, name, /)\n"
+"is_frozen_package($module, /, name)\n"
 "--\n"
 "\n"
 "Returns True if the module name is of a frozen package.");
 
 #define _IMP_IS_FROZEN_PACKAGE_METHODDEF    \
-    {"is_frozen_package", (PyCFunction)_imp_is_frozen_package, METH_O, _imp_is_frozen_package__doc__},
+    {"is_frozen_package", (PyCFunction)_imp_is_frozen_package, METH_FASTCALL, _imp_is_frozen_package__doc__},
 
 static PyObject *
 _imp_is_frozen_package_impl(PyObject *module, PyObject *name);
 
 static PyObject *
-_imp_is_frozen_package(PyObject *module, PyObject *arg)
+_imp_is_frozen_package(PyObject *module, PyObject **args, Py_ssize_t nargs, PyObject *kwnames)
 {
     PyObject *return_value = NULL;
+    static const char * const _keywords[] = {"name", NULL};
+    static _PyArg_Parser _parser = {"U:is_frozen_package", _keywords, 0};
     PyObject *name;
 
-    if (!PyArg_Parse(arg, "U:is_frozen_package", &name)) {
+    if (!_PyArg_ParseStack(args, nargs, kwnames, &_parser,
+        &name)) {
         goto exit;
     }
     return_value = _imp_is_frozen_package_impl(module, name);
@@ -207,24 +239,27 @@ exit:
 }
 
 PyDoc_STRVAR(_imp_is_builtin__doc__,
-"is_builtin($module, name, /)\n"
+"is_builtin($module, /, name)\n"
 "--\n"
 "\n"
 "Returns True if the module name corresponds to a built-in module.");
 
 #define _IMP_IS_BUILTIN_METHODDEF    \
-    {"is_builtin", (PyCFunction)_imp_is_builtin, METH_O, _imp_is_builtin__doc__},
+    {"is_builtin", (PyCFunction)_imp_is_builtin, METH_FASTCALL, _imp_is_builtin__doc__},
 
 static PyObject *
 _imp_is_builtin_impl(PyObject *module, PyObject *name);
 
 static PyObject *
-_imp_is_builtin(PyObject *module, PyObject *arg)
+_imp_is_builtin(PyObject *module, PyObject **args, Py_ssize_t nargs, PyObject *kwnames)
 {
     PyObject *return_value = NULL;
+    static const char * const _keywords[] = {"name", NULL};
+    static _PyArg_Parser _parser = {"U:is_builtin", _keywords, 0};
     PyObject *name;
 
-    if (!PyArg_Parse(arg, "U:is_builtin", &name)) {
+    if (!_PyArg_ParseStack(args, nargs, kwnames, &_parser,
+        &name)) {
         goto exit;
     }
     return_value = _imp_is_builtin_impl(module, name);
@@ -234,24 +269,27 @@ exit:
 }
 
 PyDoc_STRVAR(_imp_is_frozen__doc__,
-"is_frozen($module, name, /)\n"
+"is_frozen($module, /, name)\n"
 "--\n"
 "\n"
 "Returns True if the module name corresponds to a frozen module.");
 
 #define _IMP_IS_FROZEN_METHODDEF    \
-    {"is_frozen", (PyCFunction)_imp_is_frozen, METH_O, _imp_is_frozen__doc__},
+    {"is_frozen", (PyCFunction)_imp_is_frozen, METH_FASTCALL, _imp_is_frozen__doc__},
 
 static PyObject *
 _imp_is_frozen_impl(PyObject *module, PyObject *name);
 
 static PyObject *
-_imp_is_frozen(PyObject *module, PyObject *arg)
+_imp_is_frozen(PyObject *module, PyObject **args, Py_ssize_t nargs, PyObject *kwnames)
 {
     PyObject *return_value = NULL;
+    static const char * const _keywords[] = {"name", NULL};
+    static _PyArg_Parser _parser = {"U:is_frozen", _keywords, 0};
     PyObject *name;
 
-    if (!PyArg_Parse(arg, "U:is_frozen", &name)) {
+    if (!_PyArg_ParseStack(args, nargs, kwnames, &_parser,
+        &name)) {
         goto exit;
     }
     return_value = _imp_is_frozen_impl(module, name);
@@ -263,26 +301,27 @@ exit:
 #if defined(HAVE_DYNAMIC_LOADING)
 
 PyDoc_STRVAR(_imp_create_dynamic__doc__,
-"create_dynamic($module, spec, file=None, /)\n"
+"create_dynamic($module, /, spec, file=None)\n"
 "--\n"
 "\n"
 "Create an extension module.");
 
 #define _IMP_CREATE_DYNAMIC_METHODDEF    \
-    {"create_dynamic", (PyCFunction)_imp_create_dynamic, METH_VARARGS, _imp_create_dynamic__doc__},
+    {"create_dynamic", (PyCFunction)_imp_create_dynamic, METH_FASTCALL, _imp_create_dynamic__doc__},
 
 static PyObject *
 _imp_create_dynamic_impl(PyObject *module, PyObject *spec, PyObject *file);
 
 static PyObject *
-_imp_create_dynamic(PyObject *module, PyObject *args)
+_imp_create_dynamic(PyObject *module, PyObject **args, Py_ssize_t nargs, PyObject *kwnames)
 {
     PyObject *return_value = NULL;
+    static const char * const _keywords[] = {"spec", "file", NULL};
+    static _PyArg_Parser _parser = {"O|O:create_dynamic", _keywords, 0};
     PyObject *spec;
     PyObject *file = NULL;
 
-    if (!PyArg_UnpackTuple(args, "create_dynamic",
-        1, 2,
+    if (!_PyArg_ParseStack(args, nargs, kwnames, &_parser,
         &spec, &file)) {
         goto exit;
     }
@@ -297,23 +336,30 @@ exit:
 #if defined(HAVE_DYNAMIC_LOADING)
 
 PyDoc_STRVAR(_imp_exec_dynamic__doc__,
-"exec_dynamic($module, mod, /)\n"
+"exec_dynamic($module, /, mod)\n"
 "--\n"
 "\n"
 "Initialize an extension module.");
 
 #define _IMP_EXEC_DYNAMIC_METHODDEF    \
-    {"exec_dynamic", (PyCFunction)_imp_exec_dynamic, METH_O, _imp_exec_dynamic__doc__},
+    {"exec_dynamic", (PyCFunction)_imp_exec_dynamic, METH_FASTCALL, _imp_exec_dynamic__doc__},
 
 static int
 _imp_exec_dynamic_impl(PyObject *module, PyObject *mod);
 
 static PyObject *
-_imp_exec_dynamic(PyObject *module, PyObject *mod)
+_imp_exec_dynamic(PyObject *module, PyObject **args, Py_ssize_t nargs, PyObject *kwnames)
 {
     PyObject *return_value = NULL;
+    static const char * const _keywords[] = {"mod", NULL};
+    static _PyArg_Parser _parser = {"O:exec_dynamic", _keywords, 0};
+    PyObject *mod;
     int _return_value;
 
+    if (!_PyArg_ParseStack(args, nargs, kwnames, &_parser,
+        &mod)) {
+        goto exit;
+    }
     _return_value = _imp_exec_dynamic_impl(module, mod);
     if ((_return_value == -1) && PyErr_Occurred()) {
         goto exit;
@@ -327,23 +373,30 @@ exit:
 #endif /* defined(HAVE_DYNAMIC_LOADING) */
 
 PyDoc_STRVAR(_imp_exec_builtin__doc__,
-"exec_builtin($module, mod, /)\n"
+"exec_builtin($module, /, mod)\n"
 "--\n"
 "\n"
 "Initialize a built-in module.");
 
 #define _IMP_EXEC_BUILTIN_METHODDEF    \
-    {"exec_builtin", (PyCFunction)_imp_exec_builtin, METH_O, _imp_exec_builtin__doc__},
+    {"exec_builtin", (PyCFunction)_imp_exec_builtin, METH_FASTCALL, _imp_exec_builtin__doc__},
 
 static int
 _imp_exec_builtin_impl(PyObject *module, PyObject *mod);
 
 static PyObject *
-_imp_exec_builtin(PyObject *module, PyObject *mod)
+_imp_exec_builtin(PyObject *module, PyObject **args, Py_ssize_t nargs, PyObject *kwnames)
 {
     PyObject *return_value = NULL;
+    static const char * const _keywords[] = {"mod", NULL};
+    static _PyArg_Parser _parser = {"O:exec_builtin", _keywords, 0};
+    PyObject *mod;
     int _return_value;
 
+    if (!_PyArg_ParseStack(args, nargs, kwnames, &_parser,
+        &mod)) {
+        goto exit;
+    }
     _return_value = _imp_exec_builtin_impl(module, mod);
     if ((_return_value == -1) && PyErr_Occurred()) {
         goto exit;
@@ -361,4 +414,4 @@ exit:
 #ifndef _IMP_EXEC_DYNAMIC_METHODDEF
     #define _IMP_EXEC_DYNAMIC_METHODDEF
 #endif /* !defined(_IMP_EXEC_DYNAMIC_METHODDEF) */
-/*[clinic end generated code: output=d24d7f73702a907f input=a9049054013a1b77]*/
+/*[clinic end generated code: output=de307d9e757e0c29 input=a9049054013a1b77]*/

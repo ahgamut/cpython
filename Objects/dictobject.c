@@ -2331,14 +2331,14 @@ dict_items(PyDictObject *mp)
 dict.fromkeys
     iterable: object
     value: object=None
-    /
+
 
 Returns a new dict with keys from iterable and values equal to value.
 [clinic start generated code]*/
 
 static PyObject *
 dict_fromkeys_impl(PyTypeObject *type, PyObject *iterable, PyObject *value)
-/*[clinic end generated code: output=8fb98e4b10384999 input=b85a667f9bf4669d]*/
+/*[clinic end generated code: output=8fb98e4b10384999 input=e1e2eb25af408479]*/
 {
     return _PyDict_FromKeys((PyObject *)type, iterable, value);
 }
@@ -2794,14 +2794,14 @@ dict_richcompare(PyObject *v, PyObject *w, int op)
 dict.__contains__
 
   key: object
-  /
+
 
 True if D has a key k, else False.
 [clinic start generated code]*/
 
 static PyObject *
-dict___contains__(PyDictObject *self, PyObject *key)
-/*[clinic end generated code: output=a3d03db709ed6e6b input=b852b2a19b51ab24]*/
+dict___contains___impl(PyDictObject *self, PyObject *key)
+/*[clinic end generated code: output=1b314e6da7687dae input=80d3ec0a48df97b4]*/
 {
     register PyDictObject *mp = self;
     Py_hash_t hash;

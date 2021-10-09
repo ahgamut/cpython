@@ -42,7 +42,7 @@ exit:
 }
 
 PyDoc_STRVAR(bytes_partition__doc__,
-"partition($self, sep, /)\n"
+"partition($self, /, sep)\n"
 "--\n"
 "\n"
 "Partition the bytes into three parts using the given separator.\n"
@@ -55,18 +55,21 @@ PyDoc_STRVAR(bytes_partition__doc__,
 "object and two empty bytes objects.");
 
 #define BYTES_PARTITION_METHODDEF    \
-    {"partition", (PyCFunction)bytes_partition, METH_O, bytes_partition__doc__},
+    {"partition", (PyCFunction)bytes_partition, METH_FASTCALL, bytes_partition__doc__},
 
 static PyObject *
 bytes_partition_impl(PyBytesObject *self, Py_buffer *sep);
 
 static PyObject *
-bytes_partition(PyBytesObject *self, PyObject *arg)
+bytes_partition(PyBytesObject *self, PyObject **args, Py_ssize_t nargs, PyObject *kwnames)
 {
     PyObject *return_value = NULL;
+    static const char * const _keywords[] = {"sep", NULL};
+    static _PyArg_Parser _parser = {"y*:partition", _keywords, 0};
     Py_buffer sep = {NULL, NULL};
 
-    if (!PyArg_Parse(arg, "y*:partition", &sep)) {
+    if (!_PyArg_ParseStack(args, nargs, kwnames, &_parser,
+        &sep)) {
         goto exit;
     }
     return_value = bytes_partition_impl(self, &sep);
@@ -81,7 +84,7 @@ exit:
 }
 
 PyDoc_STRVAR(bytes_rpartition__doc__,
-"rpartition($self, sep, /)\n"
+"rpartition($self, /, sep)\n"
 "--\n"
 "\n"
 "Partition the bytes into three parts using the given separator.\n"
@@ -94,18 +97,21 @@ PyDoc_STRVAR(bytes_rpartition__doc__,
 "objects and the original bytes object.");
 
 #define BYTES_RPARTITION_METHODDEF    \
-    {"rpartition", (PyCFunction)bytes_rpartition, METH_O, bytes_rpartition__doc__},
+    {"rpartition", (PyCFunction)bytes_rpartition, METH_FASTCALL, bytes_rpartition__doc__},
 
 static PyObject *
 bytes_rpartition_impl(PyBytesObject *self, Py_buffer *sep);
 
 static PyObject *
-bytes_rpartition(PyBytesObject *self, PyObject *arg)
+bytes_rpartition(PyBytesObject *self, PyObject **args, Py_ssize_t nargs, PyObject *kwnames)
 {
     PyObject *return_value = NULL;
+    static const char * const _keywords[] = {"sep", NULL};
+    static _PyArg_Parser _parser = {"y*:rpartition", _keywords, 0};
     Py_buffer sep = {NULL, NULL};
 
-    if (!PyArg_Parse(arg, "y*:rpartition", &sep)) {
+    if (!_PyArg_ParseStack(args, nargs, kwnames, &_parser,
+        &sep)) {
         goto exit;
     }
     return_value = bytes_rpartition_impl(self, &sep);
@@ -161,7 +167,7 @@ exit:
 }
 
 PyDoc_STRVAR(bytes_join__doc__,
-"join($self, iterable_of_bytes, /)\n"
+"join($self, /, iterable_of_bytes)\n"
 "--\n"
 "\n"
 "Concatenate any number of bytes objects.\n"
@@ -173,10 +179,31 @@ PyDoc_STRVAR(bytes_join__doc__,
 "Example: b\'.\'.join([b\'ab\', b\'pq\', b\'rs\']) -> b\'ab.pq.rs\'.");
 
 #define BYTES_JOIN_METHODDEF    \
-    {"join", (PyCFunction)bytes_join, METH_O, bytes_join__doc__},
+    {"join", (PyCFunction)bytes_join, METH_FASTCALL, bytes_join__doc__},
+
+static PyObject *
+bytes_join_impl(PyBytesObject *self, PyObject *iterable_of_bytes);
+
+static PyObject *
+bytes_join(PyBytesObject *self, PyObject **args, Py_ssize_t nargs, PyObject *kwnames)
+{
+    PyObject *return_value = NULL;
+    static const char * const _keywords[] = {"iterable_of_bytes", NULL};
+    static _PyArg_Parser _parser = {"O:join", _keywords, 0};
+    PyObject *iterable_of_bytes;
+
+    if (!_PyArg_ParseStack(args, nargs, kwnames, &_parser,
+        &iterable_of_bytes)) {
+        goto exit;
+    }
+    return_value = bytes_join_impl(self, iterable_of_bytes);
+
+exit:
+    return return_value;
+}
 
 PyDoc_STRVAR(bytes_strip__doc__,
-"strip($self, bytes=None, /)\n"
+"strip($self, /, bytes=None)\n"
 "--\n"
 "\n"
 "Strip leading and trailing bytes contained in the argument.\n"
@@ -184,19 +211,20 @@ PyDoc_STRVAR(bytes_strip__doc__,
 "If the argument is omitted or None, strip leading and trailing ASCII whitespace.");
 
 #define BYTES_STRIP_METHODDEF    \
-    {"strip", (PyCFunction)bytes_strip, METH_VARARGS, bytes_strip__doc__},
+    {"strip", (PyCFunction)bytes_strip, METH_FASTCALL, bytes_strip__doc__},
 
 static PyObject *
 bytes_strip_impl(PyBytesObject *self, PyObject *bytes);
 
 static PyObject *
-bytes_strip(PyBytesObject *self, PyObject *args)
+bytes_strip(PyBytesObject *self, PyObject **args, Py_ssize_t nargs, PyObject *kwnames)
 {
     PyObject *return_value = NULL;
+    static const char * const _keywords[] = {"bytes", NULL};
+    static _PyArg_Parser _parser = {"|O:strip", _keywords, 0};
     PyObject *bytes = Py_None;
 
-    if (!PyArg_UnpackTuple(args, "strip",
-        0, 1,
+    if (!_PyArg_ParseStack(args, nargs, kwnames, &_parser,
         &bytes)) {
         goto exit;
     }
@@ -207,7 +235,7 @@ exit:
 }
 
 PyDoc_STRVAR(bytes_lstrip__doc__,
-"lstrip($self, bytes=None, /)\n"
+"lstrip($self, /, bytes=None)\n"
 "--\n"
 "\n"
 "Strip leading bytes contained in the argument.\n"
@@ -215,19 +243,20 @@ PyDoc_STRVAR(bytes_lstrip__doc__,
 "If the argument is omitted or None, strip leading  ASCII whitespace.");
 
 #define BYTES_LSTRIP_METHODDEF    \
-    {"lstrip", (PyCFunction)bytes_lstrip, METH_VARARGS, bytes_lstrip__doc__},
+    {"lstrip", (PyCFunction)bytes_lstrip, METH_FASTCALL, bytes_lstrip__doc__},
 
 static PyObject *
 bytes_lstrip_impl(PyBytesObject *self, PyObject *bytes);
 
 static PyObject *
-bytes_lstrip(PyBytesObject *self, PyObject *args)
+bytes_lstrip(PyBytesObject *self, PyObject **args, Py_ssize_t nargs, PyObject *kwnames)
 {
     PyObject *return_value = NULL;
+    static const char * const _keywords[] = {"bytes", NULL};
+    static _PyArg_Parser _parser = {"|O:lstrip", _keywords, 0};
     PyObject *bytes = Py_None;
 
-    if (!PyArg_UnpackTuple(args, "lstrip",
-        0, 1,
+    if (!_PyArg_ParseStack(args, nargs, kwnames, &_parser,
         &bytes)) {
         goto exit;
     }
@@ -238,7 +267,7 @@ exit:
 }
 
 PyDoc_STRVAR(bytes_rstrip__doc__,
-"rstrip($self, bytes=None, /)\n"
+"rstrip($self, /, bytes=None)\n"
 "--\n"
 "\n"
 "Strip trailing bytes contained in the argument.\n"
@@ -246,19 +275,20 @@ PyDoc_STRVAR(bytes_rstrip__doc__,
 "If the argument is omitted or None, strip trailing ASCII whitespace.");
 
 #define BYTES_RSTRIP_METHODDEF    \
-    {"rstrip", (PyCFunction)bytes_rstrip, METH_VARARGS, bytes_rstrip__doc__},
+    {"rstrip", (PyCFunction)bytes_rstrip, METH_FASTCALL, bytes_rstrip__doc__},
 
 static PyObject *
 bytes_rstrip_impl(PyBytesObject *self, PyObject *bytes);
 
 static PyObject *
-bytes_rstrip(PyBytesObject *self, PyObject *args)
+bytes_rstrip(PyBytesObject *self, PyObject **args, Py_ssize_t nargs, PyObject *kwnames)
 {
     PyObject *return_value = NULL;
+    static const char * const _keywords[] = {"bytes", NULL};
+    static _PyArg_Parser _parser = {"|O:rstrip", _keywords, 0};
     PyObject *bytes = Py_None;
 
-    if (!PyArg_UnpackTuple(args, "rstrip",
-        0, 1,
+    if (!_PyArg_ParseStack(args, nargs, kwnames, &_parser,
         &bytes)) {
         goto exit;
     }
@@ -269,7 +299,7 @@ exit:
 }
 
 PyDoc_STRVAR(bytes_translate__doc__,
-"translate($self, table, /, delete=b\'\')\n"
+"translate($self, /, table, delete=b\'\')\n"
 "--\n"
 "\n"
 "Return a copy with each character mapped by the given translation table.\n"
@@ -291,7 +321,7 @@ static PyObject *
 bytes_translate(PyBytesObject *self, PyObject **args, Py_ssize_t nargs, PyObject *kwnames)
 {
     PyObject *return_value = NULL;
-    static const char * const _keywords[] = {"", "delete", NULL};
+    static const char * const _keywords[] = {"table", "delete", NULL};
     static _PyArg_Parser _parser = {"O|O:translate", _keywords, 0};
     PyObject *table;
     PyObject *deletechars = NULL;
@@ -307,7 +337,7 @@ exit:
 }
 
 PyDoc_STRVAR(bytes_maketrans__doc__,
-"maketrans(frm, to, /)\n"
+"maketrans(frm, to)\n"
 "--\n"
 "\n"
 "Return a translation table useable for the bytes or bytearray translate method.\n"
@@ -318,19 +348,21 @@ PyDoc_STRVAR(bytes_maketrans__doc__,
 "The bytes objects frm and to must be of the same length.");
 
 #define BYTES_MAKETRANS_METHODDEF    \
-    {"maketrans", (PyCFunction)bytes_maketrans, METH_VARARGS|METH_STATIC, bytes_maketrans__doc__},
+    {"maketrans", (PyCFunction)bytes_maketrans, METH_FASTCALL|METH_STATIC, bytes_maketrans__doc__},
 
 static PyObject *
 bytes_maketrans_impl(Py_buffer *frm, Py_buffer *to);
 
 static PyObject *
-bytes_maketrans(void *null, PyObject *args)
+bytes_maketrans(void *null, PyObject **args, Py_ssize_t nargs, PyObject *kwnames)
 {
     PyObject *return_value = NULL;
+    static const char * const _keywords[] = {"frm", "to", NULL};
+    static _PyArg_Parser _parser = {"y*y*:maketrans", _keywords, 0};
     Py_buffer frm = {NULL, NULL};
     Py_buffer to = {NULL, NULL};
 
-    if (!PyArg_ParseTuple(args, "y*y*:maketrans",
+    if (!_PyArg_ParseStack(args, nargs, kwnames, &_parser,
         &frm, &to)) {
         goto exit;
     }
@@ -350,7 +382,7 @@ exit:
 }
 
 PyDoc_STRVAR(bytes_replace__doc__,
-"replace($self, old, new, count=-1, /)\n"
+"replace($self, /, old, new, count=-1)\n"
 "--\n"
 "\n"
 "Return a copy with all occurrences of substring old replaced by new.\n"
@@ -363,21 +395,23 @@ PyDoc_STRVAR(bytes_replace__doc__,
 "replaced.");
 
 #define BYTES_REPLACE_METHODDEF    \
-    {"replace", (PyCFunction)bytes_replace, METH_VARARGS, bytes_replace__doc__},
+    {"replace", (PyCFunction)bytes_replace, METH_FASTCALL, bytes_replace__doc__},
 
 static PyObject *
 bytes_replace_impl(PyBytesObject *self, Py_buffer *old, Py_buffer *new,
                    Py_ssize_t count);
 
 static PyObject *
-bytes_replace(PyBytesObject *self, PyObject *args)
+bytes_replace(PyBytesObject *self, PyObject **args, Py_ssize_t nargs, PyObject *kwnames)
 {
     PyObject *return_value = NULL;
+    static const char * const _keywords[] = {"old", "new", "count", NULL};
+    static _PyArg_Parser _parser = {"y*y*|n:replace", _keywords, 0};
     Py_buffer old = {NULL, NULL};
     Py_buffer new = {NULL, NULL};
     Py_ssize_t count = -1;
 
-    if (!PyArg_ParseTuple(args, "y*y*|n:replace",
+    if (!_PyArg_ParseStack(args, nargs, kwnames, &_parser,
         &old, &new, &count)) {
         goto exit;
     }
@@ -471,7 +505,7 @@ exit:
 }
 
 PyDoc_STRVAR(bytes_fromhex__doc__,
-"fromhex($type, string, /)\n"
+"fromhex($type, /, string)\n"
 "--\n"
 "\n"
 "Create a bytes object from a string of hexadecimal numbers.\n"
@@ -480,18 +514,21 @@ PyDoc_STRVAR(bytes_fromhex__doc__,
 "Example: bytes.fromhex(\'B9 01EF\') -> b\'\\\\xb9\\\\x01\\\\xef\'.");
 
 #define BYTES_FROMHEX_METHODDEF    \
-    {"fromhex", (PyCFunction)bytes_fromhex, METH_O|METH_CLASS, bytes_fromhex__doc__},
+    {"fromhex", (PyCFunction)bytes_fromhex, METH_FASTCALL|METH_CLASS, bytes_fromhex__doc__},
 
 static PyObject *
 bytes_fromhex_impl(PyTypeObject *type, PyObject *string);
 
 static PyObject *
-bytes_fromhex(PyTypeObject *type, PyObject *arg)
+bytes_fromhex(PyTypeObject *type, PyObject **args, Py_ssize_t nargs, PyObject *kwnames)
 {
     PyObject *return_value = NULL;
+    static const char * const _keywords[] = {"string", NULL};
+    static _PyArg_Parser _parser = {"U:fromhex", _keywords, 0};
     PyObject *string;
 
-    if (!PyArg_Parse(arg, "U:fromhex", &string)) {
+    if (!_PyArg_ParseStack(args, nargs, kwnames, &_parser,
+        &string)) {
         goto exit;
     }
     return_value = bytes_fromhex_impl(type, string);
@@ -499,4 +536,4 @@ bytes_fromhex(PyTypeObject *type, PyObject *arg)
 exit:
     return return_value;
 }
-/*[clinic end generated code: output=4ac7e35150d47467 input=a9049054013a1b77]*/
+/*[clinic end generated code: output=6a31efac7f8b9b10 input=a9049054013a1b77]*/

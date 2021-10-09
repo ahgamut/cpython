@@ -3,7 +3,7 @@ preserve
 [clinic start generated code]*/
 
 PyDoc_STRVAR(unicode_maketrans__doc__,
-"maketrans(x, y=None, z=None, /)\n"
+"maketrans(x, y=None, z=None)\n"
 "--\n"
 "\n"
 "Return a translation table usable for str.translate().\n"
@@ -17,20 +17,22 @@ PyDoc_STRVAR(unicode_maketrans__doc__,
 "must be a string, whose characters will be mapped to None in the result.");
 
 #define UNICODE_MAKETRANS_METHODDEF    \
-    {"maketrans", (PyCFunction)unicode_maketrans, METH_VARARGS|METH_STATIC, unicode_maketrans__doc__},
+    {"maketrans", (PyCFunction)unicode_maketrans, METH_FASTCALL|METH_STATIC, unicode_maketrans__doc__},
 
 static PyObject *
 unicode_maketrans_impl(PyObject *x, PyObject *y, PyObject *z);
 
 static PyObject *
-unicode_maketrans(void *null, PyObject *args)
+unicode_maketrans(void *null, PyObject **args, Py_ssize_t nargs, PyObject *kwnames)
 {
     PyObject *return_value = NULL;
+    static const char * const _keywords[] = {"x", "y", "z", NULL};
+    static _PyArg_Parser _parser = {"O|UU:maketrans", _keywords, 0};
     PyObject *x;
     PyObject *y = NULL;
     PyObject *z = NULL;
 
-    if (!PyArg_ParseTuple(args, "O|UU:maketrans",
+    if (!_PyArg_ParseStack(args, nargs, kwnames, &_parser,
         &x, &y, &z)) {
         goto exit;
     }
@@ -39,4 +41,4 @@ unicode_maketrans(void *null, PyObject *args)
 exit:
     return return_value;
 }
-/*[clinic end generated code: output=4a86dd108d92d104 input=a9049054013a1b77]*/
+/*[clinic end generated code: output=bd804a8b40d241ed input=a9049054013a1b77]*/

@@ -13250,7 +13250,7 @@ str.maketrans as unicode_maketrans
 
   z: unicode=NULL
 
-  /
+
 
 Return a translation table usable for str.translate().
 
@@ -13265,7 +13265,7 @@ must be a string, whose characters will be mapped to None in the result.
 
 static PyObject *
 unicode_maketrans_impl(PyObject *x, PyObject *y, PyObject *z)
-/*[clinic end generated code: output=a925c89452bd5881 input=7bfbf529a293c6c5]*/
+/*[clinic end generated code: output=a925c89452bd5881 input=e1fc297e277d2e87]*/
 {
     PyObject *new = NULL, *key, *value;
     Py_ssize_t i = 0;

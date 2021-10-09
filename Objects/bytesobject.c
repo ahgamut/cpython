@@ -1801,7 +1801,7 @@ bytes_split_impl(PyBytesObject *self, PyObject *sep, Py_ssize_t maxsplit)
 bytes.partition
 
     sep: Py_buffer
-    /
+
 
 Partition the bytes into three parts using the given separator.
 
@@ -1815,7 +1815,7 @@ object and two empty bytes objects.
 
 static PyObject *
 bytes_partition_impl(PyBytesObject *self, Py_buffer *sep)
-/*[clinic end generated code: output=f532b392a17ff695 input=61cca95519406099]*/
+/*[clinic end generated code: output=f532b392a17ff695 input=07519dc92d9c2f8c]*/
 {
     return stringlib_partition(
         (PyObject*) self,
@@ -1828,7 +1828,7 @@ bytes_partition_impl(PyBytesObject *self, Py_buffer *sep)
 bytes.rpartition
 
     sep: Py_buffer
-    /
+
 
 Partition the bytes into three parts using the given separator.
 
@@ -1842,7 +1842,7 @@ objects and the original bytes object.
 
 static PyObject *
 bytes_rpartition_impl(PyBytesObject *self, Py_buffer *sep)
-/*[clinic end generated code: output=191b114cbb028e50 input=d78db010c8cfdbe1]*/
+/*[clinic end generated code: output=191b114cbb028e50 input=fec9a90d5923836a]*/
 {
     return stringlib_rpartition(
         (PyObject*) self,
@@ -1887,7 +1887,7 @@ bytes_rsplit_impl(PyBytesObject *self, PyObject *sep, Py_ssize_t maxsplit)
 bytes.join
 
     iterable_of_bytes: object
-    /
+
 
 Concatenate any number of bytes objects.
 
@@ -1899,8 +1899,8 @@ Example: b'.'.join([b'ab', b'pq', b'rs']) -> b'ab.pq.rs'.
 [clinic start generated code]*/
 
 static PyObject *
-bytes_join(PyBytesObject *self, PyObject *iterable_of_bytes)
-/*[clinic end generated code: output=a046f379f626f6f8 input=7fe377b95bd549d2]*/
+bytes_join_impl(PyBytesObject *self, PyObject *iterable_of_bytes)
+/*[clinic end generated code: output=0687abb94d7d438e input=f28e0dca322e3571]*/
 {
     return stringlib_bytes_join((PyObject*)self, iterable_of_bytes);
 }
@@ -1910,7 +1910,7 @@ _PyBytes_Join(PyObject *sep, PyObject *x)
 {
     assert(sep != NULL && PyBytes_Check(sep));
     assert(x != NULL);
-    return bytes_join((PyBytesObject*)sep, x);
+    return bytes_join_impl((PyBytesObject*)sep, x);
 }
 
 static PyObject *
@@ -2024,7 +2024,7 @@ do_argstrip(PyBytesObject *self, int striptype, PyObject *bytes)
 bytes.strip
 
     bytes: object = None
-    /
+
 
 Strip leading and trailing bytes contained in the argument.
 
@@ -2033,7 +2033,7 @@ If the argument is omitted or None, strip leading and trailing ASCII whitespace.
 
 static PyObject *
 bytes_strip_impl(PyBytesObject *self, PyObject *bytes)
-/*[clinic end generated code: output=c7c228d3bd104a1b input=8a354640e4e0b3ef]*/
+/*[clinic end generated code: output=c7c228d3bd104a1b input=f21b39cca479ba57]*/
 {
     return do_argstrip(self, BOTHSTRIP, bytes);
 }
@@ -2042,7 +2042,7 @@ bytes_strip_impl(PyBytesObject *self, PyObject *bytes)
 bytes.lstrip
 
     bytes: object = None
-    /
+
 
 Strip leading bytes contained in the argument.
 
@@ -2051,7 +2051,7 @@ If the argument is omitted or None, strip leading  ASCII whitespace.
 
 static PyObject *
 bytes_lstrip_impl(PyBytesObject *self, PyObject *bytes)
-/*[clinic end generated code: output=28602e586f524e82 input=9baff4398c3f6857]*/
+/*[clinic end generated code: output=28602e586f524e82 input=d45b412a91f6945b]*/
 {
     return do_argstrip(self, LEFTSTRIP, bytes);
 }
@@ -2060,7 +2060,7 @@ bytes_lstrip_impl(PyBytesObject *self, PyObject *bytes)
 bytes.rstrip
 
     bytes: object = None
-    /
+
 
 Strip trailing bytes contained in the argument.
 
@@ -2069,7 +2069,7 @@ If the argument is omitted or None, strip trailing ASCII whitespace.
 
 static PyObject *
 bytes_rstrip_impl(PyBytesObject *self, PyObject *bytes)
-/*[clinic end generated code: output=547e3815c95447da input=b78af445c727e32b]*/
+/*[clinic end generated code: output=547e3815c95447da input=462e5015fa62bd46]*/
 {
     return do_argstrip(self, RIGHTSTRIP, bytes);
 }
@@ -2087,7 +2087,7 @@ bytes.translate
 
     table: object
         Translation table, which must be a bytes object of length 256.
-    /
+
     delete as deletechars: object(c_default="NULL") = b''
 
 Return a copy with each character mapped by the given translation table.
@@ -2099,7 +2099,7 @@ The remaining characters are mapped through the given translation table.
 static PyObject *
 bytes_translate_impl(PyBytesObject *self, PyObject *table,
                      PyObject *deletechars)
-/*[clinic end generated code: output=43be3437f1956211 input=0ecdf159f654233c]*/
+/*[clinic end generated code: output=43be3437f1956211 input=a08df7857303c0b9]*/
 {
     char *input, *output;
     Py_buffer table_view = {NULL, NULL};
@@ -2219,7 +2219,7 @@ bytes.maketrans
 
     frm: Py_buffer
     to: Py_buffer
-    /
+
 
 Return a translation table useable for the bytes or bytearray translate method.
 
@@ -2231,7 +2231,7 @@ The bytes objects frm and to must be of the same length.
 
 static PyObject *
 bytes_maketrans_impl(Py_buffer *frm, Py_buffer *to)
-/*[clinic end generated code: output=a36f6399d4b77f6f input=de7a8fc5632bb8f1]*/
+/*[clinic end generated code: output=a36f6399d4b77f6f input=3f57c9e8aae683d1]*/
 {
     return _Py_bytes_maketrans(frm, to);
 }
@@ -2245,7 +2245,7 @@ bytes.replace
     count: Py_ssize_t = -1
         Maximum number of occurrences to replace.
         -1 (the default value) means replace all occurrences.
-    /
+
 
 Return a copy with all occurrences of substring old replaced by new.
 
@@ -2256,7 +2256,7 @@ replaced.
 static PyObject *
 bytes_replace_impl(PyBytesObject *self, Py_buffer *old, Py_buffer *new,
                    Py_ssize_t count)
-/*[clinic end generated code: output=994fa588b6b9c104 input=b2fbbf0bf04de8e5]*/
+/*[clinic end generated code: output=994fa588b6b9c104 input=5767e810919585ec]*/
 {
     return stringlib_replace((PyObject *)self,
                              (const char *)old->buf, old->len,
@@ -2329,7 +2329,7 @@ bytes_splitlines_impl(PyBytesObject *self, int keepends)
 bytes.fromhex
 
     string: unicode
-    /
+
 
 Create a bytes object from a string of hexadecimal numbers.
 
@@ -2339,7 +2339,7 @@ Example: bytes.fromhex('B9 01EF') -> b'\\xb9\\x01\\xef'.
 
 static PyObject *
 bytes_fromhex_impl(PyTypeObject *type, PyObject *string)
-/*[clinic end generated code: output=0973acc63661bb2e input=bf4d1c361670acd3]*/
+/*[clinic end generated code: output=0973acc63661bb2e input=0da900fc63c0b9f4]*/
 {
     PyObject *result = _PyBytes_FromHex(string, 0);
     if (type != &PyBytes_Type && result != NULL) {

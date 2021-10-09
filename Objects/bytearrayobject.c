@@ -1199,7 +1199,7 @@ bytearray.translate
 
     table: object
         Translation table, which must be a bytes object of length 256.
-    /
+
     delete as deletechars: object(c_default="NULL") = b''
 
 Return a copy with each character mapped by the given translation table.
@@ -1211,7 +1211,7 @@ The remaining characters are mapped through the given translation table.
 static PyObject *
 bytearray_translate_impl(PyByteArrayObject *self, PyObject *table,
                          PyObject *deletechars)
-/*[clinic end generated code: output=b6a8f01c2a74e446 input=cfff956d4d127a9b]*/
+/*[clinic end generated code: output=b6a8f01c2a74e446 input=20ff37a52b5940b2]*/
 {
     char *input, *output;
     const char *table_chars;
@@ -1305,7 +1305,7 @@ bytearray.maketrans
 
     frm: Py_buffer
     to: Py_buffer
-    /
+
 
 Return a translation table useable for the bytes or bytearray translate method.
 
@@ -1317,7 +1317,7 @@ The bytes objects frm and to must be of the same length.
 
 static PyObject *
 bytearray_maketrans_impl(Py_buffer *frm, Py_buffer *to)
-/*[clinic end generated code: output=1df267d99f56b15e input=5925a81d2fbbf151]*/
+/*[clinic end generated code: output=1df267d99f56b15e input=5e3e4180e95e289f]*/
 {
     return _Py_bytes_maketrans(frm, to);
 }
@@ -1331,7 +1331,7 @@ bytearray.replace
     count: Py_ssize_t = -1
         Maximum number of occurrences to replace.
         -1 (the default value) means replace all occurrences.
-    /
+
 
 Return a copy with all occurrences of substring old replaced by new.
 
@@ -1342,7 +1342,7 @@ replaced.
 static PyObject *
 bytearray_replace_impl(PyByteArrayObject *self, Py_buffer *old,
                        Py_buffer *new, Py_ssize_t count)
-/*[clinic end generated code: output=d39884c4dc59412a input=aa379d988637c7fb]*/
+/*[clinic end generated code: output=d39884c4dc59412a input=95e87d65ff52e32f]*/
 {
     return stringlib_replace((PyObject *)self,
                              (const char *)old->buf, old->len,
@@ -1395,7 +1395,7 @@ bytearray_split_impl(PyByteArrayObject *self, PyObject *sep,
 bytearray.partition
 
     sep: object
-    /
+
 
 Partition the bytearray into three parts using the given separator.
 
@@ -1408,8 +1408,8 @@ original bytearray object and two empty bytearray objects.
 [clinic start generated code]*/
 
 static PyObject *
-bytearray_partition(PyByteArrayObject *self, PyObject *sep)
-/*[clinic end generated code: output=45d2525ddd35f957 input=8f644749ee4fc83a]*/
+bytearray_partition_impl(PyByteArrayObject *self, PyObject *sep)
+/*[clinic end generated code: output=b5fa1e03f10cfccb input=9b423436ac121ada]*/
 {
     PyObject *bytesep, *result;
 
@@ -1432,7 +1432,7 @@ bytearray_partition(PyByteArrayObject *self, PyObject *sep)
 bytearray.rpartition
 
     sep: object
-    /
+
 
 Partition the bytearray into three parts using the given separator.
 
@@ -1446,8 +1446,8 @@ objects and the copy of the original bytearray object.
 [clinic start generated code]*/
 
 static PyObject *
-bytearray_rpartition(PyByteArrayObject *self, PyObject *sep)
-/*[clinic end generated code: output=440de3c9426115e8 input=7e3df3e6cb8fa0ac]*/
+bytearray_rpartition_impl(PyByteArrayObject *self, PyObject *sep)
+/*[clinic end generated code: output=0186ce7b1ef61289 input=1887819275e23a83]*/
 {
     PyObject *bytesep, *result;
 
@@ -1543,14 +1543,14 @@ bytearray.insert
         The index where the value is to be inserted.
     item: bytesvalue
         The item to be inserted.
-    /
+
 
 Insert a single item into the bytearray before the given index.
 [clinic start generated code]*/
 
 static PyObject *
 bytearray_insert_impl(PyByteArrayObject *self, Py_ssize_t index, int item)
-/*[clinic end generated code: output=76c775a70e7b07b7 input=b2b5d07e9de6c070]*/
+/*[clinic end generated code: output=76c775a70e7b07b7 input=21f16ab0ff574ea7]*/
 {
     Py_ssize_t n = Py_SIZE(self);
     char *buf;
@@ -1582,14 +1582,14 @@ bytearray.append
 
     item: bytesvalue
         The item to be appended.
-    /
+
 
 Append a single item to the end of the bytearray.
 [clinic start generated code]*/
 
 static PyObject *
 bytearray_append_impl(PyByteArrayObject *self, int item)
-/*[clinic end generated code: output=a154e19ed1886cb6 input=20d6bec3d1340593]*/
+/*[clinic end generated code: output=a154e19ed1886cb6 input=1ece59320b007df8]*/
 {
     Py_ssize_t n = Py_SIZE(self);
 
@@ -1611,14 +1611,14 @@ bytearray.extend
 
     iterable_of_ints: object
         The iterable of items to append.
-    /
+
 
 Append all the items from the iterator or sequence to the end of the bytearray.
 [clinic start generated code]*/
 
 static PyObject *
-bytearray_extend(PyByteArrayObject *self, PyObject *iterable_of_ints)
-/*[clinic end generated code: output=98155dbe249170b1 input=c617b3a93249ba28]*/
+bytearray_extend_impl(PyByteArrayObject *self, PyObject *iterable_of_ints)
+/*[clinic end generated code: output=2f25e0ce72b98748 input=c2e6133aae7a8111]*/
 {
     PyObject *it, *item, *bytearray_obj;
     Py_ssize_t buf_size = 0, len = 0;
@@ -1706,7 +1706,7 @@ bytearray.pop
     index: Py_ssize_t = -1
         The index from where to remove the item.
         -1 (the default value) means remove the last item.
-    /
+
 
 Remove and return a single item from B.
 
@@ -1715,7 +1715,7 @@ If no index argument is given, will pop the last item.
 
 static PyObject *
 bytearray_pop_impl(PyByteArrayObject *self, Py_ssize_t index)
-/*[clinic end generated code: output=e0ccd401f8021da8 input=3591df2d06c0d237]*/
+/*[clinic end generated code: output=e0ccd401f8021da8 input=23777d1f42391962]*/
 {
     int value;
     Py_ssize_t n = Py_SIZE(self);
@@ -1749,14 +1749,14 @@ bytearray.remove
 
     value: bytesvalue
         The value to remove.
-    /
+
 
 Remove the first occurrence of a value in the bytearray.
 [clinic start generated code]*/
 
 static PyObject *
 bytearray_remove_impl(PyByteArrayObject *self, int value)
-/*[clinic end generated code: output=d659e37866709c13 input=121831240cd51ddf]*/
+/*[clinic end generated code: output=d659e37866709c13 input=1c5a1ac0ad5685ce]*/
 {
     Py_ssize_t where, n = Py_SIZE(self);
     char *buf = PyByteArray_AS_STRING(self);
@@ -1802,7 +1802,7 @@ rstrip_helper(const char *myptr, Py_ssize_t mysize,
 bytearray.strip
 
     bytes: object = None
-    /
+
 
 Strip leading and trailing bytes contained in the argument.
 
@@ -1811,7 +1811,7 @@ If the argument is omitted or None, strip leading and trailing ASCII whitespace.
 
 static PyObject *
 bytearray_strip_impl(PyByteArrayObject *self, PyObject *bytes)
-/*[clinic end generated code: output=760412661a34ad5a input=ef7bb59b09c21d62]*/
+/*[clinic end generated code: output=760412661a34ad5a input=34a820d3384d38f4]*/
 {
     Py_ssize_t left, right, mysize, byteslen;
     char *myptr, *bytesptr;
@@ -1843,7 +1843,7 @@ bytearray_strip_impl(PyByteArrayObject *self, PyObject *bytes)
 bytearray.lstrip
 
     bytes: object = None
-    /
+
 
 Strip leading bytes contained in the argument.
 
@@ -1852,7 +1852,7 @@ If the argument is omitted or None, strip leading ASCII whitespace.
 
 static PyObject *
 bytearray_lstrip_impl(PyByteArrayObject *self, PyObject *bytes)
-/*[clinic end generated code: output=d005c9d0ab909e66 input=80843f975dd7c480]*/
+/*[clinic end generated code: output=d005c9d0ab909e66 input=62006cb8d99bf56e]*/
 {
     Py_ssize_t left, right, mysize, byteslen;
     char *myptr, *bytesptr;
@@ -1881,7 +1881,7 @@ bytearray_lstrip_impl(PyByteArrayObject *self, PyObject *bytes)
 bytearray.rstrip
 
     bytes: object = None
-    /
+
 
 Strip trailing bytes contained in the argument.
 
@@ -1890,7 +1890,7 @@ If the argument is omitted or None, strip trailing ASCII whitespace.
 
 static PyObject *
 bytearray_rstrip_impl(PyByteArrayObject *self, PyObject *bytes)
-/*[clinic end generated code: output=030e2fbd2f7276bd input=e728b994954cfd91]*/
+/*[clinic end generated code: output=030e2fbd2f7276bd input=92ecf38a57419120]*/
 {
     Py_ssize_t right, mysize, byteslen;
     char *myptr, *bytesptr;
@@ -1954,7 +1954,7 @@ bytearray_alloc(PyByteArrayObject *self)
 bytearray.join
 
     iterable_of_bytes: object
-    /
+
 
 Concatenate any number of bytes/bytearray objects.
 
@@ -1964,8 +1964,8 @@ The result is returned as a new bytearray object.
 [clinic start generated code]*/
 
 static PyObject *
-bytearray_join(PyByteArrayObject *self, PyObject *iterable_of_bytes)
-/*[clinic end generated code: output=a8516370bf68ae08 input=aba6b1f9b30fcb8e]*/
+bytearray_join_impl(PyByteArrayObject *self, PyObject *iterable_of_bytes)
+/*[clinic end generated code: output=0ced382b5846a7ee input=cd714f82617bc1ed]*/
 {
     return stringlib_bytes_join((PyObject*)self, iterable_of_bytes);
 }
@@ -1996,7 +1996,7 @@ bytearray_splitlines_impl(PyByteArrayObject *self, int keepends)
 bytearray.fromhex
 
     string: unicode
-    /
+
 
 Create a bytearray object from a string of hexadecimal numbers.
 
@@ -2006,7 +2006,7 @@ Example: bytearray.fromhex('B9 01EF') -> bytearray(b'\\xb9\\x01\\xef')
 
 static PyObject *
 bytearray_fromhex_impl(PyTypeObject *type, PyObject *string)
-/*[clinic end generated code: output=8f0f0b6d30fb3ba0 input=f033a16d1fb21f48]*/
+/*[clinic end generated code: output=8f0f0b6d30fb3ba0 input=defa7ebb5025b4c6]*/
 {
     PyObject *result = _PyBytes_FromHex(string, type == &PyByteArray_Type);
     if (type != &PyByteArray_Type && result != NULL) {
@@ -2082,14 +2082,14 @@ bytearray_reduce_impl(PyByteArrayObject *self)
 bytearray.__reduce_ex__ as bytearray_reduce_ex
 
     proto: int = 0
-    /
+
 
 Return state information for pickling.
 [clinic start generated code]*/
 
 static PyObject *
 bytearray_reduce_ex_impl(PyByteArrayObject *self, int proto)
-/*[clinic end generated code: output=52eac33377197520 input=f129bc1a1aa151ee]*/
+/*[clinic end generated code: output=52eac33377197520 input=9c81a2ef2619f854]*/
 {
     return _common_reduce(self, proto);
 }
