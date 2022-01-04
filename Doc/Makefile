@@ -4,10 +4,10 @@
 #
 
 # You can set these variables from the command line.
-PYTHON       = python3
+PYTHON       = ./python.com
 VENVDIR      = ./venv
-SPHINXBUILD  = PATH=$(VENVDIR)/bin:$$PATH sphinx-build
-BLURB        = PATH=$(VENVDIR)/bin:$$PATH blurb
+SPHINXBUILD  = ./python.com -m sphinx.cmd.build
+BLURB        = ./python.com -m blurb
 PAPER        =
 SOURCES      =
 DISTVERSION  = $(shell $(PYTHON) tools/extensions/patchlevel.py)
