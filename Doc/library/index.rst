@@ -43,6 +43,8 @@ the `Python Package Index <https://pypi.org>`_.
    stdtypes.rst
    exceptions.rst
 
+   cosmo.rst
+   
    text.rst
    binary.rst
    datatypes.rst
@@ -60,18 +62,14 @@ the `Python Package Index <https://pypi.org>`_.
    markup.rst
    internet.rst
    mm.rst
-   i18n.rst
-   frameworks.rst
-   tk.rst
    development.rst
    debug.rst
-   distribution.rst
    python.rst
    custominterp.rst
    modules.rst
    language.rst
    misc.rst
-   windows.rst
    unix.rst
    superseded.rst
+   unsupported.rst
    undoc.rst

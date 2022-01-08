@@ -16,13 +16,14 @@ extensions = ['sphinx.ext.coverage', 'sphinx.ext.doctest',
               'pyspecific', 'c_annotations', 'escape4chm']
 
 # General substitutions.
-project = 'Python'
+project = 'Actually Portable Python'
 copyright = '2001-%s, Python Software Foundation' % time.strftime('%Y')
 
 # We look for the Include/patchlevel.h file in the current Python source tree
 # and replace the values accordingly.
 import patchlevel
-version, release = patchlevel.get_version_info()
+version = "3.6"
+release = "3.6.14+" # patchlevel.get_version_info()
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:

@@ -1,7 +1,7 @@
 .. _other-gui-packages:
 
-Other Graphical User Interface Packages
-=======================================
+PyQt, PyGTK and other GUI Packages
+==================================
 
 Major cross-platform (Windows, Mac OS X, Unix-like) GUI toolkits are
 available for Python:

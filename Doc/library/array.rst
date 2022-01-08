@@ -59,7 +59,7 @@ Notes:
 
 (2)
    The ``'q'`` and ``'Q'`` type codes are available only if
-   the platform C compiler used to build Python supports C :c:type:`long long`,
+   the platform C compiler used to build Python supports C :c:type:`uint64_t`,
    or, on Windows, :c:type:`__int64`.
 
    .. versionadded:: 3.3

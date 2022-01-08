@@ -21,6 +21,4 @@ Python's built-in string type in :ref:`textseq`.
    textwrap.rst
    unicodedata.rst
    stringprep.rst
-   readline.rst
-   rlcompleter.rst
 
