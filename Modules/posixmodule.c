@@ -7269,7 +7269,7 @@ error:
 #endif /* defined(HAVE_OPENPTY) || defined(HAVE__GETPTY) || defined(HAVE_DEV_PTMX) */
 
 
-#ifdef HAVE_FORKPTY
+#if 0 && HAVE_FORKPTY
 /*[clinic input]
 os.forkpty
 

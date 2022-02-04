@@ -3172,7 +3172,7 @@ os_openpty(PyObject *module, PyObject *Py_UNUSED(ignored))
 
 #endif /* (defined(HAVE_OPENPTY) || defined(HAVE__GETPTY) || defined(HAVE_DEV_PTMX)) */
 
-#if defined(HAVE_FORKPTY)
+#if 0 && defined(HAVE_FORKPTY)
 
 PyDoc_STRVAR(os_forkpty__doc__,
 "forkpty($module, /)\n"
