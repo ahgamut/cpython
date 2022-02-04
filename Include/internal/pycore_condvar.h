@@ -22,8 +22,8 @@
 
 #include <pthread.h>
 
-#define PyMUTEX_T pthread_mutex_t
-#define PyCOND_T pthread_cond_t
+#define PyMUTEX_T unsigned long
+#define PyCOND_T unsigned long
 
 #elif defined(NT_THREADS)
 /*

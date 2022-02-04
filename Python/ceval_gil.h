@@ -51,6 +51,7 @@
 
 #include "condvar.h"
 
+#if WITH_THREAD
 #define MUTEX_INIT(mut) \
     if (PyMUTEX_INIT(&(mut))) { \
         Py_FatalError("PyMUTEX_INIT(" #mut ") failed"); };
@@ -87,6 +88,19 @@
             timeout_result = 0; \
     } \
 
+#else
+
+#define MUTEX_INIT(mut)
+#define MUTEX_FINI(mut)
+#define MUTEX_LOCK(mut)
+#define MUTEX_UNLOCK(mut)
+#define COND_INIT(cond)
+#define COND_FINI(cond)
+#define COND_SIGNAL(cond)
+#define COND_WAIT(cond, mut)
+#define COND_TIMED_WAIT(cond, mut, microseconds, timeout_result)
+
+#endif
 
 #define DEFAULT_INTERVAL 5000
 

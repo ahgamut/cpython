@@ -2,6 +2,9 @@
 #define Py_PYTHON_H
 /* Since this is a "meta-include" file, no #ifdef __cplusplus / extern "C" { */
 
+#define WITH_THREAD 0
+#pragma GCC diagnostic ignored "-Wstrict-prototypes"
+
 /* Include nearly all Python header files */
 
 #include "patchlevel.h"

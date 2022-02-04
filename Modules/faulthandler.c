@@ -104,21 +104,29 @@ static void faulthandler_user(int signum);
 #endif /* FAULTHANDLER_USER */
 
 
-static fault_handler_t faulthandler_handlers[] = {
-#ifdef SIGBUS
-    {SIGBUS, 0, "Bus error", },
-#endif
-#ifdef SIGILL
-    {SIGILL, 0, "Illegal instruction", },
-#endif
-    {SIGFPE, 0, "Floating point exception", },
-    {SIGABRT, 0, "Aborted", },
-    /* define SIGSEGV at the end to make it the default choice if searching the
-       handler fails in faulthandler_fatal_error() */
-    {SIGSEGV, 0, "Segmentation fault", }
-};
+static fault_handler_t faulthandler_handlers[5];
 static const size_t faulthandler_nsignals = \
     Py_ARRAY_LENGTH(faulthandler_handlers);
+
+static void faulthandler_handlers_init()
+{
+    fault_handler_t local_handlers[] = {
+#ifdef SIGBUS
+        {SIGBUS, 0, "Bus error", },
+#endif
+#ifdef SIGILL
+        {SIGILL, 0, "Illegal instruction", },
+#endif
+        {SIGFPE, 0, "Floating point exception", },
+        {SIGABRT, 0, "Aborted", },
+        /* define SIGSEGV at the end to make it the default choice if searching the
+           handler fails in faulthandler_fatal_error() */
+        {SIGSEGV, 0, "Segmentation fault", }
+    };
+    _Static_assert(sizeof(faulthandler_handlers) == sizeof(local_handlers), "handler alloc error");
+    memcpy(faulthandler_handlers, local_handlers, sizeof(local_handlers));
+}
+
 
 /* Using an alternative stack requires sigaltstack()
    and sigaction() SA_ONSTACK */
@@ -1367,6 +1375,7 @@ faulthandler_init_enable(void)
 PyStatus
 _PyFaulthandler_Init(int enable)
 {
+    faulthandler_handlers_init();
 #ifdef FAULTHANDLER_USE_ALT_STACK
     memset(&stack, 0, sizeof(stack));
     stack.ss_flags = 0;

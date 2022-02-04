@@ -1013,7 +1013,7 @@ signal_sigwait_impl(PyObject *module, sigset_t sigset)
 #endif   /* #ifdef HAVE_SIGWAIT */
 
 
-#if defined(HAVE_SIGFILLSET) || defined(MS_WINDOWS)
+#if 0 && defined(HAVE_SIGFILLSET) || defined(MS_WINDOWS)
 
 /*[clinic input]
 signal.valid_signals

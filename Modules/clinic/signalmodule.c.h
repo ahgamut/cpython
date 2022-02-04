@@ -467,7 +467,7 @@ exit:
 
 #endif /* defined(HAVE_SIGWAIT) */
 
-#if (defined(HAVE_SIGFILLSET) || defined(MS_WINDOWS))
+#if 0 && (defined(HAVE_SIGFILLSET) || defined(MS_WINDOWS))
 
 PyDoc_STRVAR(signal_valid_signals__doc__,
 "valid_signals($module, /)\n"

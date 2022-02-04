@@ -70,6 +70,23 @@
 #endif
 #endif
 
+/*
+* Initialization.
+*/
+static void
+PyThread__init_thread(void)
+{
+#if WITH_THREAD
+#if defined(_AIX) && defined(__GNUC__)
+   extern void pthread_init(void);
+   pthread_init();
+#endif
+   init_condattr();
+#endif
+}
+
+
+#if WITH_THREAD
 /* The POSIX spec says that implementations supporting the sem_*
    family of functions must indicate this by defining
    _POSIX_SEMAPHORES. */
@@ -131,7 +148,7 @@ do { \
 #endif
 
 // NULL when pthread_condattr_setclock(CLOCK_MONOTONIC) is not supported.
-static pthread_condattr_t *condattr_monotonic = NULL;
+// static pthread_condattr_t *condattr_monotonic = NULL;
 
 static void
 init_condattr(void)
@@ -196,19 +213,6 @@ typedef struct {
 #define CHECK_STATUS(name)  if (status != 0) { perror(name); error = 1; }
 #define CHECK_STATUS_PTHREAD(name)  if (status != 0) { fprintf(stderr, \
     "%s: %s\n", name, strerror(status)); error = 1; }
-
-/*
- * Initialization.
- */
-static void
-PyThread__init_thread(void)
-{
-#if defined(_AIX) && defined(__GNUC__)
-    extern void pthread_init(void);
-    pthread_init();
-#endif
-    init_condattr();
-}
 
 /*
  * Thread support.
@@ -895,3 +899,4 @@ PyThread_tss_get(Py_tss_t *key)
     assert(key != NULL);
     return pthread_getspecific(key->_key);
 }
+#endif

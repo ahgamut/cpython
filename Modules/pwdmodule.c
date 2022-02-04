@@ -143,7 +143,7 @@ pwd_getpwuid(PyObject *module, PyObject *uidobj)
                          "getpwuid(): uid not found");
         return NULL;
     }
-#ifdef HAVE_GETPWUID_R
+#if 0 && HAVE_GETPWUID_R
     int status;
     Py_ssize_t bufsize;
     /* Note: 'pwd' will be used via pointer 'p' on getpwuid_r success. */
@@ -195,7 +195,7 @@ pwd_getpwuid(PyObject *module, PyObject *uidobj)
         return NULL;
     }
     retval = mkpwent(p);
-#ifdef HAVE_GETPWUID_R
+#if 0 && HAVE_GETPWUID_R
     PyMem_RawFree(buf);
 #endif
     return retval;
@@ -226,7 +226,7 @@ pwd_getpwnam_impl(PyObject *module, PyObject *name)
     /* check for embedded null bytes */
     if (PyBytes_AsStringAndSize(bytes, &name_chars, NULL) == -1)
         goto out;
-#ifdef HAVE_GETPWNAM_R
+#if 0 && HAVE_GETPWNAM_R
     int status;
     Py_ssize_t bufsize;
     /* Note: 'pwd' will be used via pointer 'p' on getpwnam_r success. */

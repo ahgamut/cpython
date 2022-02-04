@@ -6221,7 +6221,7 @@ exit:
 
 #endif /* (defined(HAVE_MKNOD) && defined(HAVE_MAKEDEV)) */
 
-#if defined(HAVE_DEVICE_MACROS)
+#if 0 && defined(HAVE_DEVICE_MACROS)
 
 PyDoc_STRVAR(os_major__doc__,
 "major($module, device, /)\n"
@@ -6257,7 +6257,7 @@ exit:
 
 #endif /* defined(HAVE_DEVICE_MACROS) */
 
-#if defined(HAVE_DEVICE_MACROS)
+#if 0 && defined(HAVE_DEVICE_MACROS)
 
 PyDoc_STRVAR(os_minor__doc__,
 "minor($module, device, /)\n"
@@ -6293,7 +6293,7 @@ exit:
 
 #endif /* defined(HAVE_DEVICE_MACROS) */
 
-#if defined(HAVE_DEVICE_MACROS)
+#if 0 && defined(HAVE_DEVICE_MACROS)
 
 PyDoc_STRVAR(os_makedev__doc__,
 "makedev($module, major, minor, /)\n"

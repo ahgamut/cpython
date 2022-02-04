@@ -396,8 +396,9 @@ extern char        *ctermid_r(char *);
 #    include <direct.h>
 #    define NAMLEN(dirent) strlen((dirent)->d_name)
 #  else
-#    define dirent direct
-#    define NAMLEN(dirent) (dirent)->d_namlen
+// #    define dirent direct
+// #    define NAMLEN(dirent) (dirent)->d_namlen
+#    define NAMLEN(dirent) strlen((dirent)->d_name)
 #  endif
 #  ifdef HAVE_SYS_NDIR_H
 #    include <sys/ndir.h>
@@ -3026,7 +3027,7 @@ os_ttyname_impl(PyObject *module, int fd)
 /*[clinic end generated code: output=c424d2e9d1cd636a input=9ff5a58b08115c55]*/
 {
 
-    long size = sysconf(_SC_TTY_NAME_MAX);
+    long size = sysconf(_POSIX_TTY_NAME_MAX);
     if (size == -1) {
         return posix_error();
     }
@@ -4128,6 +4129,7 @@ _posix_listdir(path_t *path, PyObject *list)
                 goto exit;
             }
         }
+        /*
         if (ep->d_name[0] == '.' &&
             (NAMLEN(ep) == 1 ||
              (ep->d_name[1] == '.' && NAMLEN(ep) == 2)))
@@ -4136,6 +4138,7 @@ _posix_listdir(path_t *path, PyObject *list)
             v = PyUnicode_DecodeFSDefaultAndSize(ep->d_name, NAMLEN(ep));
         else
             v = PyBytes_FromStringAndSize(ep->d_name, NAMLEN(ep));
+        */
         if (v == NULL) {
             Py_CLEAR(list);
             break;
@@ -5884,9 +5887,11 @@ parse_posix_spawn_flags(PyObject *module, const char *func_name, PyObject *setpg
 
    if (setsigmask) {
         sigset_t set;
+        /*
         if (!_Py_Sigset_Converter(setsigmask, &set)) {
             goto fail;
         }
+        */
         errno = posix_spawnattr_setsigmask(attrp, &set);
         if (errno) {
             posix_error();
@@ -5897,9 +5902,10 @@ parse_posix_spawn_flags(PyObject *module, const char *func_name, PyObject *setpg
 
     if (setsigdef) {
         sigset_t set;
+        /*
         if (!_Py_Sigset_Converter(setsigdef, &set)) {
             goto fail;
-        }
+        }*/
         errno = posix_spawnattr_setsigdefault(attrp, &set);
         if (errno) {
             posix_error();
@@ -8131,7 +8137,7 @@ os_setgroups(PyObject *module, PyObject *groups)
         Py_DECREF(elem);
     }
 
-    if (setgroups(len, grouplist) < 0)
+    if (setgroups(len, (const int32_t*)grouplist) < 0)
         return posix_error();
     Py_RETURN_NONE;
 }
@@ -15494,6 +15500,7 @@ posixmodule_exec(PyObject *m)
 #  endif
 #endif
 
+#if 0
 #if defined(HAVE_SCHED_SETPARAM) || defined(HAVE_SCHED_SETSCHEDULER) || defined(POSIX_SPAWN_SETSCHEDULER) || defined(POSIX_SPAWN_SETSCHEDPARAM)
     sched_param_desc.name = MODNAME ".sched_param";
     PyObject *SchedParamType = (PyObject *)PyStructSequence_NewType(&sched_param_desc);
@@ -15504,6 +15511,7 @@ posixmodule_exec(PyObject *m)
     PyModule_AddObject(m, "sched_param", SchedParamType);
     state->SchedParamType = SchedParamType;
     ((PyTypeObject *)SchedParamType)->tp_new = os_sched_param;
+#endif
 #endif
 
     /* initialize TerminalSize_info */

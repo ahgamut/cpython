@@ -226,7 +226,7 @@ PyDoc_STRVAR(clock_gettime_ns_doc,
 Return the time of the specified clock clk_id as nanoseconds.");
 #endif   /* HAVE_CLOCK_GETTIME */
 
-#ifdef HAVE_CLOCK_SETTIME
+#if 0 && HAVE_CLOCK_SETTIME
 static PyObject *
 time_clock_settime(PyObject *self, PyObject *args)
 {
@@ -1777,7 +1777,7 @@ static PyMethodDef time_methods[] = {
     {"clock_gettime",   time_clock_gettime, METH_VARARGS, clock_gettime_doc},
     {"clock_gettime_ns",time_clock_gettime_ns, METH_VARARGS, clock_gettime_ns_doc},
 #endif
-#ifdef HAVE_CLOCK_SETTIME
+#if 0 && HAVE_CLOCK_SETTIME
     {"clock_settime",   time_clock_settime, METH_VARARGS, clock_settime_doc},
     {"clock_settime_ns",time_clock_settime_ns, METH_VARARGS, clock_settime_ns_doc},
 #endif
