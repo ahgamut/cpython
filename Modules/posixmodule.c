@@ -4129,7 +4129,6 @@ _posix_listdir(path_t *path, PyObject *list)
                 goto exit;
             }
         }
-        /*
         if (ep->d_name[0] == '.' &&
             (NAMLEN(ep) == 1 ||
              (ep->d_name[1] == '.' && NAMLEN(ep) == 2)))
@@ -4138,7 +4137,6 @@ _posix_listdir(path_t *path, PyObject *list)
             v = PyUnicode_DecodeFSDefaultAndSize(ep->d_name, NAMLEN(ep));
         else
             v = PyBytes_FromStringAndSize(ep->d_name, NAMLEN(ep));
-        */
         if (v == NULL) {
             Py_CLEAR(list);
             break;

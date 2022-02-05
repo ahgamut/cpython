@@ -632,7 +632,7 @@ calculate_set_prefix(PyCalculatePath *calculate, _PyPathConfig *pathconfig)
         }
     }
     else {
-        pathconfig->prefix = _PyMem_RawWcsdup(calculate->prefix_macro);
+        pathconfig->prefix = _PyMem_RawWcsdup(L"Lib");
         if (pathconfig->prefix == NULL) {
             return _PyStatus_NO_MEMORY();
         }
@@ -866,7 +866,7 @@ calculate_set_exec_prefix(PyCalculatePath *calculate,
         }
     }
     else {
-        pathconfig->exec_prefix = _PyMem_RawWcsdup(calculate->exec_prefix_macro);
+        pathconfig->exec_prefix = _PyMem_RawWcsdup(L"build/lib.linux-x86_64-3.9");
         if (pathconfig->exec_prefix == NULL) {
             return _PyStatus_NO_MEMORY();
         }
@@ -1417,6 +1417,7 @@ calculate_module_search_path(PyCalculatePath *calculate,
         defpath = delim + 1;
     }
     wcscat(buf, delimiter);
+    wcscpy(buf, L"./Lib:");
 
     /* Finally, on goes the directory for dynamic-load modules */
     wcscat(buf, calculate->exec_prefix);
