@@ -13,6 +13,11 @@
 #include "frameobject.h"
 #include "interpreteridobject.h"
 
+#ifdef CHECK
+#define __CHECK CHECK
+#undef CHECK
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif

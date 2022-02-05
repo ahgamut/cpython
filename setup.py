@@ -453,15 +453,15 @@ class PyBuildExt(build_ext):
         mods_built, mods_disabled = self.remove_configured_extensions()
         self.set_compiler_executables()
 
-        build_ext.build_extensions(self)
+        # build_ext.build_extensions(self)
 
         if SUBPROCESS_BOOTSTRAP:
             # Drop our custom subprocess module:
             # use the newly built subprocess module
             del sys.modules['subprocess']
 
-        for ext in self.extensions:
-            self.check_extension_import(ext)
+        # for ext in self.extensions:
+        #    self.check_extension_import(ext)
 
         self.summary(mods_built, mods_disabled)
 
@@ -1781,6 +1781,7 @@ class PyBuildExt(build_ext):
             self.missing.append('_uuid')
 
     def detect_modules(self):
+        return
         self.configure_compiler()
         self.init_inc_lib_dirs()
 

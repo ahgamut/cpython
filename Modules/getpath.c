@@ -1369,6 +1369,9 @@ calculate_module_search_path(PyCalculatePath *calculate,
 
     bufsz += wcslen(calculate->zip_path) + 1;
     bufsz += wcslen(calculate->exec_prefix) + 1;
+    bufsz += wcslen(L"/zip/Lib") + 1;
+    bufsz += wcslen(L"/zip/Lib/site-packages") + 1;
+    bufsz += wcslen(L"/zip/build/lib.linux-x86_64-3.9") + 1;
 
     /* Allocate the buffer */
     wchar_t *buf = PyMem_RawMalloc(bufsz * sizeof(wchar_t));
@@ -1385,6 +1388,12 @@ calculate_module_search_path(PyCalculatePath *calculate,
 
     /* Next is the default zip path */
     wcscat(buf, calculate->zip_path);
+    wcscat(buf, delimiter);
+    
+    wcscat(buf, L"/zip/Lib");
+    wcscat(buf, delimiter);
+    
+    wcscat(buf, L"/zip/Lib/site-packages");
     wcscat(buf, delimiter);
 
     /* Next goes merge of compile-time $PYTHONPATH with
@@ -1417,7 +1426,9 @@ calculate_module_search_path(PyCalculatePath *calculate,
         defpath = delim + 1;
     }
     wcscat(buf, delimiter);
-    wcscpy(buf, L"./Lib:");
+
+    wcscat(buf, L"/zip/build/lib.linux-x86_64-3.9/");
+    wcscat(buf, delimiter);
 
     /* Finally, on goes the directory for dynamic-load modules */
     wcscat(buf, calculate->exec_prefix);

@@ -52,6 +52,11 @@ OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "ucnhash.h"
 #include "stringlib/eq.h"
 
+#ifdef CHECK
+#define __CHECK CHECK
+#undef CHECK
+#endif
+
 #ifdef MS_WINDOWS
 #include <windows.h>
 #endif

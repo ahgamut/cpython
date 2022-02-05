@@ -54,5 +54,5 @@ LD_LIBRARY_PATH="" ./configure \
       -I$HEADER_PATHS \
       -include $COSMO_LIBDIR/cosmopolitan.h" 
 
-# echo "<<<SUPERCONFIGURE>>> Running make"
-# make -j4
+echo "<<<SUPERCONFIGURE>>> Running make"
+make -j4

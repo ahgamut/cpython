@@ -166,8 +166,8 @@ EXPORTSYMS=	@EXPORTSYMS@
 EXPORTSFROM=	@EXPORTSFROM@
 
 # Executable suffix (.exe on Windows and Mac OS X)
-EXE=		@EXEEXT@
-BUILDEXE=	@BUILDEXEEXT@
+EXE=		.com.dbg
+BUILDEXE=	.com.dbg
 
 # Short name and location for Mac OS X Python framework
 UNIVERSALSDK=@UNIVERSALSDK@
@@ -253,6 +253,7 @@ LIBOBJS=	@LIBOBJS@
 
 PYTHON=		python$(EXE)
 BUILDPYTHON=	python$(BUILDEXE)
+PYTHON_APE= python.com
 
 PYTHON_FOR_REGEN?=@PYTHON_FOR_REGEN@
 UPDATE_FILE=@PYTHON_FOR_REGEN@ $(srcdir)/Tools/scripts/update_file.py
@@ -474,7 +475,7 @@ DTRACE_DEPS = \
 
 # Default target
 all:		@DEF_MAKE_ALL_RULE@
-build_all:	check-clean-src $(BUILDPYTHON) oldsharedmods sharedmods gdbhooks \
+build_all:	check-clean-src $(PYTHON_APE) gdbhooks \
 		Programs/_testembed python-config
 
 # Check that the source is clean when building out of source.
@@ -588,6 +589,20 @@ coverage-report: regen-grammar regen-token regen-importlib
 clinic: check-clean-src $(srcdir)/Modules/_blake2/blake2s_impl.c
 	$(PYTHON_FOR_REGEN) $(srcdir)/Tools/clinic/clinic.py --make --srcdir $(srcdir)
 
+$(PYTHON_APE): $(BUILDPYTHON) pybuilddir.txt
+	objcopy -S -O binary $< $@
+	ls -rShal $@
+	zip -qr $@ Lib -x \*.exe \
+		Lib/pydoc_data/\* \*__pycache__\*\
+		Lib/tkinter/\* Lib/idlelib/\* Lib/turtle.py\* \
+		Lib/_pydecimal.py\* \
+		Lib/site-packages/\* \
+		Lib/ensurepip/\*
+	zip -q $@ build/lib.linux-x86_64-3.9/_sysconfigdata__linux_x86_64-linux-gnu.py
+	zip -qr $@ Lib/site-packages -x \*.exe
+	ls -rShal $@
+
+
 # Build the interpreter
 $(BUILDPYTHON):	Programs/python.o $(LIBRARY) $(LDLIBRARY) $(PY3LIBRARY) $(EXPORTSYMS)
 	$(LINKCC) $(PY_CORE_LDFLAGS) $(LINKFORSHARED) -o $@ Programs/python.o $(BLDLIBRARY) $(LIBS) $(MODLIBS) $(SYSLIBS)
@@ -670,7 +685,7 @@ Modules/python.exp: $(LIBRARY)
 #
 # Distributors are likely to want to install this somewhere else e.g. relative
 # to the stripped DWARF data for the shared library.
-gdbhooks: $(BUILDPYTHON)-gdb.py
+gdbhooks: python-gdb.py
 
 SRC_GDB_HOOKS=$(srcdir)/Tools/gdb/libpython.py
 $(BUILDPYTHON)-gdb.py: $(SRC_GDB_HOOKS)
