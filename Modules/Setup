@@ -178,7 +178,7 @@ _weakref _weakref.c	# basic weak reference support
 #_testcapi _testcapimodule.c    # Python C API test module
 #_testinternalcapi _testinternalcapi.c -I$(srcdir)/Include/internal -DPy_BUILD_CORE_MODULE  # Python internal C API test module
 _random _randommodule.c -DPy_BUILD_CORE_MODULE	# Random number generator
-#_elementtree -I$(srcdir)/Modules/expat -DHAVE_EXPAT_CONFIG_H -DUSE_PYEXPAT_CAPI _elementtree.c	# elementtree accelerator
+_elementtree -I$(srcdir)/Modules/expat -DHAVE_EXPAT_CONFIG_H -DUSE_PYEXPAT_CAPI _elementtree.c	# elementtree accelerator
 _pickle _pickle.c	# pickle accelerator
 _datetime _datetimemodule.c	# datetime accelerator
 _zoneinfo _zoneinfo.c	# zoneinfo accelerator
@@ -207,7 +207,7 @@ mmap mmapmodule.c
 _csv _csv.c
 
 # Socket module helper for socket(2)
-#_socket socketmodule.c
+_socket socketmodule.c
 
 # Socket module helper for SSL support; you must comment out the other
 # socket line above, and possibly edit the SSL variable:
@@ -229,7 +229,7 @@ _csv _csv.c
 #termios termios.c	# Steen Lumholt's termios module
 resource resource.c	# Jeremy Hylton's rlimit interface
 
-#_posixsubprocess _posixsubprocess.c  # POSIX subprocess module helper
+_posixsubprocess _posixsubprocess.c  # POSIX subprocess module helper
 
 # Multimedia modules -- off by default.
 # These don't work for 64-bit platforms!!!

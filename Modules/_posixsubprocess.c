@@ -524,7 +524,7 @@ child_exec(char *const exec_array[],
 
 #ifdef HAVE_SETGROUPS
     if (call_setgroups)
-        POSIX_CALL(setgroups(groups_size, groups));
+        POSIX_CALL(setgroups(groups_size, (int32_t*) groups));
 #endif /* HAVE_SETGROUPS */
 
 #ifdef HAVE_SETREGID

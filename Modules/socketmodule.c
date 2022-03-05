@@ -100,6 +100,7 @@ Local naming conventions:
 #endif
 
 #define PY_SSIZE_T_CLEAN
+#define SOMAXCONN 128
 #include "Python.h"
 #include "structmember.h"         // PyMemberDef
 
@@ -1823,7 +1824,7 @@ getsockaddrarg(PySocketSockObject *s, PyObject *args,
 #endif /* AF_VSOCK */
 
 
-#ifdef AF_RDS
+#if 0 && AF_RDS
     case AF_RDS:
         /* RDS sockets use sockaddr_in: fall-through */
 #endif /* AF_RDS */
@@ -2450,7 +2451,7 @@ getsockaddrlen(PySocketSockObject *s, socklen_t *len_ret)
        }
 #endif /* AF_VSOCK */
 
-#ifdef AF_RDS
+#if 0 &&  AF_RDS
     case AF_RDS:
         /* RDS sockets use sockaddr_in: fall-through */
 #endif /* AF_RDS */
@@ -7975,7 +7976,7 @@ PyInit__socket(void)
 #else
     PyModule_AddIntConstant(m, "IPPROTO_RAW", 255);
 #endif
-#ifdef  IPPROTO_MAX
+#if 0 &&  IPPROTO_MAX
     PyModule_AddIntMacro(m, IPPROTO_MAX);
 #endif
 
