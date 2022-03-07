@@ -1096,6 +1096,7 @@ thread_PyThread_start_new_thread(PyObject *self, PyObject *fargs)
         return NULL;
     }
 
+#if WITH_THREAD
     boot = PyMem_NEW(struct bootstate, 1);
     if (boot == NULL)
         return PyErr_NoMemory();
@@ -1123,6 +1124,22 @@ thread_PyThread_start_new_thread(PyObject *self, PyObject *fargs)
         PyMem_DEL(boot);
         return NULL;
     }
+#else
+    PyObject *res = PyObject_Call(func, args, keyw);
+    if (res == NULL) {
+        if (PyErr_ExceptionMatches(PyExc_SystemExit))
+            /* SystemExit is ignored silently */
+            PyErr_Clear();
+        else {
+            // _PyErr_WriteUnraisableMsg("in thread started by", boot->func);
+            PyErr_SetString(PyExc_RuntimeError, "thread glitch");
+        }
+    }
+    else {
+        Py_DECREF(res);
+    }
+    ident = PyThread_get_thread_ident();
+#endif
     return PyLong_FromUnsignedLong(ident);
 }
 

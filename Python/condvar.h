@@ -88,21 +88,20 @@ int _PyThread_cond_init(PyCOND_T *cond);
 void _PyThread_cond_after(long long us, struct timespec *abs);
 
 /* The following functions return 0 on success, nonzero on error */
-#define PyMUTEX_INIT(mut)
-#define PyMUTEX_FINI(mut)      
-#define PyMUTEX_LOCK(mut)     
-#define PyMUTEX_UNLOCK(mut)  
+#define PyMUTEX_INIT(mut) 0
+#define PyMUTEX_FINI(mut) 0
+#define PyMUTEX_LOCK(mut) 0
+#define PyMUTEX_UNLOCK(mut) 0
 
-#define PyCOND_INIT(cond)   
-#define PyCOND_FINI(cond)  
-#define PyCOND_SIGNAL(cond)
-#define PyCOND_BROADCAST(cond)
-#define PyCOND_WAIT(cond, mut)
+#define PyCOND_INIT(cond) 0
+#define PyCOND_FINI(cond) 0
+#define PyCOND_SIGNAL(cond) 0
+#define PyCOND_BROADCAST(cond) 0
+#define PyCOND_WAIT(cond, mut) 0
 
 /* return 0 for success, 1 on timeout, -1 on error */
 Py_LOCAL_INLINE(int)
-PyCOND_TIMEDWAIT(PyCOND_T *cond, PyMUTEX_T *mut, long long us)
-{
+    PyCOND_TIMEDWAIT(PyCOND_T *cond, PyMUTEX_T *mut, long long us) {
     return 0;
 }
 #endif

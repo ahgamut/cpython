@@ -327,7 +327,7 @@ PyThread_start_new_thread(void (*func)(void *), void *arg)
 #endif
 #else
     func(arg);
-    return 0;
+    return 1;
 #endif
 }
 
@@ -574,7 +574,7 @@ PyThread_type_lock
 PyThread_allocate_lock(void)
 {
     pthread_lock *lock;
-    int status, error = 0;
+    int status = 0, error = 0;
 
     dprintf(("PyThread_allocate_lock called\n"));
     if (!initialized)
@@ -613,7 +613,7 @@ void
 PyThread_free_lock(PyThread_type_lock lock)
 {
     pthread_lock *thelock = (pthread_lock *)lock;
-    int status, error = 0;
+    int status = 0, error = 0;
 
     (void) error; /* silence unused-but-set-variable warning */
     dprintf(("PyThread_free_lock(%p) called\n", lock));
@@ -688,8 +688,6 @@ PyThread_acquire_lock_timed(PyThread_type_lock lock, PY_TIMEOUT_T microseconds,
                         &thelock->mut);
                     CHECK_STATUS_PTHREAD("pthread_cond_wait");
                 }
-#else
-#endif
                 if (intr_flag && status == 0 && thelock->locked) {
                     /* We were woken up, but didn't get the lock.  We probably received
                      * a signal.  Return PY_LOCK_INTR to allow the caller to handle
@@ -700,6 +698,9 @@ PyThread_acquire_lock_timed(PyThread_type_lock lock, PY_TIMEOUT_T microseconds,
                 else if (status == 0 && !thelock->locked) {
                     success = PY_LOCK_ACQUIRED;
                 }
+#else
+                success = PY_LOCK_ACQUIRED;
+#endif
             }
         }
         if (success == PY_LOCK_ACQUIRED) thelock->locked = 1;
@@ -720,7 +721,7 @@ void
 PyThread_release_lock(PyThread_type_lock lock)
 {
     pthread_lock *thelock = (pthread_lock *)lock;
-    int status, error = 0;
+    int status = 0, error = 0;
 
     (void) error; /* silence unused-but-set-variable warning */
     dprintf(("PyThread_release_lock(%p) called\n", lock));
