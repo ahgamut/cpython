@@ -1,8 +1,8 @@
 #! /bin/sh 
 set -eux
 
-COSMO_LIBDIR=$(realpath "../libcosmo/")
-COSMO_REPODIR=$(realpath "../libcosmo/testing/cosmopolitan")
+COSMO_LIBDIR=$(realpath "../amalg/")
+COSMO_REPODIR=$(realpath "../cosmopolitan/")
 EXTRA_STUBS=$(realpath "./header_stubs")
 CC="./gcc-wrapper.bash"
 

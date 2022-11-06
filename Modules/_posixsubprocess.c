@@ -40,6 +40,8 @@
 # define SYS_getdents64  __NR_getdents64
 #endif
 
+int sys_getdents(unsigned, void *, unsigned, long *);
+
 #if defined(__linux__) && defined(HAVE_VFORK) && defined(HAVE_SIGNAL_H) && \
     defined(HAVE_PTHREAD_SIGMASK) && !defined(HAVE_BROKEN_PTHREAD_SIGMASK)
 /* If this is ever expanded to non-Linux platforms, verify what calls are
@@ -300,7 +302,7 @@ _close_open_fds_safe(int start_fd, PyObject* py_fds_to_keep)
     } else {
         char buffer[sizeof(struct linux_dirent64)];
         int bytes;
-        while ((bytes = getdents(fd_dir_fd,
+        while ((bytes = sys_getdents(fd_dir_fd,
                                 (struct linux_dirent64 *)buffer,
                                 sizeof(buffer), NULL)) > 0) {
             struct linux_dirent64 *entry;

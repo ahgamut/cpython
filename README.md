@@ -5,6 +5,16 @@ compile with [Cosmopolitan][cosmo] libc.  **Meant for experimental purposes
 only**.
 
 # Steps to compile
+0. Install dependencies
+```
+git
+zip
+unzip
+gcc 11
+gnumake
+bintools (for ar)
+pkg-config
+```
 
 1. clone the cosmopolitan repo somewhere nearby (for headers)
 

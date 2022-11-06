@@ -7,6 +7,9 @@
 #define _POSIX_THREADS 1
 // Since this is a "meta-include" file, no #ifdef __cplusplus / extern "C" {
 
+#define IMAGE_BASE_VIRTUAL 0x400000
+#define PTHREAD_SCOPE_SYSTEM 0
+
 // Include Python header files
 #include "patchlevel.h"
 #include "pyconfig.h"
@@ -106,7 +109,7 @@
 #include "cpython/pyfpe.h"
 #include "tracemalloc.h"
 
-typedef uint64_t clockid_t;
+typedef int32_t clockid_t;
 #define SSIZE_MAX __INT64_MAX__
 #define SSIZE_MIN (-SSIZE_MAX -1)
 

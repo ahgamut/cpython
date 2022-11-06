@@ -18,6 +18,8 @@
 #  include <pathcch.h>
 #endif
 
+#include "libc/thread/pthread_kill.c"
+
 #ifdef __VXWORKS__
 #  include "pycore_bitutils.h"    // _Py_popcount32()
 #endif
@@ -226,7 +228,27 @@ corresponding Unix manual entries for more information on calls.");
 #endif
 
 #ifdef HAVE_SYSEXITS_H
-#  include <sysexits.h>
+#define EX_OK0/* successful termination */
+
+#define EX__BASE64/* base value for error messages */
+
+#define EX_USAGE64/* command line usage error */
+#define EX_DATAERR65/* data format error */
+#define EX_NOINPUT66/* cannot open input */
+#define EX_NOUSER67/* addressee unknown */
+#define EX_NOHOST68/* host name unknown */
+#define EX_UNAVAILABLE69/* service unavailable */
+#define EX_SOFTWARE70/* internal software error */
+#define EX_OSERR71/* system error (e.g., can't fork) */
+#define EX_OSFILE72/* critical OS file missing */
+#define EX_CANTCREAT73/* can't create (user) output file */
+#define EX_IOERR74/* input/output error */
+#define EX_TEMPFAIL75/* temp failure; user is invited to retry */
+#define EX_PROTOCOL76/* remote error in protocol */
+#define EX_NOPERM77/* permission denied */
+#define EX_CONFIG78/* configuration error */
+
+#define EX__MAX78/* maximum listed value */
 #endif
 
 #ifdef HAVE_SYS_LOADAVG_H
@@ -354,8 +376,9 @@ extern char        *ctermid_r(char *);
 #endif /* __VXWORKS__ */
 
 #ifdef HAVE_POSIX_SPAWN
-#  include "libc/stdio/spawna.internal.h" // need cosmo repo!
-#  include "libc/stdio/spawn.h" // need cosmo repo!
+# include "libc/stdio/posix_spawn.h"
+# include "libc/stdio/posix_spawn.internal.h"
+
 #endif
 #include "libc/calls/struct/iovec.h" // need cosmo repo!
 
