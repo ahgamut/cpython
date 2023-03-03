@@ -1,4 +1,5 @@
 # -*- makefile -*-
+
 # The file Setup is used by the makesetup script to construct the files
 # Makefile and config.c, from Makefile.pre and config.c.in,
 # respectively.  Note that Makefile.pre is created from Makefile.pre.in
@@ -286,6 +287,9 @@ _testinternalcapi _testinternalcapi.c
 
 _sqlite3 _sqlite/blob.c _sqlite/connection.c _sqlite/cursor.c _sqlite/microprotocols.c _sqlite/module.c _sqlite/prepare_protocol.c _sqlite/row.c _sqlite/statement.c _sqlite/util.c
 # Some testing modules MUST be built as shared libraries.
+
+#_pyarrow -L/home/x/c/cosmopolitan/o/third_party/libcxx -lcxx -I/home/x/c/django/arrow/cpp/build/src -L/home/x/c/djngo/arrow/cpp/build/release -larrow -I$(srcdir)/Lib/numpy/core/include -I$(srcdir)/Lib/pyarrow/include/ _pyarrow/python_to_arrow.cc  _pyarrow/deserialize.cc _pyarrow/inference.cc _pyarrow/parquet_encryption.cc _pyarrow/benchmark.cc _pyarrow/extension_type.cc _pyarrow/init.cc  _pyarrow/pyarrow.cc _pyarrow/common.cc  _pyarrow/filesystem.cc _pyarrow/io.cc _pyarrow/python_test.cc _pyarrow/csv.cc  _pyarrow/ipc.cc _pyarrow/datetime.cc _pyarrow/gdb.cc _pyarrow/serialize.cc _pyarrow/decimal.cc _pyarrow/helpers.cc _pyarrow/udf.cc 
+
 
 #*shared*
 #_ctypes_test _ctypes/_ctypes_test.c

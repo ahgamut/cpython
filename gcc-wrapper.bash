@@ -22,4 +22,4 @@ for o in "$@" ; do
     args+=("$o")
 done
 
-gcc "${args[@]}"
+/home/x/c/cosmopolitan/o/third_party/gcc/bin/x86_64-linux-musl-g++ "${args[@]}"

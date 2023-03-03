@@ -1,10 +1,15 @@
 #! /bin/sh 
 set -eux
 
-COSMO_LIBDIR=$(realpath "../testing/cosmopolitan/o")
-COSMO_REPODIR=$(realpath "../testing/cosmopolitan")
+COSMO_LIBDIR=$(realpath "../../cosmopolitan/o")
+COSMO_REPODIR=$(realpath "../../cosmopolitan")
 EXTRA_STUBS=$(realpath "./header_stubs")
 CC="./gcc-wrapper.bash"
+
+CC=/opt/cosmo/tool/scripts/cosmocc
+
+CXX=/opt/cosmo/tool/scripts/cosmoc++
+LD=/opt/cosmo/tool/scripts/cosmoc++
 
 if [ ! -f $COSMO_LIBDIR/cosmopolitan.a ]; then
     echo "<<<SUPERCONFIGURE>>> cosmopolitan.a does not exist in $COSMO_LIBDIR!!!!"
@@ -33,35 +38,28 @@ LD_LIBRARY_PATH="" ./configure \
     --with-libm="" \
     --with-libc="" \
     OPT="" \
+    PLATFORM_TRIPLET="x86_64-linux-musl" \
+    CC="/opt/cosmo/tool/scripts/cosmocc" \
+    CXX="/opt/cosmo/tool/scripts/cosmoc++" \
+    LD="/opt/cosmo/tool/scripts/cosmoc++" \
     CCSHARED="" \
     LINKFORSHARED="" \
     PKG_CONFIG="" \
-    CFLAGS="-O2 -g3 -Wall -Wno-strict-prototypes -Wno-unused-value \
+    CFLAGS="-O2 -g3  -Wno-unused-value \
       -static -fno-pie -fno-omit-frame-pointer \
       -mno-red-zone -pg \
-      -nostdinc -nostdlib \
-      -iquote$COSMO_REPODIR \
-      -I$COSMO_REPODIR \
-      -isystem$COSMO_REPODIR/libc/isystem   \
-      -include$COSMO_REPODIR/libc/integral/normalize.inc" \
+      -nostdinc -nostdlib" \
     LDFLAGS="-static -nostdlib -nostdinc \
       -fno-omit-frame-pointer \
       -mno-red-zone -pg \
       -fno-pie -mno-red-zone" \
-    LIBS="\
-      -fuse-ld=bfd \
-      -Wl,-T,$COSMO_LIBDIR/ape/ape.lds \
-      $COSMO_LIBDIR/libc/crt/crt.o \
-      $COSMO_LIBDIR/ape/ape-no-modify-self.o \
-      $COSMO_LIBDIR/cosmopolitan.a" \
+    LIBS="" \
     LIBSQLITE3_CFLAGS="-I$COSMO_REPODIR/third_party/sqlite3"\
     LIBSQLITE3_LIBS="-L$COSMO_LIBDIR/third_party/sqlite3 -lsqlite3" \
-    CFLAGS_NODIST="-O2 -g3 -Wall -Wno-strict-prototypes -Wno-unused-value \
+    CFLAGS_NODIST="-O2 -g3  \
       -static -fno-pie -fno-omit-frame-pointer \
       -mno-red-zone -pg \
-      -nostdinc -nostdlib \
-      -iquote$COSMO_REPODIR \
-      -isystem$COSMO_REPODIR/libc/isystem"
+      -nostdinc -nostdlib"
 
 echo "<<<SUPERCONFIGURE>>> Running make"
 # make -j4

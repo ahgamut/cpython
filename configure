@@ -8424,7 +8424,7 @@ $as_echo "$ac_cv_enable_strict_prototypes_warning" >&6; }
 fi
 
      ac_save_cc="$CC"
-     CC="$CC -Werror=implicit-function-declaration"
+     CC="$CC"
      { $as_echo "$as_me:${as_lineno-$LINENO}: checking if we can make implicit function declaration an error in $CC" >&5
 $as_echo_n "checking if we can make implicit function declaration an error in $CC... " >&6; }
 if ${ac_cv_enable_implicit_function_declaration_error+:} false; then :
@@ -8459,7 +8459,7 @@ $as_echo "$ac_cv_enable_implicit_function_declaration_error" >&6; }
      CC="$ac_save_cc"
 
     if test "x$ac_cv_enable_implicit_function_declaration_error" = xyes; then :
-  CFLAGS_NODIST="$CFLAGS_NODIST -Werror=implicit-function-declaration"
+  CFLAGS_NODIST="$CFLAGS_NODIST"
 fi
 
      ac_save_cc="$CC"

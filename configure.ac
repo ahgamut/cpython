@@ -2238,7 +2238,7 @@ yes)
               [CFLAGS_NODIST="$CFLAGS_NODIST -Wstrict-prototypes"])
 
      ac_save_cc="$CC"
-     CC="$CC -Werror=implicit-function-declaration"
+     CC="$CC"
      AC_CACHE_CHECK([if we can make implicit function declaration an error in $CC],
                     [ac_cv_enable_implicit_function_declaration_error],
        AC_COMPILE_IFELSE(
@@ -2252,7 +2252,7 @@ yes)
      CC="$ac_save_cc"
 
     AS_VAR_IF([ac_cv_enable_implicit_function_declaration_error], [yes],
-              [CFLAGS_NODIST="$CFLAGS_NODIST -Werror=implicit-function-declaration"])
+              [CFLAGS_NODIST="$CFLAGS_NODIST"])
 
      ac_save_cc="$CC"
      CC="$CC -fvisibility=hidden"

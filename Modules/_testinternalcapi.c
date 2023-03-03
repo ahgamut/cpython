@@ -47,10 +47,10 @@ get_recursion_depth(PyObject *self, PyObject *Py_UNUSED(args))
 static PyObject*
 test_bswap(PyObject *self, PyObject *Py_UNUSED(args))
 {
-#define UINT16_C(x) ((uint16_t)(x))
-#define UINT32_C(x) ((uint32_t)(x))
-#define UINT64_C(x) ((uint64_t)(x))
-    uint16_t u16 = _Py_bswap16(UINT16_C(0x3412));
+//#define UINT16_C(x) ((uint16_t)(x))
+//#define UINT32_C(x) ((uint32_t)(x))
+//#define UINT64_C(x) ((uint64_t)(x))
+   uint16_t u16 = _Py_bswap16(UINT16_C(0x3412));
     if (u16 != UINT16_C(0x1234)) {
         PyErr_Format(PyExc_AssertionError,
                      "_Py_bswap16(0x3412) returns %u", u16);
