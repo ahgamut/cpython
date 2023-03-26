@@ -106,4 +106,6 @@
 #include "cpython/pyfpe.h"
 #include "tracemalloc.h"
 
+#define HAVE_TIMEGM 1
+#define HAVE_GETADDRINFO 1
 #endif /* !Py_PYTHON_H */

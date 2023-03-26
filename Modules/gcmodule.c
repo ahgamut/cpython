@@ -32,6 +32,7 @@
 #include "pycore_pystate.h"     // _PyThreadState_GET()
 #include "pydtrace.h"
 
+#undef unreachable
 typedef struct _gc_runtime_state GCState;
 
 /*[clinic input]

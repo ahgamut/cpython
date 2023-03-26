@@ -247,7 +247,7 @@ _close_range_except(int start_fd,
     return 0;
 }
 
-#if defined(__linux__) && defined(HAVE_SYS_SYSCALL_H)
+#if 0 && defined(__linux__) && defined(HAVE_SYS_SYSCALL_H)
 /* It doesn't matter if d_name has room for NAME_MAX chars; we're using this
  * only to read a directory of short file descriptor number names.  The kernel
  * will return an error if we didn't give it enough space.  Highly Unlikely.

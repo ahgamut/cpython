@@ -1,0 +1,66 @@
+#! /bin/sh 
+set -eux
+
+COSMO_LIBDIR=$(realpath "../testing/cosmopolitan/o")
+COSMO_REPODIR=$(realpath "../testing/cosmopolitan")
+EXTRA_STUBS=$(realpath "./header_stubs")
+export CC="./gcc-wrapper.bash" 
+
+if [ ! -f $COSMO_LIBDIR/cosmopolitan.a ]; then
+    echo "<<<SUPERCONFIGURE>>> cosmopolitan.a does not exist in $COSMO_LIBDIR!!!!"
+    exit 1
+fi
+
+if [ ! -f $COSMO_REPODIR/libc/integral/normalize.inc ]; then
+    echo "<<<SUPERCONFIGURE>>> $COSMO_REPODIR is not root of cosmopolitan repo!!!!"
+    exit 1
+fi
+
+echo "<<<SUPERCONFIGURE>>> Running configure with $CC"
+LD_LIBRARY_PATH="" ./configure \
+    --prefix="" \
+    --disable-shared --disable-profiling \
+    --disable-ipv6 --disable-optimizations \
+    --disable-pystats --enable-loadable-sqlite-extensions=no \
+    --disable-test-modules  \
+    --with-pkg-config=no  \
+    --with-static-libpython \
+    --without-lto --without-pydebug \
+    --with-pymalloc --with-freelists \
+    --without-readline  \
+    --without-ensurepip \
+    --with-builtin-hashlib-hashes=  \
+    --with-libm="" \
+    --with-libc="" \
+    OPT="" \
+    CCSHARED="" \
+    LINKFORSHARED="" \
+    PKG_CONFIG="" \
+    CFLAGS="-O2 -g -Wall -Wno-strict-prototypes -Wno-unused-value \
+      -static -fno-pie -fno-omit-frame-pointer \
+      -mno-red-zone -pg \
+      -nostdinc -nostdlib \
+      -iquote$COSMO_REPODIR \
+      -I$COSMO_REPODIR \
+      -isystem$COSMO_REPODIR/libc/isystem   \
+      -include$COSMO_REPODIR/libc/integral/normalize.inc \
+      -include/home/gautham/stuff/cosmo/portcosmo/tmpconst.h" \
+    LDFLAGS="-static -nostdlib -nostdinc \
+      -fno-omit-frame-pointer \
+      -mno-red-zone -pg \
+      -fno-pie -mno-red-zone" \
+    LIBS="\
+      -fuse-ld=bfd \
+      -Wl,-T,$COSMO_LIBDIR/ape/ape.lds \
+      $COSMO_LIBDIR/libc/crt/crt.o \
+      $COSMO_LIBDIR/ape/ape-no-modify-self.o \
+      $COSMO_LIBDIR/cosmopolitan.a" \
+    CFLAGS_NODIST="-O2 -g -Wall -Wno-strict-prototypes -Wno-unused-value \
+      -static -fno-pie -fno-omit-frame-pointer \
+      -mno-red-zone -pg \
+      -nostdinc -nostdlib \
+      -iquote$COSMO_REPODIR \
+      -isystem$COSMO_REPODIR/libc/isystem"
+
+echo "<<<SUPERCONFIGURE>>> Running make"
+# make -j4

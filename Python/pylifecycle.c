@@ -99,7 +99,7 @@ __attribute__((
 _Py_COMP_DIAG_PUSH
 _Py_COMP_DIAG_IGNORE_DEPR_DECLS
 _PyRuntimeState _PyRuntime
-#if defined(__linux__) && (defined(__GNUC__) || defined(__clang__))
+#if 0 && defined(__linux__) && (defined(__GNUC__) || defined(__clang__))
 __attribute__ ((section (".PyRuntime")))
 #endif
 = _PyRuntimeState_INIT;

@@ -108,13 +108,13 @@ PY_LDFLAGS=	$(CONFIGURE_LDFLAGS) $(LDFLAGS)
 PY_LDFLAGS_NODIST=$(CONFIGURE_LDFLAGS_NODIST) $(LDFLAGS_NODIST)
 PY_LDFLAGS_NOLTO=$(PY_LDFLAGS) $(CONFIGURE_LDFLAGS_NOLTO) $(LDFLAGS_NODIST)
 NO_AS_NEEDED=	@NO_AS_NEEDED@
-CCSHARED=	@CCSHARED@
+CCSHARED=
 # LINKFORSHARED are the flags passed to the $(CC) command that links
 # the python executable -- this is only needed for a few systems
-LINKFORSHARED=	@LINKFORSHARED@
+LINKFORSHARED=
 ARFLAGS=	@ARFLAGS@
 # Extra C flags added for building the interpreter object files.
-CFLAGSFORSHARED=@CFLAGSFORSHARED@
+CFLAGSFORSHARED=
 # C flags used for building the interpreter object files
 PY_STDMODULE_CFLAGS= $(PY_CFLAGS) $(PY_CFLAGS_NODIST) $(PY_CPPFLAGS) $(CFLAGSFORSHARED)
 PY_BUILTIN_MODULE_CFLAGS= $(PY_STDMODULE_CFLAGS) -DPy_BUILD_CORE_BUILTIN
@@ -284,6 +284,7 @@ LIBOBJS=	@LIBOBJS@
 
 PYTHON=		python$(EXE)
 BUILDPYTHON=	python$(BUILDEXE)
+PYTHON_APE= python.com
 
 HOSTRUNNER= @HOSTRUNNER@
 
@@ -584,7 +585,7 @@ LIBEXPAT_HEADERS= \
 
 # Default target
 all:		@DEF_MAKE_ALL_RULE@
-build_all:	check-clean-src $(BUILDPYTHON) platform oldsharedmods sharedmods \
+build_all:	check-clean-src $(PYTHON_APE) platform oldsharedmods sharedmods \
 		gdbhooks Programs/_testembed python-config
 build_wasm: check-clean-src $(BUILDPYTHON) platform oldsharedmods python-config
 
@@ -702,7 +703,20 @@ clinic: check-clean-src $(srcdir)/Modules/_blake2/blake2s_impl.c
 
 # Build the interpreter
 $(BUILDPYTHON):	Programs/python.o $(LINK_PYTHON_DEPS)
-	$(LINKCC) $(PY_CORE_LDFLAGS) $(LINKFORSHARED) -o $@ Programs/python.o $(LINK_PYTHON_OBJS) $(LIBS) $(MODLIBS) $(SYSLIBS)
+	$(LINKCC) $(PY_CORE_LDFLAGS) $(LINKFORSHARED) -o $@ Programs/python.o $(LINK_PYTHON_OBJS) $(MODLIBS) $(SYSLIBS) $(LIBS)
+
+$(PYTHON_APE): sharedmods
+	objcopy -SO binary ./$(BUILDPYTHON) ./$(PYTHON_APE)
+	ls -rShal ./$@
+	zip -qr ./$@ Lib -x \*.exe \
+		Lib/pydoc_data/\* \*__pycache__\*\
+		Lib/tkinter/\* Lib/idlelib/\* Lib/turtle.py\* \
+		Lib/_pydecimal.py\* \
+		Lib/site-packages/\* \
+		Lib/ensurepip/\*
+	zip -qr ./$@ build/lib.linux-x86_64-3.11/
+	ls -rShal ./$@
+
 
 platform: $(PYTHON_FOR_BUILD_DEPS) pybuilddir.txt
 	$(RUNSHARED) $(PYTHON_FOR_BUILD) -c 'import sys ; from sysconfig import get_platform ; print("%s-%d.%d" % (get_platform(), *sys.version_info[:2]))' >platform
@@ -809,7 +823,7 @@ $(PYTHONFRAMEWORKDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK): \
 $(DLLLIBRARY) libpython$(LDVERSION).dll.a: $(LIBRARY_OBJS)
 	if test -n "$(DLLLIBRARY)"; then \
 		$(LDSHARED) -Wl,--out-implib=$@ -o $(DLLLIBRARY) $^ \
-			$(LIBS) $(MODLIBS) $(SYSLIBS); \
+			$(MODLIBS) $(SYSLIBS) $(LIBS) ; \
 	else true; \
 	fi
 
@@ -961,7 +975,7 @@ regen-re: $(BUILDPYTHON)
 	$(RUNSHARED) ./$(BUILDPYTHON) $(srcdir)/Tools/scripts/generate_re_casefix.py $(srcdir)/Lib/re/_casefix.py
 
 Programs/_testembed: Programs/_testembed.o $(LINK_PYTHON_DEPS)
-	$(LINKCC) $(PY_CORE_LDFLAGS) $(LINKFORSHARED) -o $@ Programs/_testembed.o $(LINK_PYTHON_OBJS) $(LIBS) $(MODLIBS) $(SYSLIBS)
+	$(LINKCC) $(PY_CORE_LDFLAGS) $(LINKFORSHARED) -o $@ Programs/_testembed.o $(LINK_PYTHON_OBJS) $(MODLIBS) $(SYSLIBS) $(LIBS) 
 
 ############################################################################
 # "Bootstrap Python" used to run deepfreeze.py
@@ -974,7 +988,7 @@ Programs/_bootstrap_python.o: Programs/_bootstrap_python.c $(BOOTSTRAP_HEADERS) 
 
 _bootstrap_python: $(LIBRARY_OBJS_OMIT_FROZEN) Programs/_bootstrap_python.o Modules/getpath.o Modules/Setup.local
 	$(LINKCC) $(PY_LDFLAGS_NOLTO) -o $@ $(LIBRARY_OBJS_OMIT_FROZEN) \
-		Programs/_bootstrap_python.o Modules/getpath.o $(LIBS) $(MODLIBS) $(SYSLIBS)
+		Programs/_bootstrap_python.o Modules/getpath.o $(MODLIBS) $(SYSLIBS) $(LIBS) 
 
 
 ############################################################################
@@ -1061,7 +1075,7 @@ Programs/_freeze_module.o: Programs/_freeze_module.c Makefile
 Modules/getpath_noop.o: $(srcdir)/Modules/getpath_noop.c Makefile
 
 Programs/_freeze_module: Programs/_freeze_module.o Modules/getpath_noop.o $(LIBRARY_OBJS_OMIT_FROZEN)
-	$(LINKCC) $(PY_CORE_LDFLAGS) -o $@ Programs/_freeze_module.o Modules/getpath_noop.o $(LIBRARY_OBJS_OMIT_FROZEN) $(LIBS) $(MODLIBS) $(SYSLIBS)
+	$(LINKCC) $(PY_CORE_LDFLAGS) -o $@ Programs/_freeze_module.o Modules/getpath_noop.o $(LIBRARY_OBJS_OMIT_FROZEN) $(MODLIBS) $(SYSLIBS) $(LIBS) 
 
 # We manually freeze getpath.py rather than through freeze_modules
 Python/frozen_modules/getpath.h: Modules/getpath.py $(FREEZE_MODULE_BOOTSTRAP_DEPS)
@@ -2400,6 +2414,7 @@ clean-retain-profile: pycremoval
 	-rm -f pybuilddir.txt
 	-rm -f Lib/lib2to3/*Grammar*.pickle
 	-rm -f _bootstrap_python
+	-rm -f $(BUILDPYTHON) $(PYTHON_APE)
 	-rm -f python.html python*.js python.data python*.symbols python*.map
 	-rm -f $(WASM_STDLIB)
 	-rm -f Programs/_testembed Programs/_freeze_module
@@ -2425,7 +2440,7 @@ clean: clean-retain-profile
 	fi
 
 clobber: clean
-	-rm -f $(BUILDPYTHON) $(LIBRARY) $(LDLIBRARY) $(DLLLIBRARY) \
+	-rm -f $(BUILDPYTHON) $(PYTHON_APE) $(LIBRARY) $(LDLIBRARY) $(DLLLIBRARY) \
 		tags TAGS \
 		config.cache config.log pyconfig.h Modules/config.c
 	-rm -rf build platform

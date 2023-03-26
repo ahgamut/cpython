@@ -50,6 +50,8 @@
 
 #include <stdio.h>                // ctermid()
 #include <stdlib.h>               // system()
+#undef HAVE_SPLICE
+#undef HAVE_POSIX_FALLOCATE
 
 /*
  * A number of APIs are available on macOS from a certain macOS version.

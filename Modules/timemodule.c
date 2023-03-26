@@ -512,7 +512,7 @@ time_gmtime(PyObject *module, PyObject *args)
 #endif
 }
 
-#ifndef HAVE_TIMEGM
+#if 0 && HAVE_TIMEGM
 static time_t
 timegm(struct tm *p)
 {

@@ -339,7 +339,7 @@ PyThread_get_thread_native_id(void)
     (void) pthread_threadid_np(NULL, &native_id);
 #elif defined(__linux__)
     pid_t native_id;
-    native_id = syscall(SYS_gettid);
+    native_id = gettid();
 #elif defined(__FreeBSD__)
     int native_id;
     native_id = pthread_getthreadid_np();

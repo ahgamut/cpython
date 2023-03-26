@@ -922,6 +922,7 @@ class PyBuildExt(build_ext):
         # on pretty much any POSIXish platform.
         #
 
+        return
         # array objects
         self.addext(Extension('array', ['arraymodule.c']))
 
@@ -1338,6 +1339,7 @@ class PyBuildExt(build_ext):
     def detect_modules(self):
         # remove dummy extension
         self.extensions = []
+        return
 
         # Some C extensions are built by entries in Modules/Setup.bootstrap.
         # These are extensions are required to bootstrap the interpreter or
@@ -1364,8 +1366,8 @@ class PyBuildExt(build_ext):
         # Uncomment the next line if you want to play with xxmodule.c
 #        self.add(Extension('xx', ['xxmodule.c']))
 
-        self.addext(Extension('xxlimited', ['xxlimited.c']))
-        self.addext(Extension('xxlimited_35', ['xxlimited_35.c']))
+        # self.addext(Extension('xxlimited', ['xxlimited.c']))
+        # self.addext(Extension('xxlimited_35', ['xxlimited_35.c']))
 
     def detect_tkinter(self):
         self.addext(Extension('_tkinter', ['_tkinter.c', 'tkappinit.c']))

@@ -8066,7 +8066,7 @@ UNIVERSAL_ARCH_FLAGS=
 # tweak BASECFLAGS based on compiler and platform
 case $GCC in
 yes)
-    CFLAGS_NODIST="$CFLAGS_NODIST -std=c11"
+    CFLAGS_NODIST="$CFLAGS_NODIST"
 
 
 
@@ -11918,7 +11918,7 @@ if test "x$with_system_expat" = xyes; then :
 else
 
   LIBEXPAT_CFLAGS="-I\$(srcdir)/Modules/expat"
-  LIBEXPAT_LDFLAGS="-lm \$(LIBEXPAT_A)"
+  LIBEXPAT_LDFLAGS="\$(LIBEXPAT_A)"
   LIBEXPAT_INTERNAL="\$(LIBEXPAT_A)"
 
 fi
@@ -11992,7 +11992,7 @@ if test "x$with_system_libmpdec" = xyes; then :
 else
 
   LIBMPDEC_CFLAGS="-I\$(srcdir)/Modules/_decimal/libmpdec"
-  LIBMPDEC_LDFLAGS="-lm \$(LIBMPDEC_A)"
+  LIBMPDEC_LDFLAGS="\$(LIBMPDEC_A)"
   LIBMPDEC_INTERNAL="\$(LIBMPDEC_A)"
 
     if test "x$with_pydebug" = xyes; then :
@@ -15809,7 +15809,7 @@ if ${ac_cv_lib_resolv_inet_aton+:} false; then :
   $as_echo_n "(cached) " >&6
 else
   ac_check_lib_save_LIBS=$LIBS
-LIBS="-lresolv  $LIBS"
+LIBS="$LIBS"
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
@@ -15844,7 +15844,7 @@ if test "x$ac_cv_lib_resolv_inet_aton" = xyes; then :
 #define HAVE_LIBRESOLV 1
 _ACEOF
 
-  LIBS="-lresolv $LIBS"
+  LIBS="$LIBS"
 
 fi
 

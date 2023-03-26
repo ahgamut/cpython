@@ -3041,15 +3041,24 @@ _PySys_UpdateConfig(PyThreadState *tstate)
     }
 
     if (config->module_search_paths_set) {
+        PyWideStringList_Append(&(config->module_search_paths), L"/zip/Lib");
+        PyWideStringList_Append(&(config->module_search_paths), L"/zip/build/lib.linux-x86_64-3.11");
         COPY_LIST("path", config->module_search_paths);
+    } else {
+        PyObject *v = PyList_New(2);
+        if (v == NULL)
+            goto err_occurred;
+        PyList_SET_ITEM(v, 0, PyUnicode_FromString("/zip/Lib"));
+        PyList_SET_ITEM(v, 1, PyUnicode_FromString("/zip/build/lib.linux-x86_64-3.11"));
+        SET_SYS("path", v);
     }
 
     COPY_WSTR("executable", config->executable);
     COPY_WSTR("_base_executable", config->base_executable);
-    COPY_WSTR("prefix", config->prefix);
-    COPY_WSTR("base_prefix", config->base_prefix);
-    COPY_WSTR("exec_prefix", config->exec_prefix);
-    COPY_WSTR("base_exec_prefix", config->base_exec_prefix);
+    COPY_WSTR("prefix", L"./");
+    COPY_WSTR("base_prefix", L"./");
+    COPY_WSTR("exec_prefix", L"./");
+    COPY_WSTR("base_exec_prefix", L"./");
     COPY_WSTR("platlibdir", config->platlibdir);
 
     if (config->pycache_prefix != NULL) {
