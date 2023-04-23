@@ -53,6 +53,7 @@ LD_LIBRARY_PATH="" ./configure \
       -Wl,-T,$COSMO_LIBDIR/ape.lds \
       $COSMO_LIBDIR/crt.o \
       $COSMO_LIBDIR/ape-no-modify-self.o \
+      $COSMO_REPODIR/o/tool/args/args.a \
       $COSMO_LIBDIR/cosmopolitan.a" \
     CFLAGS_NODIST="-O2 -g3 -Wall -Wno-strict-prototypes -Wno-unused-value \
       -static -fno-pie -fno-omit-frame-pointer \
