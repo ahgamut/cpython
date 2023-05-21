@@ -1,8 +1,8 @@
 #! /bin/sh 
 set -eux
 
-COSMO_LIBDIR=$(realpath "../testing/cosmopolitan/o")
-COSMO_REPODIR=$(realpath "../testing/cosmopolitan")
+COSMO_LIBDIR=$(realpath "../libcosmo")
+COSMO_REPODIR=$(realpath "../libcosmo/cosmopolitan")
 EXTRA_STUBS=$(realpath "./header_stubs")
 export CC="./gcc-wrapper.bash" 
 
@@ -51,9 +51,9 @@ LD_LIBRARY_PATH="" ./configure \
       -fno-pie -mno-red-zone" \
     LIBS="\
       -fuse-ld=bfd \
-      -Wl,-T,$COSMO_LIBDIR/ape/ape.lds \
-      $COSMO_LIBDIR/libc/crt/crt.o \
-      $COSMO_LIBDIR/ape/ape-no-modify-self.o \
+      -Wl,-T,$COSMO_LIBDIR/ape.lds \
+      $COSMO_LIBDIR/crt.o \
+      $COSMO_LIBDIR/ape-no-modify-self.o \
       $COSMO_LIBDIR/cosmopolitan.a" \
     CFLAGS_NODIST="-O2 -g -Wall -Wno-strict-prototypes -Wno-unused-value \
       -static -fno-pie -fno-omit-frame-pointer \
