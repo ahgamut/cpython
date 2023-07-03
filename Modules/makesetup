@@ -305,7 +305,7 @@ sed -e 's/[ 	]*#.*//' -e '/^[ 	]*$/d' |
 	INITBITS=
 	for mod in $MODS
 	do
-        submod="${mod##*.}"
+        submod=$(printf '%s' "$mod" | sed -e 's@\.@_@g')
 		EXTDECLS="${EXTDECLS}extern PyObject* PyInit_$submod(void);$NL"
 		INITBITS="${INITBITS}    {\"$mod\", PyInit_$submod},$NL"
 	done

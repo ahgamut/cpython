@@ -218,10 +218,10 @@ _ssl _ssl.c $(OPENSSL_INCLUDES) $(OPENSSL_LDFLAGS) -L/opt/cosmos/lib -lssl
 _hashlib _hashopenssl.c $(OPENSSL_INCLUDES) $(OPENSSL_LDFLAGS) -L/opt/cosmos/lib -lcrypto
 
 # libyaml bindings
-# _yaml _yaml/_yaml.c -IModules/_yaml/ -lyaml
+yaml._yaml _yaml/_yaml.c -IModules/_yaml/ -lyaml
 
 # markupsafe speedups C extension
-# markupsafe._speedups markupsafe/_speedups.c
+markupsafe._speedups markupsafe/_speedups.c
 
 _sqlite3 _sqlite/blob.c _sqlite/connection.c _sqlite/cursor.c _sqlite/microprotocols.c _sqlite/module.c _sqlite/prepare_protocol.c _sqlite/row.c _sqlite/statement.c _sqlite/util.c -lsqlite3
 
