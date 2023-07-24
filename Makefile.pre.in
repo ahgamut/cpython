@@ -707,7 +707,7 @@ $(BUILDPYTHON):	Programs/python.o $(LINK_PYTHON_DEPS)
 
 $(PYTHON_APE): sharedmods
 	-./$(BUILDPYTHON) -m compileall -b Lib/
-	/opt/cosmos/bin/apecopy $(BUILDPYTHON) $(PYTHON_APE)
+	./apecopy $(BUILDPYTHON) $(PYTHON_APE)
 	ls -rShal ./$@
 	zip -qr ./$@ Lib -x \*.exe \*.py\
 		Lib/test/\* Lib/ctypes/test/\*\
