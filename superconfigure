@@ -8,7 +8,7 @@ export COSMOS=/opt/cosmos
 
 ./configure --disable-shared --disable-loadable-sqlite-extensions\
     --with-lto=no --without-system-expat --without-system-ffi\
-    --disable-ipv6\
     --with-pymalloc --with-openssl=/opt/cosmos/ssl\
+    --with-tzpath=/zip/usr/share/zoneinfo\
     --prefix=$COSMOS\
     CFLAGS="-Os -I$COSMOS/include/ncurses"

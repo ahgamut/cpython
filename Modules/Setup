@@ -199,7 +199,7 @@ _crypt _cryptmodule.c -lcrypt
 # Modules that require external libraries.
 
 _bz2 _bz2module.c -lbz2
-#_ctypes _ctypes/_ctypes.c _ctypes/callbacks.c _ctypes/callproc.c _ctypes/stgdict.c _ctypes/cfield.c -ldl -lffi -DHAVE_FFI_PREP_CIF_VAR -DHAVE_FFI_PREP_CLOSURE_LOC -DHAVE_FFI_CLOSURE_ALLOC
+# _ctypes _ctypes/_ctypes.c _ctypes/callbacks.c _ctypes/callproc.c _ctypes/stgdict.c _ctypes/cfield.c -ldl -lffi -DHAVE_FFI_PREP_CIF_VAR -DHAVE_FFI_PREP_CLOSURE_LOC -DHAVE_FFI_CLOSURE_ALLOC
 # The _dbm module supports NDBM, GDBM with compat module, and Berkeley DB.
 _dbm _dbmmodule.c -lgdbm_compat -DUSE_GDBM_COMPAT
 _gdbm _gdbmmodule.c -lgdbm
@@ -209,8 +209,8 @@ zlib  zlibmodule.c -lz
 
 # The readline module also supports libeditline (-leditline).
 # Some systems may require -ltermcap or -ltermlib.
-readline readline.c -lreadline -ltinfo
-# need to declare UP, PC, BC as extern when building readline
+# readline readline.c -lreadline -ltinfo
+# may need to declare UP, PC, BC as extern when building readline
 # libtinfo is from ncurses
 
 # OpenSSL bindings
@@ -274,8 +274,8 @@ _sqlite3 _sqlite/blob.c _sqlite/connection.c _sqlite/cursor.c _sqlite/microproto
 #	-lX11
 
 # Some system have -lcurses 
-_curses -lncurses -ltinfo _cursesmodule.c
-_curses_panel -lpanel -lncurses _curses_panel.c
+# _curses -lncurses -ltinfo _cursesmodule.c
+# _curses_panel -lpanel -lncurses _curses_panel.c
 
 # macOS specific module, needs SystemConfiguration and CoreFoundation framework
 # _scproxy _scproxy.c
