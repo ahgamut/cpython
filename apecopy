@@ -1,0 +1,19 @@
+#!/bin/sh
+
+COSMO=${COSMO:-/opt/cosmo}
+COSMOS=${COSMOS:-/opt/cosmos}
+
+OBJCOPY="$COSMOS/bin/x86_64-linux-musl-objcopy"
+FIXUPOBJ="$COSMO/o/$MODE/tool/build/fixupobj.com"
+ZIPCOPY="$COSMO/o/$MODE/tool/build/zipcopy.com"
+
+if [ ! -f "$1" ]; then
+  echo "no file to apecopy!"
+  exit 1
+fi
+
+SRC="$1"
+DST="${2:-$1.com}"
+
+"$OBJCOPY" -S -O binary "$SRC" "$DST" || exit
+"$ZIPCOPY" "$SRC" "$DST" || exit
