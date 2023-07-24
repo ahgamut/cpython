@@ -109,6 +109,7 @@ Local naming conventions:
 #include "Python.h"
 #include "pycore_fileutils.h"     // _Py_set_inheritable()
 #include "structmember.h"         // PyMemberDef
+#include "libc/dce.h"
 
 #ifdef _Py_MEMORY_SANITIZER
 # include <sanitizer/msan_interface.h>
@@ -5270,7 +5271,7 @@ sock_initobj_impl(PySocketSockObject *self, int family, int type, int proto,
                 if (family == -1 || CHECK_ERRNO(ENOTSOCK)) {
 #else
                 /* getsockname() is not supported for SOL_ALG on Linux. */
-                if (family == -1 || CHECK_ERRNO(EBADF) || CHECK_ERRNO(ENOTSOCK)) {
+                if (family == -1 || (!IsWindows() && CHECK_ERRNO(EBADF)) || CHECK_ERRNO(ENOTSOCK)) {
 #endif
                     set_error();
                     return -1;
