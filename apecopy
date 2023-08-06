@@ -3,7 +3,7 @@
 COSMO=${COSMO:-/opt/cosmo}
 COSMOS=${COSMOS:-/opt/cosmos}
 
-OBJCOPY="$COSMOS/bin/x86_64-linux-musl-objcopy"
+OBJCOPY="$COSMO/o/third_party/gcc/bin/x86_64-linux-musl-objcopy"
 FIXUPOBJ="$COSMO/o/$MODE/tool/build/fixupobj.com"
 ZIPCOPY="$COSMO/o/$MODE/tool/build/zipcopy.com"
 

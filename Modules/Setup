@@ -210,7 +210,7 @@ zlib  zlibmodule.c -lz
 # The readline module also supports libeditline (-leditline).
 # Some systems may require -ltermcap or -ltermlib.
 readline readline.c -lreadline -ltinfo
-# need to declare UP, PC, BC as extern when building readline
+# may need to declare UP, PC, BC as extern when building readline
 # libtinfo is from ncurses
 
 # OpenSSL bindings
