@@ -342,7 +342,7 @@ venv_prefix = None
 
 # Calling Py_SetPythonHome(), Py_SetPath() or
 # setting $PYTHONHOME will override venv detection.
-if not home and not py_setpath:
+if False and not home and not py_setpath:
     try:
         # prefix2 is just to avoid calculating dirname again later,
         # as the path in venv_prefix is the more common case.

@@ -54,6 +54,7 @@ _PyImport_FindSharedFuncptr(const char *prefix,
                             const char *shortname,
                             const char *pathname, FILE *fp)
 {
+#if 0
     dl_funcptr p;
     void *handle;
     char funcname[258];
@@ -108,4 +109,7 @@ _PyImport_FindSharedFuncptr(const char *prefix,
     }
     p = (dl_funcptr) dlsym(handle, funcname);
     return p;
+#else
+    return NULL;
+#endif
 }

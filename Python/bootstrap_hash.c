@@ -67,7 +67,7 @@ win32_urandom(unsigned char *buffer, Py_ssize_t size, int raise)
 
 #else /* !MS_WINDOWS */
 
-#if defined(HAVE_GETRANDOM) || defined(HAVE_GETRANDOM_SYSCALL)
+#if 1 || defined(HAVE_GETRANDOM) || defined(HAVE_GETRANDOM_SYSCALL)
 #define PY_GETRANDOM 1
 
 /* Call getrandom() to get random bytes:
@@ -110,7 +110,7 @@ py_getrandom(void *buffer, Py_ssize_t size, int blocking, int raise)
 #endif
 
         errno = 0;
-#ifdef HAVE_GETRANDOM
+#if 1 || HAVE_GETRANDOM
         if (raise) {
             Py_BEGIN_ALLOW_THREADS
             n = getrandom(dest, n, flags);
@@ -472,7 +472,7 @@ lcg_urandom(unsigned int x0, unsigned char *buffer, size_t size)
 static int
 pyurandom(void *buffer, Py_ssize_t size, int blocking, int raise)
 {
-#if defined(PY_GETRANDOM) || defined(PY_GETENTROPY)
+#if 1 || defined(PY_GETRANDOM) || defined(PY_GETENTROPY)
     int res;
 #endif
 
@@ -492,9 +492,9 @@ pyurandom(void *buffer, Py_ssize_t size, int blocking, int raise)
     return win32_urandom((unsigned char *)buffer, size, raise);
 #else
 
-#if defined(PY_GETRANDOM) || defined(PY_GETENTROPY)
-    if (HAVE_GETENTRYPY_GETRANDOM_RUNTIME) {
-#ifdef PY_GETRANDOM
+#if 1 || defined(PY_GETRANDOM) || defined(PY_GETENTROPY)
+    if (1 || HAVE_GETENTRYPY_GETRANDOM_RUNTIME) {
+#if 1 || PY_GETRANDOM
         res = py_getrandom(buffer, size, blocking, raise);
 #else
         res = py_getentropy(buffer, size, raise);
