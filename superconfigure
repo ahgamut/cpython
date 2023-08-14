@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 
-export CC=/opt/cosmos/bin/cosmocc
-export CXX=/opt/cosmos/bin/cosmoc++
-export LD=/opt/cosmos/bin/cosmoc++
-export COSMO=/opt/cosmo
-export COSMOS=/opt/cosmos
-
 ./configure --disable-shared --disable-loadable-sqlite-extensions\
     --with-lto=no --without-system-expat --without-system-ffi\
     --with-pymalloc --with-openssl=/opt/cosmos/ssl\

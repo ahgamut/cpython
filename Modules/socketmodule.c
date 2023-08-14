@@ -109,6 +109,8 @@ Local naming conventions:
 #include "Python.h"
 #include "pycore_fileutils.h"     // _Py_set_inheritable()
 #include "structmember.h"         // PyMemberDef
+#define _COSMO_SOURCE
+#include <stdbool.h>
 #include "libc/dce.h"
 
 #ifdef _Py_MEMORY_SANITIZER
