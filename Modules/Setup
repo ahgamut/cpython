@@ -158,8 +158,8 @@ mmap mmapmodule.c
 select selectmodule.c
 
 # XML
-_elementtree _elementtree.c
-pyexpat pyexpat.c
+_elementtree _elementtree.c -lexpat
+pyexpat pyexpat.c -lexpat
 
 # hashing builtins
 _blake2 _blake2/blake2module.c _blake2/blake2b_impl.c _blake2/blake2s_impl.c
@@ -214,8 +214,8 @@ readline readline.c -lreadline -ltinfo
 # libtinfo is from ncurses
 
 # OpenSSL bindings
-_ssl _ssl.c $(OPENSSL_INCLUDES) $(OPENSSL_LDFLAGS) -L/opt/cosmos/lib -lssl
-_hashlib _hashopenssl.c $(OPENSSL_INCLUDES) $(OPENSSL_LDFLAGS) -L/opt/cosmos/lib -lcrypto
+_ssl _ssl.c $(OPENSSL_INCLUDES) $(OPENSSL_LDFLAGS) -L$(COSMOS)/lib -lssl
+_hashlib _hashopenssl.c $(OPENSSL_INCLUDES) $(OPENSSL_LDFLAGS) -L$(COSMOS)/lib -lcrypto
 
 # libyaml bindings
 yaml._yaml _yaml/_yaml.c -IModules/_yaml/ -lyaml

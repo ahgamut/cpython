@@ -706,7 +706,7 @@ $(BUILDPYTHON):	Programs/python.o $(LINK_PYTHON_DEPS)
 	$(LINKCC) $(PY_CORE_LDFLAGS) $(LINKFORSHARED) -o $@ Programs/python.o $(LINK_PYTHON_OBJS) $(LIBS) $(MODLIBS) $(SYSLIBS)
 
 $(PYTHON_APE): sharedmods
-	-./$(BUILDPYTHON) -m compileall -b Lib/
+	-./$(BUILDPYTHON) -m compileall -b Lib/ -x 'Lib/test/*'
 	./apecopy $(BUILDPYTHON) $(PYTHON_APE)
 	ls -rShal ./$@
 	zip -qr ./$@ Lib -x \*.exe \*.py\
@@ -716,7 +716,7 @@ $(PYTHON_APE): sharedmods
 		Lib/tkinter/\* Lib/idlelib/\* Lib/turtle.py\* \
 		Lib/turtledemo/\* Lib/_pydecimal.py\* \
 		Lib/ensurepip/\*
-	zip -qr ./$@ build/lib.linux-x86_64-3.11/\
+	zip -qr ./$@ build/lib.linux*/\
 		-x \*__pycache__\*
 	ls -rShal ./$@
 

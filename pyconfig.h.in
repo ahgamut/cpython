@@ -285,7 +285,7 @@
 #undef HAVE_DLFCN_H
 
 /* Define to 1 if you have the `dlopen' function. */
-#undef HAVE_DLOPEN
+#undef HAVE_DLOPEN0
 
 /* Define to 1 if you have the `dup' function. */
 #undef HAVE_DUP
@@ -300,7 +300,7 @@
 #undef HAVE_DYLD_SHARED_CACHE_CONTAINS_PATH
 
 /* Defined when any dynamic module loading is enabled. */
-#undef HAVE_DYNAMIC_LOADING
+#undef HAVE_DYNAMIC_LOADING0
 
 /* Define to 1 if you have the <endian.h> header file. */
 #undef HAVE_ENDIAN_H
