@@ -1,0 +1,15 @@
+sqlite_utils/__init__.py,sha256=eyDK-5KOo-ARS3i0JcuxGiJmk5T-58Z1p_bhACbBrGc,201
+sqlite_utils/__main__.py,sha256=8hDtWlaFZK24KhfNq_ZKgtXqYHsDQDetukOCMlsbW0Q,59
+sqlite_utils/cli.py,sha256=IoZA29q_QcpkOHw3NZdNpKiXovttUMuzWC1xd-b-Q9U,88439
+sqlite_utils/db.py,sha256=HSF3H_u3s028-WIpwCrepTg_0lIaWAadcuCAUNYyDSk,144689
+sqlite_utils/hookspecs.py,sha256=NFA0BFZ8WUhnI_NRz4oFVDcomQYlguuAgUCBKAN792o,395
+sqlite_utils/plugins.py,sha256=V5nXD4r0o1wSbIHHOAiUBBV66ZOfKVnywKfZzCUqdsA,771
+sqlite_utils/py.typed,sha256=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU,0
+sqlite_utils/recipes.py,sha256=_npzti0nPV6XxvMj69Ca4QF-pXwZZQp_f_VY3i7pQDs,1687
+sqlite_utils/utils.py,sha256=0umlYfgSaNWyIJaRotjoyJ3u6Up9ef28pu8bxB0zKYQ,17084
+sqlite_utils-3.35.1.dist-info/LICENSE,sha256=xx0jnfkXJvxRnG63LTGOxlggYnIysveWIZ6H3PNdCrQ,11357
+sqlite_utils-3.35.1.dist-info/METADATA,sha256=lu6bGlZZ7fhmgTrHeeRKDdCR-aVcMan-kcOhAHlIJMo,7502
+sqlite_utils-3.35.1.dist-info/WHEEL,sha256=yQN5g4mg4AybRjkgi-9yy4iQEFibGQmlz78Pik5Or-A,92
+sqlite_utils-3.35.1.dist-info/entry_points.txt,sha256=33jbVHROlRBNhoXoSI-QI2rN6JDkJIkKIX7P5sNIWdY,54
+sqlite_utils-3.35.1.dist-info/top_level.txt,sha256=_dw_n5BWKUEtCYB2DTlmPMQfdRZSuFsmRQe2ZhNYwnQ,13
+sqlite_utils-3.35.1.dist-info/RECORD,,
