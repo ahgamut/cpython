@@ -235,3 +235,40 @@ var DROPDOWN_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="14" heig
     }
   });
 })();
+
+/* Set up datalist autocomplete for filter values */
+(function () {
+  function createDataLists() {
+    var facetResults = document.querySelectorAll(
+      ".facet-results [data-column]"
+    );
+    Array.from(facetResults).forEach(function (facetResult) {
+      // Use link text from all links in the facet result
+      var links = Array.from(
+        facetResult.querySelectorAll("li:not(.facet-truncated) a")
+      );
+      // Create a datalist element
+      var datalist = document.createElement("datalist");
+      datalist.id = "datalist-" + facetResult.dataset.column;
+      // Create an option element for each link text
+      links.forEach(function (link) {
+        var option = document.createElement("option");
+        option.label = link.innerText;
+        option.value = link.dataset.facetValue;
+        datalist.appendChild(option);
+      });
+      // Add the datalist to the facet result
+      facetResult.appendChild(datalist);
+    });
+  }
+  createDataLists();
+  // When any select with name=_filter_column changes, update the datalist
+  document.body.addEventListener("change", function (event) {
+    if (event.target.name === "_filter_column") {
+      event.target
+        .closest(".filter-row")
+        .querySelector(".filter-value")
+        .setAttribute("list", "datalist-" + event.target.value);
+    }
+  });
+})();

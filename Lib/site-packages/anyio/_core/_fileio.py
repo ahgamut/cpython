@@ -3,6 +3,7 @@ from __future__ import annotations
 import os
 import pathlib
 import sys
+from collections.abc import Callable, Iterable, Iterator, Sequence
 from dataclasses import dataclass
 from functools import partial
 from os import PathLike
@@ -12,22 +13,14 @@ from typing import (
     Any,
     AnyStr,
     AsyncIterator,
-    Callable,
+    Final,
     Generic,
-    Iterable,
-    Iterator,
-    Sequence,
     cast,
     overload,
 )
 
 from .. import to_thread
 from ..abc import AsyncResource
-
-if sys.version_info >= (3, 8):
-    from typing import Final
-else:
-    from typing_extensions import Final
 
 if TYPE_CHECKING:
     from _typeshed import OpenBinaryMode, OpenTextMode, ReadableBuffer, WriteableBuffer
@@ -39,8 +32,8 @@ class AsyncFile(AsyncResource, Generic[AnyStr]):
     """
     An asynchronous file object.
 
-    This class wraps a standard file object and provides async friendly versions of the following
-    blocking methods (where available on the original file object):
+    This class wraps a standard file object and provides async friendly versions of the
+    following blocking methods (where available on the original file object):
 
     * read
     * read1
@@ -57,8 +50,8 @@ class AsyncFile(AsyncResource, Generic[AnyStr]):
 
     All other methods are directly passed through.
 
-    This class supports the asynchronous context manager protocol which closes the underlying file
-    at the end of the context block.
+    This class supports the asynchronous context manager protocol which closes the
+    underlying file at the end of the context block.
 
     This class also supports asynchronous iteration::
 
@@ -223,11 +216,12 @@ class Path:
     """
     An asynchronous version of :class:`pathlib.Path`.
 
-    This class cannot be substituted for :class:`pathlib.Path` or :class:`pathlib.PurePath`, but
-    it is compatible with the :class:`os.PathLike` interface.
+    This class cannot be substituted for :class:`pathlib.Path` or
+    :class:`pathlib.PurePath`, but it is compatible with the :class:`os.PathLike`
+    interface.
 
-    It implements the Python 3.10 version of :class:`pathlib.Path` interface, except for the
-    deprecated :meth:`~pathlib.Path.link_to` method.
+    It implements the Python 3.10 version of :class:`pathlib.Path` interface, except for
+    the deprecated :meth:`~pathlib.Path.link_to` method.
 
     Any methods that do disk I/O need to be awaited on. These methods are:
 
@@ -263,7 +257,8 @@ class Path:
     * :meth:`~pathlib.Path.write_bytes`
     * :meth:`~pathlib.Path.write_text`
 
-    Additionally, the following methods return an async iterator yielding :class:`~.Path` objects:
+    Additionally, the following methods return an async iterator yielding
+    :class:`~.Path` objects:
 
     * :meth:`~pathlib.Path.glob`
     * :meth:`~pathlib.Path.iterdir`
@@ -371,12 +366,15 @@ class Path:
     def match(self, path_pattern: str) -> bool:
         return self._path.match(path_pattern)
 
-    def is_relative_to(self, *other: str | PathLike[str]) -> bool:
+    def is_relative_to(self, other: str | PathLike[str]) -> bool:
         try:
-            self.relative_to(*other)
+            self.relative_to(other)
             return True
         except ValueError:
             return False
+
+    async def is_junction(self) -> bool:
+        return await to_thread.run_sync(self._path.is_junction)
 
     async def chmod(self, mode: int, *, follow_symlinks: bool = True) -> None:
         func = partial(os.chmod, follow_symlinks=follow_symlinks)
@@ -571,6 +569,29 @@ class Path:
             if not missing_ok:
                 raise
 
+    if sys.version_info >= (3, 12):
+
+        async def walk(
+            self,
+            top_down: bool = True,
+            on_error: Callable[[OSError], object] | None = None,
+            follow_symlinks: bool = False,
+        ) -> AsyncIterator[tuple[Path, list[str], list[str]]]:
+            def get_next_value() -> tuple[pathlib.Path, list[str], list[str]] | None:
+                try:
+                    return next(gen)
+                except StopIteration:
+                    return None
+
+            gen = self._path.walk(top_down, on_error, follow_symlinks)
+            while True:
+                value = await to_thread.run_sync(get_next_value)
+                if value is None:
+                    return
+
+                root, dirs, paths = value
+                yield Path(root), dirs, paths
+
     def with_name(self, name: str) -> Path:
         return Path(self._path.with_name(name))
 
@@ -579,6 +600,9 @@ class Path:
 
     def with_suffix(self, suffix: str) -> Path:
         return Path(self._path.with_suffix(suffix))
+
+    def with_segments(self, *pathsegments: str) -> Path:
+        return Path(*pathsegments)
 
     async def write_bytes(self, data: bytes) -> int:
         return await to_thread.run_sync(self._path.write_bytes, data)
