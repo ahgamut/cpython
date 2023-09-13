@@ -1148,6 +1148,7 @@ def _find_and_load_unlocked(name, import_):
         # if the module is present as a builtin, we call
         # BuiltinImporter with the full name (and no path)
         # to create the module spec correctly.
+        _warnings.warn(f"attempting internal import of {name}", ImportWarning)
         spec = BuiltinImporter.find_spec(name)
     if spec is None:
         raise ModuleNotFoundError(_ERR_MSG.format(name), name=name)
