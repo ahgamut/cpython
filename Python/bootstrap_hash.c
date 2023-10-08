@@ -472,7 +472,7 @@ lcg_urandom(unsigned int x0, unsigned char *buffer, size_t size)
 static int
 pyurandom(void *buffer, Py_ssize_t size, int blocking, int raise)
 {
-#if defined(PY_GETRANDOM) || defined(PY_GETENTROPY)
+#if 1 || defined(PY_GETRANDOM) || defined(PY_GETENTROPY)
     int res;
 #endif
 
@@ -492,9 +492,9 @@ pyurandom(void *buffer, Py_ssize_t size, int blocking, int raise)
     return win32_urandom((unsigned char *)buffer, size, raise);
 #else
 
-#if defined(PY_GETRANDOM) || defined(PY_GETENTROPY)
-    if (HAVE_GETENTRYPY_GETRANDOM_RUNTIME) {
-#ifdef PY_GETRANDOM
+#if 1 || defined(PY_GETRANDOM) || defined(PY_GETENTROPY)
+    if (1 || HAVE_GETENTRYPY_GETRANDOM_RUNTIME) {
+#if 1 || PY_GETRANDOM
         res = py_getrandom(buffer, size, blocking, raise);
 #else
         res = py_getentropy(buffer, size, raise);
