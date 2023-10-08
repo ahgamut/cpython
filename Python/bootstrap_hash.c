@@ -67,7 +67,7 @@ win32_urandom(unsigned char *buffer, Py_ssize_t size, int raise)
 
 #else /* !MS_WINDOWS */
 
-#if defined(HAVE_GETRANDOM) || defined(HAVE_GETRANDOM_SYSCALL)
+#if 1 || defined(HAVE_GETRANDOM) || defined(HAVE_GETRANDOM_SYSCALL)
 #define PY_GETRANDOM 1
 
 /* Call getrandom() to get random bytes:
@@ -110,7 +110,7 @@ py_getrandom(void *buffer, Py_ssize_t size, int blocking, int raise)
 #endif
 
         errno = 0;
-#ifdef HAVE_GETRANDOM
+#if 1 || HAVE_GETRANDOM
         if (raise) {
             Py_BEGIN_ALLOW_THREADS
             n = getrandom(dest, n, flags);
