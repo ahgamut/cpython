@@ -4,7 +4,7 @@ COSMO=${COSMO:-/opt/cosmo}
 COSMOS=${COSMOS:-/opt/cosmos}
 ARCH=${ARCH:-x86_64}
 
-OBJCOPY="$COSMO/bin/$ARCH-unknown-cosmo-objcopy"
+OBJCOPY="$COSMO/cosmocc/bin/$ARCH-unknown-cosmo-objcopy"
 FIXUPOBJ="$COSMO/o/$MODE/tool/build/fixupobj.com"
 ZIPCOPY="$COSMO/o/$MODE/tool/build/zipcopy.com"
 
