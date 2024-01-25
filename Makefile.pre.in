@@ -715,7 +715,7 @@ $(PYTHON_APE): sharedmods
 		Lib/pydoc_data/\* \*__pycache__\*\
 		Lib/tkinter/\* Lib/idlelib/\* Lib/turtle.py\* \
 		Lib/turtledemo/\* Lib/_pydecimal.py\* \
-		Lib/ensurepip/\*
+		Lib/ensurepip/\* Lib/site-packages/\*
 	zip -qr ./$@ build/lib.linux*/\
 		-x \*__pycache__\*
 	ls -rShal ./$@

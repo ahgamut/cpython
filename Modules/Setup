@@ -193,7 +193,7 @@ termios termios.c
 
 # Modules with UNIX dependencies that require external libraries
 
-_crypt _cryptmodule.c -lcrypt
+#_crypt _cryptmodule.c -lcrypt
 #nis nismodule.c -I/usr/include/tirpc -lnsl -ltirpc
 
 # Modules that require external libraries.
@@ -214,16 +214,16 @@ readline readline.c -lreadline -ltinfo
 # libtinfo is from ncurses
 
 # OpenSSL bindings
-_ssl _ssl.c $(OPENSSL_INCLUDES) $(OPENSSL_LDFLAGS) -L$(COSMOS)/lib -lssl
-_hashlib _hashopenssl.c $(OPENSSL_INCLUDES) $(OPENSSL_LDFLAGS) -L$(COSMOS)/lib -lcrypto
+# _ssl _ssl.c $(OPENSSL_INCLUDES) $(OPENSSL_LDFLAGS) -L$(COSMOS)/lib -lssl
+# _hashlib _hashopenssl.c $(OPENSSL_INCLUDES) $(OPENSSL_LDFLAGS) -L$(COSMOS)/lib -lcrypto
 
 # libyaml bindings
-yaml._yaml _yaml/_yaml.c -IModules/_yaml/ -lyaml
+# yaml._yaml _yaml/_yaml.c -IModules/_yaml/ -lyaml
 
 # markupsafe speedups C extension
-markupsafe._speedups markupsafe/_speedups.c
+# markupsafe._speedups markupsafe/_speedups.c
 
-_sqlite3 _sqlite/blob.c _sqlite/connection.c _sqlite/cursor.c _sqlite/microprotocols.c _sqlite/module.c _sqlite/prepare_protocol.c _sqlite/row.c _sqlite/statement.c _sqlite/util.c -lsqlite3
+# _sqlite3 _sqlite/blob.c _sqlite/connection.c _sqlite/cursor.c _sqlite/microprotocols.c _sqlite/module.c _sqlite/prepare_protocol.c _sqlite/row.c _sqlite/statement.c _sqlite/util.c -lsqlite3
 
 # To statically link OpenSSL:
 # _ssl _ssl.c $(OPENSSL_INCLUDES) $(OPENSSL_LDFLAGS) \
@@ -285,7 +285,7 @@ _curses_panel -lpanel -lncurses _curses_panel.c
 #xx xxmodule.c
 #xxlimited xxlimited.c
 #xxlimited_35 xxlimited_35.c
-xxsubtype xxsubtype.c  # Required for the test suite to pass!
+# xxsubtype xxsubtype.c  # Required for the test suite to pass!
 
 # Testing
 
