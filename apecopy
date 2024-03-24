@@ -5,8 +5,8 @@ COSMOS=${COSMOS:-/opt/cosmos}
 ARCH=${ARCH:-x86_64}
 
 OBJCOPY="$COSMO/cosmocc/bin/$ARCH-unknown-cosmo-objcopy"
-FIXUPOBJ="$COSMO/o/tool/build/fixupobj.com"
-ZIPCOPY="$COSMO/o/tool/build/zipcopy.com"
+FIXUPOBJ="$COSMO/o/tool/build/fixupobj"
+ZIPCOPY="$COSMO/o/tool/build/zipcopy"
 
 if [ ! -f "$1" ]; then
   echo "no file to apecopy!"
